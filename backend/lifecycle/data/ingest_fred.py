@@ -5,10 +5,13 @@ signals used inside decision rules; the platform's regime rules use CPI and yiel
 whose revisions are negligible, so latest vintages are stored with a publication lag.
 """
 import io
+import json
+import os
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 import pandas as pd
 
-from lifecycle.data.http import fetch
+from lifecycle.data.http import complete_months, fetch
 from lifecycle.data.schema import finalize_rows
 
 # FRED id -> (series id, quantity, transform, publication lag days)
@@ -35,6 +38,16 @@ FRED_SERIES = {
 
 
 def _read_fred_csv(fred_id: str) -> pd.Series:
+    key = os.environ.get("FRED_API_KEY", "")
+    if key != "":
+        # the official API is faster and more reliable than the keyless fredgraph endpoint
+        url = ("https://api.stlouisfed.org/fred/series/observations?file_type=json&series_id=" + fred_id +
+               "&api_key=" + key)
+        path = fetch(url, "fred_" + fred_id + ".json")
+        obs = json.loads(path.read_text())["observations"]
+        idx = pd.to_datetime([o["date"] for o in obs])
+        values = pd.to_numeric(pd.Series([o["value"] for o in obs]), errors="coerce")
+        return pd.Series(values.values, index=idx, name=fred_id).dropna()
     path = fetch("https://fred.stlouisfed.org/graph/fredgraph.csv?id=" + fred_id, "fred_" + fred_id + ".csv")
     frame = pd.read_csv(io.StringIO(path.read_text()))
     date_col = frame.columns[0]
@@ -43,19 +56,35 @@ def _read_fred_csv(fred_id: str) -> pd.Series:
     return pd.Series(values.values, index=frame[date_col], name=fred_id).dropna()
 
 
+def _download_all(series: list[str]) -> dict[str, pd.Series | Exception]:
+    """Fetch every FRED series concurrently (a handful of workers keeps within FRED's rate limits)."""
+    out: dict[str, pd.Series | Exception] = {}
+    with ThreadPoolExecutor(max_workers=6) as pool:
+        futures = {pool.submit(_read_fred_csv, fid): fid for fid in series}
+        for fut in as_completed(futures):
+            fid = futures[fut]
+            try:
+                out[fid] = fut.result()
+            except Exception as exc:
+                out[fid] = exc
+    return out
+
+
 def pull_fred(series: list[str] | None = None) -> pd.DataFrame:
     if series is None:
         series = list(FRED_SERIES.keys())
     rows = []
+    downloaded = _download_all(series)
     for fred_id in series:
         sid, quantity, transform, lag = FRED_SERIES[fred_id]
-        try:
-            raw = _read_fred_csv(fred_id)
-        except Exception as exc:  # network or parsing failure is reported, never silenced into data
-            print("warning: FRED", fred_id, "failed:", exc)
+        raw = downloaded[fred_id]
+        if isinstance(raw, Exception):  # network or parsing failure is reported, never silenced into data
+            print("warning: FRED", fred_id, "failed:", raw)
             continue
         if transform == "level_monthly_last":
+            cutoff = complete_months(raw.index)
             raw = raw.resample("ME").last().dropna()
+            raw = raw[raw.index <= cutoff]
         idx = raw.index + pd.offsets.MonthEnd(0)
         values = raw.values.astype(float)
         if transform == "pct":

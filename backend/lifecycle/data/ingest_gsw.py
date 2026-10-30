@@ -8,7 +8,7 @@ import io
 import numpy as np
 import pandas as pd
 
-from lifecycle.data.http import fetch
+from lifecycle.data.http import complete_months, fetch
 from lifecycle.data.schema import finalize_rows
 
 NOMINAL_URL = "https://www.federalreserve.gov/data/yield-curve-tables/feds200628.csv"
@@ -34,6 +34,7 @@ def pull_gsw() -> pd.DataFrame:
     rows = []
     nominal = _read_fed_csv(NOMINAL_URL, "gsw_nominal.csv")
     month_end = nominal.resample("ME").last()
+    month_end = month_end[month_end.index <= complete_months(nominal.index)]
     for m in range(1, 31):
         col = "SVENY%02d" % m
         if col not in month_end.columns:
@@ -46,6 +47,7 @@ def pull_gsw() -> pd.DataFrame:
     try:
         real = _read_fed_csv(REAL_URL, "gsw_real.csv")
         month_end_r = real.resample("ME").last()
+        month_end_r = month_end_r[month_end_r.index <= complete_months(real.index)]
         for m in range(2, 21):
             col = "TIPSY%02d" % m
             if col not in month_end_r.columns:
