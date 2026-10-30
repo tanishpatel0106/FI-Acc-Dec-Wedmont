@@ -1,0 +1,13 @@
+{
+  "kind": "sweep",
+  "label": "Accumulation heatmap: savings rate x starting age, core, bootstrap, gamma=4",
+  "tier": "core",
+  "spec": {
+    "base": {"data": {"universe": "core"}, "scenario": {"generator": "bootstrap", "n_paths": 2000, "n_train_paths": 1000},
+             "preferences": {"gamma": 4.0}},
+    "kind": "accumulation",
+    "optimizer": "parametric",
+    "benchmarks": ["target_date", "sixty_forty", "best_constant"],
+    "label": "Accumulation heatmap: savings rate x starting age, core, bootstrap, gamma=4"
+  }
+}

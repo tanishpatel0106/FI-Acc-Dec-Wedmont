@@ -1,0 +1,2078 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "LIFECYCLE API",
+    "description": "Multi-asset portfolio optimisation & lifetime utility research platform. Research output only - not investment advice.",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/v1/catalog/series": {
+      "get": {
+        "tags": [
+          "catalog & market"
+        ],
+        "summary": "Catalog Series",
+        "operationId": "catalog_series_v1_catalog_series_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Catalog Series V1 Catalog Series Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/market/returns/summary": {
+      "get": {
+        "tags": [
+          "catalog & market"
+        ],
+        "summary": "Returns Summary",
+        "operationId": "returns_summary_v1_market_returns_summary_get",
+        "parameters": [
+          {
+            "name": "universe",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "core",
+              "title": "Universe"
+            }
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Start"
+            }
+          },
+          {
+            "name": "end",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "End"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Returns Summary V1 Market Returns Summary Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/market/dependence": {
+      "get": {
+        "tags": [
+          "catalog & market"
+        ],
+        "summary": "Market Dependence",
+        "operationId": "market_dependence_v1_market_dependence_get",
+        "parameters": [
+          {
+            "name": "universe",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "core",
+              "title": "Universe"
+            }
+          },
+          {
+            "name": "a",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "us_eq",
+              "title": "A"
+            }
+          },
+          {
+            "name": "b",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "ust_10y",
+              "title": "B"
+            }
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Start"
+            }
+          },
+          {
+            "name": "end",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "End"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Market Dependence V1 Market Dependence Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/market/yield-curve": {
+      "get": {
+        "tags": [
+          "catalog & market"
+        ],
+        "summary": "Yield Curve",
+        "operationId": "yield_curve_v1_market_yield_curve_get",
+        "parameters": [
+          {
+            "name": "date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Date"
+            }
+          },
+          {
+            "name": "withdrawal",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "default": 40000.0,
+              "title": "Withdrawal"
+            }
+          },
+          {
+            "name": "years",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 30,
+              "title": "Years"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Yield Curve V1 Market Yield Curve Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/market/regimes": {
+      "get": {
+        "tags": [
+          "catalog & market"
+        ],
+        "summary": "Regimes",
+        "operationId": "regimes_v1_market_regimes_get",
+        "parameters": [
+          {
+            "name": "universe",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "core",
+              "title": "Universe"
+            }
+          },
+          {
+            "name": "k",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 2,
+              "title": "K"
+            }
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Start"
+            }
+          },
+          {
+            "name": "end",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "End"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Regimes V1 Market Regimes Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/market/factors": {
+      "get": {
+        "tags": [
+          "catalog & market"
+        ],
+        "summary": "Factors",
+        "operationId": "factors_v1_market_factors_get",
+        "parameters": [
+          {
+            "name": "universe",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "core",
+              "title": "Universe"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Factors V1 Market Factors Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/experiments": {
+      "post": {
+        "tags": [
+          "experiments"
+        ],
+        "summary": "Submit Experiment",
+        "operationId": "submit_experiment_v1_experiments_post",
+        "parameters": [
+          {
+            "name": "label",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Label"
+            }
+          },
+          {
+            "name": "force",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Force"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExperimentSpec"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Submit Experiment V1 Experiments Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "experiments"
+        ],
+        "summary": "List Experiments",
+        "operationId": "list_experiments_v1_experiments_get",
+        "parameters": [
+          {
+            "name": "kind",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Kind"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 500,
+              "default": 100,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "parent_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Parent Id"
+            }
+          },
+          {
+            "name": "include_children",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Include Children"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response List Experiments V1 Experiments Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/experiments/{run_id}": {
+      "get": {
+        "tags": [
+          "experiments"
+        ],
+        "summary": "Get Experiment",
+        "operationId": "get_experiment_v1_experiments__run_id__get",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Run Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Get Experiment V1 Experiments  Run Id  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/experiments/{run_id}/cancel": {
+      "post": {
+        "tags": [
+          "experiments"
+        ],
+        "summary": "Cancel Experiment",
+        "operationId": "cancel_experiment_v1_experiments__run_id__cancel_post",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Run Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Cancel Experiment V1 Experiments  Run Id  Cancel Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/experiments/{run_id}/events": {
+      "get": {
+        "tags": [
+          "experiments"
+        ],
+        "summary": "Experiment Events",
+        "operationId": "experiment_events_v1_experiments__run_id__events_get",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Run Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/experiments/{run_id}/results": {
+      "get": {
+        "tags": [
+          "experiments"
+        ],
+        "summary": "Experiment Results",
+        "operationId": "experiment_results_v1_experiments__run_id__results_get",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Run Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Experiment Results V1 Experiments  Run Id  Results Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/experiments/{run_id}/paths": {
+      "get": {
+        "tags": [
+          "experiments"
+        ],
+        "summary": "Experiment Paths",
+        "description": "Sample path arrays as Arrow IPC (application/vnd.apache.arrow.stream).",
+        "operationId": "experiment_paths_v1_experiments__run_id__paths_get",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Run Id"
+            }
+          },
+          {
+            "name": "n",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 2000,
+              "default": 200,
+              "title": "N"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/sweeps": {
+      "post": {
+        "tags": [
+          "sweeps, comparison, validation, reports"
+        ],
+        "summary": "Submit Sweep",
+        "operationId": "submit_sweep_v1_sweeps_post",
+        "parameters": [
+          {
+            "name": "force",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Force"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SweepSpec"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Submit Sweep V1 Sweeps Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "sweeps, comparison, validation, reports"
+        ],
+        "summary": "List Sweeps",
+        "operationId": "list_sweeps_v1_sweeps_get",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 100,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response List Sweeps V1 Sweeps Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/sweeps/disagreement": {
+      "get": {
+        "tags": [
+          "sweeps, comparison, validation, reports"
+        ],
+        "summary": "Sweep Disagreement",
+        "description": "Cells where generators (or other sweep variants) disagree on the sign of Delta_CE.",
+        "operationId": "sweep_disagreement_v1_sweeps_disagreement_get",
+        "parameters": [
+          {
+            "name": "ids",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Ids"
+            }
+          },
+          {
+            "name": "benchmark",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "sixty_forty",
+              "title": "Benchmark"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Sweep Disagreement V1 Sweeps Disagreement Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/sweeps/{sweep_id}/surface": {
+      "get": {
+        "tags": [
+          "sweeps, comparison, validation, reports"
+        ],
+        "summary": "Sweep Surface",
+        "operationId": "sweep_surface_v1_sweeps__sweep_id__surface_get",
+        "parameters": [
+          {
+            "name": "sweep_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Sweep Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Sweep Surface V1 Sweeps  Sweep Id  Surface Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/compare": {
+      "post": {
+        "tags": [
+          "sweeps, comparison, validation, reports"
+        ],
+        "summary": "Compare",
+        "operationId": "compare_v1_compare_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompareSpec"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Compare V1 Compare Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/compare/{run_id}": {
+      "get": {
+        "tags": [
+          "sweeps, comparison, validation, reports"
+        ],
+        "summary": "Compare Result",
+        "operationId": "compare_result_v1_compare__run_id__get",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Run Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Compare Result V1 Compare  Run Id  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/attribution/{sweep_id}": {
+      "get": {
+        "tags": [
+          "sweeps, comparison, validation, reports"
+        ],
+        "summary": "Attribution",
+        "operationId": "attribution_v1_attribution__sweep_id__get",
+        "parameters": [
+          {
+            "name": "sweep_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Sweep Id"
+            }
+          },
+          {
+            "name": "universe",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "modern",
+              "title": "Universe"
+            }
+          },
+          {
+            "name": "by_regime",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true,
+              "title": "By Regime"
+            }
+          },
+          {
+            "name": "n_paths",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1000,
+              "title": "N Paths"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Attribution V1 Attribution  Sweep Id  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/validation/{run_id}": {
+      "get": {
+        "tags": [
+          "sweeps, comparison, validation, reports"
+        ],
+        "summary": "Validation",
+        "operationId": "validation_v1_validation__run_id__get",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Run Id"
+            }
+          },
+          {
+            "name": "n_param_boot",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 500,
+              "default": 20,
+              "title": "N Param Boot"
+            }
+          },
+          {
+            "name": "max_paths",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 50000,
+              "default": 10000,
+              "title": "Max Paths"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Validation V1 Validation  Run Id  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/reports/{run_id}": {
+      "get": {
+        "tags": [
+          "sweeps, comparison, validation, reports"
+        ],
+        "summary": "Report",
+        "operationId": "report_v1_reports__run_id__get",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Run Id"
+            }
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "pdf",
+              "title": "Format"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/research/hypotheses": {
+      "get": {
+        "tags": [
+          "sweeps, comparison, validation, reports"
+        ],
+        "summary": "Latest Hypotheses",
+        "operationId": "latest_hypotheses_v1_research_hypotheses_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Latest Hypotheses V1 Research Hypotheses Get"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "sweeps, comparison, validation, reports"
+        ],
+        "summary": "Run Hypotheses",
+        "operationId": "run_hypotheses_v1_research_hypotheses_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HypothesesSpec"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Run Hypotheses V1 Research Hypotheses Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/overview": {
+      "get": {
+        "tags": [
+          "sweeps, comparison, validation, reports"
+        ],
+        "summary": "Overview",
+        "operationId": "overview_v1_overview_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Overview V1 Overview Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "summary": "Health",
+        "operationId": "health_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Health Health Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CompareSpec": {
+        "properties": {
+          "run_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Run Ids"
+          },
+          "n_divergent": {
+            "type": "integer",
+            "title": "N Divergent",
+            "default": 50
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "run_ids"
+        ],
+        "title": "CompareSpec"
+      },
+      "DataSpec": {
+        "properties": {
+          "universe": {
+            "type": "string",
+            "enum": [
+              "core",
+              "modern"
+            ],
+            "title": "Universe",
+            "default": "core"
+          },
+          "calibration_start": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Calibration Start"
+          },
+          "calibration_end": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Calibration End"
+          },
+          "catalog_hash": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Catalog Hash"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "DataSpec"
+      },
+      "ExperimentSpec": {
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/DataSpec"
+          },
+          "scenario": {
+            "$ref": "#/components/schemas/ScenarioSpec"
+          },
+          "investor": {
+            "$ref": "#/components/schemas/InvestorSpec"
+          },
+          "preferences": {
+            "$ref": "#/components/schemas/PreferencesSpec"
+          },
+          "policy": {
+            "$ref": "#/components/schemas/PolicySpec"
+          },
+          "outputs": {
+            "$ref": "#/components/schemas/OutputsSpec"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "ExperimentSpec"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "HypothesesSpec": {
+        "properties": {
+          "sweep_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sweep Id"
+          },
+          "attribution_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Attribution Id"
+          },
+          "gammas": {
+            "items": {
+              "type": "number"
+            },
+            "type": "array",
+            "title": "Gammas",
+            "default": [
+              2.0,
+              4.0,
+              6.0
+            ]
+          },
+          "n_boot": {
+            "type": "integer",
+            "title": "N Boot",
+            "default": 5
+          },
+          "h1_ages": {
+            "items": {
+              "type": "number"
+            },
+            "type": "array",
+            "title": "H1 Ages",
+            "default": [
+              55.0,
+              70.0
+            ]
+          },
+          "min_effect": {
+            "type": "number",
+            "title": "Min Effect",
+            "default": 0.005
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "HypothesesSpec"
+      },
+      "InvestorSpec": {
+        "properties": {
+          "start_age": {
+            "type": "number",
+            "maximum": 95.0,
+            "minimum": 20.0,
+            "title": "Start Age",
+            "default": 65.0
+          },
+          "retirement_age": {
+            "type": "number",
+            "maximum": 80.0,
+            "minimum": 40.0,
+            "title": "Retirement Age",
+            "default": 65.0
+          },
+          "max_age": {
+            "type": "number",
+            "maximum": 110.0,
+            "minimum": 70.0,
+            "title": "Max Age",
+            "default": 100.0
+          },
+          "initial_wealth": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Initial Wealth",
+            "default": 1000000.0
+          },
+          "income": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Income",
+            "default": 100000.0
+          },
+          "income_profile": {
+            "type": "string",
+            "enum": [
+              "flat",
+              "cgm_college",
+              "cgm_highschool"
+            ],
+            "title": "Income Profile",
+            "default": "cgm_college"
+          },
+          "sigma_u": {
+            "type": "number",
+            "maximum": 0.5,
+            "minimum": 0.0,
+            "title": "Sigma U",
+            "default": 0.1
+          },
+          "sigma_eps": {
+            "type": "number",
+            "maximum": 0.5,
+            "minimum": 0.0,
+            "title": "Sigma Eps",
+            "default": 0.1
+          },
+          "rho_ye": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": -1.0,
+            "title": "Rho Ye",
+            "default": 0.0
+          },
+          "replacement_rate": {
+            "type": "number",
+            "maximum": 1.5,
+            "minimum": 0.0,
+            "title": "Replacement Rate",
+            "default": 0.4
+          },
+          "pension": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pension",
+            "default": 20000.0
+          },
+          "savings_rate": {
+            "type": "number",
+            "maximum": 0.8,
+            "minimum": 0.0,
+            "title": "Savings Rate",
+            "default": 0.1
+          },
+          "sex": {
+            "type": "string",
+            "enum": [
+              "male",
+              "female",
+              "unisex"
+            ],
+            "title": "Sex",
+            "default": "unisex"
+          },
+          "mortality": {
+            "type": "boolean",
+            "title": "Mortality",
+            "default": true
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "InvestorSpec"
+      },
+      "OutputsSpec": {
+        "properties": {
+          "benchmark": {
+            "type": "string",
+            "enum": [
+              "sixty_forty",
+              "target_date",
+              "best_constant",
+              "none"
+            ],
+            "title": "Benchmark",
+            "default": "sixty_forty"
+          },
+          "quantiles": {
+            "items": {
+              "type": "number"
+            },
+            "type": "array",
+            "title": "Quantiles",
+            "default": [
+              0.05,
+              0.25,
+              0.5,
+              0.75,
+              0.95
+            ]
+          },
+          "persist_paths": {
+            "type": "boolean",
+            "title": "Persist Paths",
+            "default": false
+          },
+          "n_sample_paths": {
+            "type": "integer",
+            "maximum": 2000.0,
+            "minimum": 0.0,
+            "title": "N Sample Paths",
+            "default": 150
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "OutputsSpec"
+      },
+      "PolicySpec": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "constant_mix",
+              "sixty_forty",
+              "target_date",
+              "glidepath",
+              "risk_parity",
+              "min_variance",
+              "mean_variance",
+              "mean_cvar",
+              "utility_static",
+              "best_constant",
+              "regime",
+              "bucket",
+              "parametric",
+              "dp"
+            ],
+            "title": "Type",
+            "default": "sixty_forty"
+          },
+          "weights": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "number"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Weights"
+          },
+          "params": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Params"
+          },
+          "spending_rule": {
+            "type": "string",
+            "enum": [
+              "fixed_real",
+              "fixed_pct",
+              "guardrails",
+              "bucket",
+              "utility_optimal"
+            ],
+            "title": "Spending Rule",
+            "default": "fixed_real"
+          },
+          "withdrawal_rate": {
+            "type": "number",
+            "maximum": 0.2,
+            "minimum": 0.0,
+            "title": "Withdrawal Rate",
+            "default": 0.04
+          },
+          "rebalance_months": {
+            "type": "integer",
+            "maximum": 60.0,
+            "minimum": 1.0,
+            "title": "Rebalance Months",
+            "default": 1
+          },
+          "cost_bps": {
+            "type": "number",
+            "maximum": 200.0,
+            "minimum": 0.0,
+            "title": "Cost Bps",
+            "default": 0.0
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "PolicySpec"
+      },
+      "PreferencesSpec": {
+        "properties": {
+          "gamma": {
+            "type": "number",
+            "maximum": 15.0,
+            "minimum": 0.5,
+            "title": "Gamma",
+            "default": 4.0
+          },
+          "beta_annual": {
+            "type": "number",
+            "maximum": 1.0,
+            "exclusiveMinimum": 0.5,
+            "title": "Beta Annual",
+            "default": 0.97
+          },
+          "eta": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Eta",
+            "default": 0.0
+          },
+          "c_min": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "C Min",
+            "default": 6000.0
+          },
+          "bequest_shift": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Bequest Shift",
+            "default": 10000.0
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "PreferencesSpec"
+      },
+      "ScenarioSpec": {
+        "properties": {
+          "generator": {
+            "type": "string",
+            "enum": [
+              "historical",
+              "bootstrap",
+              "student_t",
+              "markov_switching",
+              "curve_factor"
+            ],
+            "title": "Generator",
+            "default": "bootstrap"
+          },
+          "n_paths": {
+            "type": "integer",
+            "maximum": 100000.0,
+            "minimum": 100.0,
+            "title": "N Paths",
+            "default": 2000
+          },
+          "n_train_paths": {
+            "type": "integer",
+            "maximum": 20000.0,
+            "minimum": 100.0,
+            "title": "N Train Paths",
+            "default": 1000
+          },
+          "horizon_months": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 1200.0,
+                "minimum": 12.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Horizon Months"
+          },
+          "seed": {
+            "type": "integer",
+            "title": "Seed",
+            "default": 20261030
+          },
+          "block_length": {
+            "anyOf": [
+              {
+                "type": "number",
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Block Length"
+          },
+          "k_regimes": {
+            "type": "integer",
+            "maximum": 3.0,
+            "minimum": 1.0,
+            "title": "K Regimes",
+            "default": 2
+          },
+          "start_regime": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Start Regime"
+          },
+          "nu": {
+            "anyOf": [
+              {
+                "type": "number",
+                "exclusiveMinimum": 2.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Nu"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "ScenarioSpec"
+      },
+      "SweepSpec": {
+        "properties": {
+          "base": {
+            "$ref": "#/components/schemas/ExperimentSpec"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "decumulation",
+              "accumulation"
+            ],
+            "title": "Kind",
+            "default": "decumulation"
+          },
+          "withdrawal_rates": {
+            "items": {
+              "type": "number"
+            },
+            "type": "array",
+            "title": "Withdrawal Rates",
+            "default": [
+              0.02,
+              0.025,
+              0.03,
+              0.035,
+              0.04,
+              0.045,
+              0.05,
+              0.055,
+              0.06,
+              0.065,
+              0.07,
+              0.075,
+              0.08
+            ]
+          },
+          "years_relative": {
+            "items": {
+              "type": "number"
+            },
+            "type": "array",
+            "title": "Years Relative",
+            "default": [
+              -20,
+              -15,
+              -10,
+              -5,
+              0,
+              5,
+              10
+            ]
+          },
+          "savings_rates": {
+            "items": {
+              "type": "number"
+            },
+            "type": "array",
+            "title": "Savings Rates",
+            "default": [
+              0.05,
+              0.1,
+              0.15,
+              0.2
+            ]
+          },
+          "start_ages": {
+            "items": {
+              "type": "number"
+            },
+            "type": "array",
+            "title": "Start Ages",
+            "default": [
+              30,
+              40,
+              50
+            ]
+          },
+          "optimizer": {
+            "type": "string",
+            "enum": [
+              "parametric",
+              "glidepath",
+              "best_constant",
+              "utility_static"
+            ],
+            "title": "Optimizer",
+            "default": "parametric"
+          },
+          "benchmarks": {
+            "items": {
+              "type": "string",
+              "enum": [
+                "sixty_forty",
+                "target_date",
+                "best_constant",
+                "none"
+              ]
+            },
+            "type": "array",
+            "title": "Benchmarks",
+            "default": [
+              "sixty_forty",
+              "target_date",
+              "best_constant"
+            ]
+          },
+          "label": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Label"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "SweepSpec"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "kind": "experiment",
+  "label": "Parametric dynamic policy vs 60/40, 4% fixed real",
+  "tier": "core",
+  "spec": {"scenario": {"generator": "bootstrap", "n_paths": 10000}, "policy": {"type": "parametric"}}
+}

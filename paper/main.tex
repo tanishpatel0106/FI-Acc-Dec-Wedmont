@@ -1,0 +1,74 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,graphicx,booktabs,hyperref,natbib}
+\title{Dynamic Multi-Asset Portfolio Optimization Across the Accumulation--Decumulation Lifecycle:\\
+A Utility-Based Analysis of Savings and Withdrawal Rates}
+\author{Tanish Patel\\Columbia University \and Wedmont Private Capital}
+\date{Draft --- figures built from stored run IDs (\texttt{make paper})}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We measure how much lifetime utility an investor gains from a cash-flow-aware, dynamically optimised multi-asset
+portfolio relative to a static 60/40 allocation or an age-based glidepath, expressed as the percentage gain in
+certainty-equivalent (CE) real consumption. Policies are compared on common random numbers; Monte Carlo, parameter
+and model uncertainty are reported separately, and a result is called robust only if its sign survives all three.
+\end{abstract}
+
+\section{Introduction}
+Most retirement tools ask whether a portfolio survives. We ask how lifetime welfare changes when the allocation
+responds to the investor's own cash flows, horizon and economic regime \citep{merton1969lifetime,cocco2005consumption}.
+
+\section{Data}
+Investable returns come from WRDS (CRSP index and Treasury files, WRDS Bond Returns, ETFs resolved by PERMNO);
+macro state variables, yield curves \citep{gurkaynak2007us,gurkaynak2010tips} and term premia \citep{adrian2013pricing}
+from public sources. Two universes: a long-history core and a modern diversified universe.
+
+\section{Model}
+Wealth evolves monthly in real terms,
+\begin{equation}
+W_{t+1}=(W_t+Y_t+P_t-C_t)(1+\mathbf w_t^\top\mathbf R_{t+1})-\kappa\lVert\mathbf w_t-\tilde{\mathbf w}_t\rVert_1(W_t+Y_t+P_t-C_t),
+\end{equation}
+and the investor maximises survival-weighted CRRA utility with a bequest motive. The headline metric is
+\begin{equation}
+\mathrm{CE}(\pi)=\Big[\tfrac{(1-\gamma)\hat U(\pi)}{\sum_t\beta^tS_t}\Big]^{1/(1-\gamma)},\qquad
+\Delta_{\mathrm{CE}}=\mathrm{CE}(\pi^*)/\mathrm{CE}(\pi_{\mathrm{bench}})-1.
+\end{equation}
+Scenarios come from a stationary block bootstrap \citep{politis1994stationary,politis2004automatic}, a multivariate
+Student-t, a Markov-switching model \citep{hamilton1989new} and a yield-curve factor model; dependence is studied with
+DCC-GARCH \citep{engle2002dynamic} and Ledoit--Wolf shrinkage \citep{ledoit2004well}.
+
+\section{Hypotheses}
+\begin{description}
+\item[H1] Optimal allocation depends on the sign and magnitude of the net-flow rate $q_t$, not only age.
+\item[H2] A lifecycle-optimised policy raises CE consumption over constant-mix and target-date policies.
+\item[H3] The CE value of each sleeve differs between inflationary and disinflationary regimes.
+\item[H4] Sleeves beyond US equity and Treasuries improve consumption sustainability under some conditions.
+\end{description}
+
+\section{Results}
+\begin{figure}[h]\centering
+\IfFileExists{figures/fig1_decumulation_heatmap.pdf}{\includegraphics[width=.9\linewidth]{figures/fig1_decumulation_heatmap.pdf}}{\fbox{run \texttt{make paper}}}
+\caption{$\Delta_{\mathrm{CE}}$ of the parametric dynamic policy vs 60/40: withdrawal rate $\times$ years relative to retirement.}
+\end{figure}
+\begin{figure}[h]\centering
+\IfFileExists{figures/fig2_accumulation_heatmap.pdf}{\includegraphics[width=.9\linewidth]{figures/fig2_accumulation_heatmap.pdf}}{\fbox{run \texttt{make paper}}}
+\caption{Accumulation: savings rate $\times$ starting age, vs the target-date glidepath.}
+\end{figure}
+\begin{figure}[h]\centering
+\IfFileExists{figures/fig3_transition.pdf}{\includegraphics[width=.75\linewidth]{figures/fig3_transition.pdf}}{\fbox{run \texttt{make paper}}}
+\caption{Lifecycle transition: optimal equity weight against $q_t$ (grid DP, reduced problem).}
+\end{figure}
+\begin{figure}[h]\centering
+\IfFileExists{figures/fig4_shapley_by_regime.pdf}{\includegraphics[width=.75\linewidth]{figures/fig4_shapley_by_regime.pdf}}{\fbox{run \texttt{make seed-full}}}
+\caption{Shapley marginal utility of sleeves by starting regime.}
+\end{figure}
+
+\section{Robustness}
+Monte Carlo convergence, parameter bootstrap re-estimation, model disagreement across generators, calibration
+windows and historical cohort replay \citep{bengen1994determining,guyton2006decision}.
+
+\bibliographystyle{plainnat}
+\bibliography{references}
+\end{document}

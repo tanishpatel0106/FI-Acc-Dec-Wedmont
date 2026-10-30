@@ -1,0 +1,29 @@
+services:
+  api:
+    build: { context: ./backend }
+    env_file: [.env]
+    environment:
+      LIFECYCLE_DATA_DIR: /data
+      REDIS_URL: redis://redis:6379
+      API_CORS_ORIGINS: http://localhost:3000
+    volumes: ["./data:/data", "./research:/app/research:ro"]
+    command: uvicorn lifecycle.api.main:app --host 0.0.0.0 --port 8000
+    ports: ["8000:8000"]
+    depends_on: [redis]
+  worker:
+    build: { context: ./backend }
+    env_file: [.env]
+    environment:
+      LIFECYCLE_DATA_DIR: /data
+      REDIS_URL: redis://redis:6379
+    volumes: ["./data:/data"]
+    command: arq lifecycle.workers.arq_worker.WorkerSettings
+    depends_on: [redis]
+  redis:
+    image: redis:7.4-alpine
+  web:
+    build:
+      context: ./web
+      args: { NEXT_PUBLIC_API_BASE: "http://localhost:8000" }
+    ports: ["3000:3000"]
+    depends_on: [api]
