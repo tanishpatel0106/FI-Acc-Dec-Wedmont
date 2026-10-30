@@ -1,5 +1,6 @@
 """High-level evaluation: investor + preferences + policy on a scenario tensor (common random numbers)."""
 from dataclasses import dataclass, field
+from typing import Any
 
 import numpy as np
 from numpy.typing import NDArray
@@ -70,7 +71,7 @@ class Context:
     survival: NDArray[np.float64]
     q: NDArray[np.float64]
     w_ref: float
-    extras: dict = field(default_factory=dict)
+    extras: dict[str, Any] = field(default_factory=dict)
 
     @property
     def months(self) -> int:

@@ -207,7 +207,9 @@ def run_dp(spec: ExperimentSpec, progress: Progress) -> dict[str, Any]:
                    "frequency": "annual", "unit_dollars": meta["unit"], "x0": meta["x0"]},
         "benchmark": {"name": "sixty_forty", "label": "60/40 with fixed real withdrawals (annual)"},
         "timings": {"solve": t_solve, "total": time.time() - t0},
-        "warnings": ["DP solved at annual frequency on the reduced universe " + ", ".join(REDUCED)],
+        "warnings": ["DP solved at annual frequency on the reduced universe " + ", ".join(REDUCED),
+                     "in-model gain: ΔCE includes optimal consumption versus a fixed-real withdrawal rule, "
+                     "evaluated under the same scenario model the DP was solved on"],
         "scenario": ten.meta,
     }
 

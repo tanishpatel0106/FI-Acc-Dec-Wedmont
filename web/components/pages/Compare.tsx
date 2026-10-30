@@ -116,7 +116,8 @@ function Comparison({ id }: { id: string }) {
 
 function Validation({ runs }: { runs: RunRow[] }) {
   const [runId, setRunId] = useState<string>("");
-  const job = useJob(runId ? "/v1/validation/" + runId : null, { n_param_boot: 20, max_paths: 10000 });
+  const [launch, setLaunch] = useState<string | null>(null);
+  const job = useJob(runId ? "/v1/validation/" + runId : null, { n_param_boot: 20, max_paths: 10000, submit: launch === runId });
   const t = useVizTokens();
   const d = job.data;
   const v = d?.results;
@@ -124,7 +125,12 @@ function Validation({ runs }: { runs: RunRow[] }) {
     <div className="space-y-4">
       <Field label="Run to validate"><NativeSelect value={runId} onChange={setRunId} options={[{ value: "", label: "Select a run…" },
         ...runs.map((r) => ({ value: r.run_id, label: ((r.summary?.policy as string) ?? r.kind) + " · " + shortId(r.run_id) }))]} /></Field>
-      {d && d.status !== "done" ? (d.status === "failed" ? <pre className="text-xs text-destructive">{d.error}</pre> : <Section><InlineProgress stage={d.stage ?? "queued"} progress={d.progress ?? 0} /></Section>) : null}
+      {d && d.status === "none" ? (
+        <button onClick={() => setLaunch(runId)} className="rounded-md border border-border px-3 py-1.5 text-sm hover:bg-muted">
+          Run validation (convergence, 20 parameter re-estimations, 3 generators, cohort replay)
+        </button>
+      ) : null}
+      {d && d.status !== "done" && d.status !== "none" ? (d.status === "failed" ? <pre className="text-xs text-destructive">{d.error}</pre> : <Section><InlineProgress stage={d.stage ?? "queued"} progress={d.progress ?? 0} /></Section>) : null}
       {v ? (
         <>
           <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
@@ -150,6 +156,37 @@ function Validation({ runs }: { runs: RunRow[] }) {
                 layout={{ yaxis: { title: { text: "ΔCE %" } }, showlegend: false, hovermode: "closest" }} />
             </Section>
           </div>
+          <div className="grid gap-4 lg:grid-cols-3">
+            {v.sequence_risk ? (
+              <Section title="Sequence-risk isolation" description={`Months of the worst benchmark cohort (${v.sequence_risk.cohort_start}) permuted ${v.sequence_risk.n_permutations}×, values fixed. ${v.sequence_risk.note}.`}>
+                <Plot height={240} data={[
+                  { x: v.sequence_risk.permuted_benchmark, type: "histogram", name: "benchmark (permuted)", marker: { color: t.series[1] }, opacity: 0.7 },
+                  { x: v.sequence_risk.permuted_policy, type: "histogram", name: "policy (permuted)", marker: { color: t.series[0] }, opacity: 0.7 },
+                ] as Data[]} layout={{ barmode: "overlay", hovermode: "closest", xaxis: { tickformat: "$~s", title: { text: "CE ($/yr)" } },
+                  shapes: [{ type: "line", x0: v.sequence_risk.benchmark.actual, x1: v.sequence_risk.benchmark.actual, yref: "paper", y0: 0, y1: 1, line: { color: t.series[1], width: 2, dash: "dot" } },
+                    { type: "line", x0: v.sequence_risk.policy.actual, x1: v.sequence_risk.policy.actual, yref: "paper", y0: 0, y1: 1, line: { color: t.series[0], width: 2, dash: "dot" } }] }} />
+                <div className="mt-1 text-xs text-muted-foreground">Timing effect (actual − permuted mean): policy {usd(v.sequence_risk.policy.timing_effect)}, benchmark {usd(v.sequence_risk.benchmark.timing_effect)}. Dotted = actual order.</div>
+              </Section>
+            ) : null}
+            {v.calibration_windows ? (
+              <Section title="Calibration-window sensitivity" description="Scenario model re-fitted on sub-periods; same frozen policy.">
+                <Plot height={240} data={[{ type: "bar", x: v.calibration_windows.map((w: any) => w.window), y: v.calibration_windows.map((w: any) => (w.delta ?? 0) * 100),
+                  error_y: { type: "data", array: v.calibration_windows.map((w: any) => 2 * (w.se ?? 0) * 100), color: t.text2 },
+                  marker: { color: v.calibration_windows.map((w: any) => ((w.delta ?? 0) >= 0 ? t.series[0] : t.series[7])) } } as Data]}
+                  layout={{ yaxis: { title: { text: "ΔCE %" } }, showlegend: false, hovermode: "closest" }} />
+              </Section>
+            ) : null}
+            {v.tail_coverage ? (
+              <Section title="Tail coverage" description="P(equity and 10Y both below their historical 10% quantile) over 1/12/60 months: realised vs simulated.">
+                <Table>
+                  <TableHeader><TableRow><TableHead>Horizon</TableHead><TableHead className="text-right">Realised</TableHead><TableHead className="text-right">Simulated</TableHead></TableRow></TableHeader>
+                  <TableBody>{v.tail_coverage.map((r: any) => (
+                    <TableRow key={r.horizon_months}><TableCell>{r.horizon_months}m</TableCell><TableCell className="text-right tabular-nums">{pct(r.realised, 2)}</TableCell><TableCell className="text-right tabular-nums">{pct(r.simulated, 2)}</TableCell></TableRow>
+                  ))}</TableBody>
+                </Table>
+              </Section>
+            ) : null}
+          </div>
           <Section title="Historical cohort replay" description={v.cohort_replay.caveat + ` · ${v.cohort_replay.horizon_years}-year horizon`}>
             <Plot height={280} data={[
               { x: v.cohort_replay.start, y: v.cohort_replay.ce_policy, type: "scatter", mode: "lines", name: "policy", line: { width: 2, color: t.series[0] } },
@@ -167,14 +204,20 @@ function Attribution() {
   const sweeps = useSweeps();
   const done = (sweeps.data?.sweeps ?? []).filter((s) => s.status === "done");
   const [sid, setSid] = useState("");
-  const job = useJob(sid ? "/v1/attribution/" + sid : null, { universe: "modern", by_regime: true, n_paths: 1000 });
+  const [launch, setLaunch] = useState<string | null>(null);
+  const job = useJob(sid ? "/v1/attribution/" + sid : null, { universe: "modern", by_regime: true, n_paths: 1000, submit: launch === sid });
   const t = useVizTokens();
   const a = job.data?.results;
   return (
     <div className="space-y-4">
       <Field label="Sweep (base investor)"><NativeSelect value={sid} onChange={setSid} options={[{ value: "", label: "Select a sweep…" },
         ...done.map((s) => ({ value: s.run_id, label: (s.label ?? s.run_id).slice(0, 80) }))]} /></Field>
-      {job.data && job.data.status !== "done" ? (job.data.status === "failed" ? <pre className="text-xs text-destructive">{job.data.error}</pre> :
+      {job.data && job.data.status === "none" ? (
+        <button onClick={() => setLaunch(sid)} className="rounded-md border border-border px-3 py-1.5 text-sm hover:bg-muted">
+          Compute attribution (modern universe, unconditional + by regime)
+        </button>
+      ) : null}
+      {job.data && job.data.status !== "done" && job.data.status !== "none" ? (job.data.status === "failed" ? <pre className="text-xs text-destructive">{job.data.error}</pre> :
         <Section><InlineProgress stage={job.data.stage ?? "queued"} progress={job.data.progress ?? 0} /><div className="mt-2 text-xs text-muted-foreground">Exact Shapley over 2^k sleeve subsets, each a fitted static CRRA mix — a few minutes.</div></Section>) : null}
       {a ? (
         <>

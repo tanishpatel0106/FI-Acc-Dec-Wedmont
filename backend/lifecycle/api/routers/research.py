@@ -11,7 +11,19 @@ from lifecycle.runs.spec import AttributionSpec, CompareSpec, SweepSpec, Validat
 router = APIRouter(prefix="/v1", tags=["sweeps, comparison, validation, reports"])
 
 
-def _job_response(kind: str, spec, label: str | None = None, force: bool = False) -> dict:
+def _job_response(kind: str, spec, label: str | None = None, force: bool = False, submit: bool = True) -> dict:
+    if not submit:
+        from lifecycle.runs.hashing import run_id_for
+
+        rid = run_id_for(kind, executor.with_catalog(spec))
+        row = registry.get(rid)
+        if row is None:
+            return envelope({"status": "none", "kind": kind}, rid)
+        payload = {"status": row["status"], "stage": row["stage"], "progress": row["progress"], "kind": kind,
+                   "error": row.get("error")}
+        if row["status"] == "done":
+            payload["results"] = registry.load_results(rid)
+        return envelope(payload, rid, row.get("spec_hash"), row.get("catalog_hash"))
     rid, status = executor.submit(kind, spec, label, force)
     row = registry.get(rid) or {}
     payload = {"status": status, "kind": kind}
@@ -96,17 +108,21 @@ def compare_result(run_id: str) -> dict:
 
 
 @router.get("/attribution/{sweep_id}")
-def attribution(sweep_id: str, universe: str = "modern", by_regime: bool = True, n_paths: int = 1000) -> dict:
+def attribution(sweep_id: str, universe: str = "modern", by_regime: bool = True, n_paths: int = 1000,
+                submit: bool = True) -> dict:
+    """Marginal and Shapley utility; submit=false only reports whether the job exists."""
     run_row_or_404(sweep_id)
     return _job_response("attribution", AttributionSpec(sweep_id=sweep_id, universe=universe, by_regime=by_regime,
-                                                        n_paths=n_paths))
+                                                        n_paths=n_paths), submit=submit)
 
 
 @router.get("/validation/{run_id}")
-def validation(run_id: str, n_param_boot: int = Query(20, le=500), max_paths: int = Query(10000, le=50000)) -> dict:
+def validation(run_id: str, n_param_boot: int = Query(20, le=500), max_paths: int = Query(10000, le=50000),
+               submit: bool = True) -> dict:
     run_row_or_404(run_id)
     counts = tuple(c for c in (1000, 2500, 5000, 10000, 50000) if c <= max_paths)
-    return _job_response("validation", ValidationSpec(run_id=run_id, n_param_boot=n_param_boot, path_counts=counts))
+    return _job_response("validation", ValidationSpec(run_id=run_id, n_param_boot=n_param_boot, path_counts=counts),
+                         submit=submit)
 
 
 @router.get("/reports/{run_id}")

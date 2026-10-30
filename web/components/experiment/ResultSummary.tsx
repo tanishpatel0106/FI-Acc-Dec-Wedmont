@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import type { ExperimentResults } from "@/lib/api/types";
 import { num, pct, signedPct, usd } from "@/lib/format";
 import { Provenance } from "./Provenance";
+import { SamplePaths } from "@/components/charts/SamplePaths";
 
 export function HeadlineStats({ r }: { r: ExperimentResults }) {
   const d = r.ce.delta;
@@ -64,6 +65,11 @@ export function ResultSummary({ r, runId, retireAge, compact = false }: {
           </Section>
         ) : null}
       </div>
+      {!compact && runId && !isDP ? (
+        <Section title="Sample wealth paths" description="Individual simulated paths, streamed as Arrow IPC.">
+          <SamplePaths runId={runId} />
+        </Section>
+      ) : null}
       {r.warnings && r.warnings.length > 0 ? (
         <div className="flex flex-wrap gap-2">
           {r.warnings.map((w) => <Badge key={w} variant="outline" className="text-[11px]">⚠ {w}</Badge>)}

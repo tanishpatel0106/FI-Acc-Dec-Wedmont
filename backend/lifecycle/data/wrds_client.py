@@ -24,11 +24,13 @@ def connect():
     if username == "":
         raise RuntimeError("WRDS_USERNAME is not set (add it to the repository .env)")
     password = os.environ.get("WRDS_PASSWORD", "")
-    if password != "":
-        # wrds reads PGPASSWORD through psycopg2/libpq; avoids the interactive prompt
-        os.environ["PGPASSWORD"] = password
     print("connecting to WRDS as", username, "- approve the Duo push on your phone")
-    _SHARED["db"] = wrds.Connection(wrds_username=username)
+    if password != "":
+        # passed straight to the client (and libpq as a fallback) so there is no interactive prompt
+        os.environ["PGPASSWORD"] = password
+        _SHARED["db"] = wrds.Connection(wrds_username=username, wrds_password=password)
+    else:
+        _SHARED["db"] = wrds.Connection(wrds_username=username)  # falls back to ~/.pgpass or a prompt
     return _SHARED["db"]
 
 

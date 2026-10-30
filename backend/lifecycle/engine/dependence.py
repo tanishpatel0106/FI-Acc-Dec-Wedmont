@@ -21,7 +21,8 @@ def rolling_corr(x: NDArray[np.float64], y: NDArray[np.float64], window: int) ->
     return out
 
 
-def conditional_corr(x: NDArray[np.float64], y: NDArray[np.float64], labels: NDArray[np.int64]) -> dict[int, dict]:
+def conditional_corr(x: NDArray[np.float64], y: NDArray[np.float64],
+                     labels: NDArray[np.int64]) -> dict[int, dict[str, Any]]:
     out = {}
     for s in np.unique(labels):
         m = labels == s
@@ -194,7 +195,7 @@ def covariance_forecast_horse_race(returns: NDArray[np.float64], window: int = 6
                                    dcc_cov: NDArray[np.float64] | None = None) -> list[dict[str, Any]]:
     """Out-of-sample one-month-ahead covariance forecasts scored on unseen months only."""
     T, k = returns.shape
-    models: dict[str, list[NDArray[np.float64]]] = {"rolling_60m": [], "ewma_0.97": [], "ledoit_wolf_60m": []}
+    models: dict[str, list[NDArray[Any]]] = {"rolling_60m": [], "ewma_0.97": [], "ledoit_wolf_60m": []}
     if dcc_cov is not None:
         models["dcc_garch"] = []
     ewma = np.cov(returns[:window], rowvar=False)
@@ -210,7 +211,7 @@ def covariance_forecast_horse_race(returns: NDArray[np.float64], window: int = 6
             models["dcc_garch"].append(dcc_cov[t])
         realised.append(returns[t] - hist.mean(axis=0))
     real = np.array(realised)
-    out = []
+    out: list[dict[str, Any]] = []
     for name, fc in models.items():
         arr = np.array(fc)
         out.append({"model": name, "qlike": qlike(arr, real), "minvar_vol": min_var_realised_vol(arr, real)})

@@ -142,6 +142,67 @@ def run_validation(spec: ValidationSpec, progress: Progress) -> dict[str, Any]:
         "delta_paired": delta_block(a, b, ctx.prefs.gamma),
     }
 
+    # 5) sequence-risk isolation: permute the months of the worst benchmark cohort, values held fixed
+    worst = int(np.argmin(pb))
+    window = r_c[worst]
+    n_perm = 300
+    perm_rng = np.random.default_rng(es.scenario.seed + 5)
+    idx = np.stack([np.arange(replay_T)] + [perm_rng.permutation(replay_T) for _ in range(n_perm)])
+    pten = ScenarioTensor(u.assets, window[idx], i_c[worst][idx], np.zeros((n_perm + 1, replay_T), dtype=np.int64), 1,
+                          {"generator": "permutation"})
+    pctx = C.build(es_c, pten, es.scenario.seed)
+    pa_out = evaluate(pctx, pol_c, sp)
+    pb_out = evaluate(pctx, bp_c, bsp)
+    ce_p = path_ce(pa_out.utility, ctx.prefs.gamma, pa_out.sum_disc) * 12000
+    ce_b = path_ce(pb_out.utility, ctx.prefs.gamma, pb_out.sum_disc) * 12000
+    out["sequence_risk"] = {
+        "cohort_start": starts[worst], "n_permutations": n_perm,
+        "policy": {"actual": float(ce_p[0]), "permuted_mean": float(ce_p[1:].mean()),
+                   "timing_effect": float(ce_p[0] - ce_p[1:].mean()), "percentile": float(np.mean(ce_p[1:] <= ce_p[0]))},
+        "benchmark": {"actual": float(ce_b[0]), "permuted_mean": float(ce_b[1:].mean()),
+                      "timing_effect": float(ce_b[0] - ce_b[1:].mean()), "percentile": float(np.mean(ce_b[1:] <= ce_b[0]))},
+        "permuted_policy": ce_p[1:].tolist(), "permuted_benchmark": ce_b[1:].tolist(),
+        "note": "controlled counterfactual: the order of jointly observed monthly vectors is permuted, values fixed"}
+
+    # 6) calibration-window sensitivity
+    windows = []
+    first = u.start.year
+    candidates = [("pre-1970", None, "1969-12-31"), ("1970-1999", "1970-01-31", "1999-12-31"),
+                  ("2000-", "2000-01-31", None), ("full", None, None)]
+    for name, w0, w1 in candidates:
+        if w1 is not None and int(w1[:4]) <= first + 10:
+            continue
+        s2 = es.model_copy(update={"data": es.data.model_copy(update={"calibration_start": w0, "calibration_end": w1}),
+                                   "scenario": es.scenario.model_copy(update={"n_paths": min(es.scenario.n_paths, 2000),
+                                                                              "generator": gen})})
+        try:
+            ten = C.tensor(s2).head(T)
+            windows.append({"window": name, **_delta_on(es, ten, pol, sp, bp, bsp, es.scenario.seed)})
+        except Exception as exc:
+            windows.append({"window": name, "error": str(exc)})
+    out["calibration_windows"] = windows
+
+    # 7) tail coverage: simulated vs realised joint-loss frequencies at 1, 12, 60 months
+    tail = []
+    if "us_eq" in u.assets and "ust_10y" in u.assets:
+        e_i, b_i = u.assets.index("us_eq"), u.assets.index("ust_10y")
+        sim = C.tensor(es.model_copy(update={"scenario": es.scenario.model_copy(
+            update={"n_paths": min(es.scenario.n_paths, 2000), "generator": gen})})).head(T)
+        for h in (1, 12, 60):
+            hist_e = np.convolve(np.log1p(real[:, e_i]), np.ones(h), "valid")
+            hist_b = np.convolve(np.log1p(real[:, b_i]), np.ones(h), "valid")
+            qe, qb = np.quantile(hist_e, 0.1), np.quantile(hist_b, 0.1)
+            realised = float(np.mean((hist_e < qe) & (hist_b < qb)))
+            le = np.log1p(sim.real_returns[:, :, e_i])
+            lb = np.log1p(sim.real_returns[:, :, b_i])
+            ce_ = np.cumsum(le, axis=1)
+            cb_ = np.cumsum(lb, axis=1)
+            se_ = ce_[:, h - 1:] - np.concatenate([np.zeros((le.shape[0], 1)), ce_[:, :-h]], axis=1)
+            sb_ = cb_[:, h - 1:] - np.concatenate([np.zeros((lb.shape[0], 1)), cb_[:, :-h]], axis=1)
+            simulated = float(np.mean((se_ < qe) & (sb_ < qb)))
+            tail.append({"horizon_months": h, "realised": realised, "simulated": simulated})
+    out["tail_coverage"] = tail
+
     # robustness verdict: sign must survive MC, parameter and model uncertainty
     signs = []
     if len(conv) > 0:

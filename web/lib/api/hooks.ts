@@ -75,7 +75,7 @@ export function useJob(path: string | null, params?: Record<string, string | num
     queryFn: () => apiGet<any>(path as string, params),
     refetchInterval: (q) => {
       const s = q.state.data?.status;
-      return s === "done" || s === "failed" ? false : 3000;
+      return s === "done" || s === "failed" || s === "none" || s === "cancelled" ? false : 3000;
     },
   });
 }

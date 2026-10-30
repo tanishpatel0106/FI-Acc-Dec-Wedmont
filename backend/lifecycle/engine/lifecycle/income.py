@@ -44,6 +44,6 @@ def simulate_income(n: int, months: int, start_age: float, retire_age: float, in
     labor[:, :work] = income0 / 12.0 * np.exp(f[:work] + v[:, :work] + eps[:, :work])
     if retire_m < months:
         final_perm = income0 * np.exp(f[retire_m - 1] + v[:, retire_m - 1])
-        level = replacement * final_perm if pension_override is None else np.full(n, pension_override)
-        pension[:, retire_m:] = (level / 12.0)[:, None]
+        levels = replacement * final_perm if pension_override is None else np.full(n, pension_override)
+        pension[:, retire_m:] = (levels / 12.0)[:, None]
     return labor, pension

@@ -7,7 +7,6 @@ from pydantic import BaseModel, ConfigDict
 
 from lifecycle.engine.optimize import grid_dp
 from lifecycle.engine.scenarios.bootstrap import StationaryBootstrap
-from lifecycle.engine.scenarios.markov_switching import MarkovSwitching
 from lifecycle.runs import context as C
 from lifecycle.runs import registry
 from lifecycle.runs.dp_job import build_problem, h1_slope, policy_surfaces
@@ -37,7 +36,8 @@ def _slopes_at(surfaces: dict[str, Any], ages: tuple[float, ...]) -> list[float]
 
 def test_h1(spec: HypothesesSpec, progress: Progress) -> dict[str, Any]:
     res = []
-    base = ExperimentSpec(scenario=ScenarioSpec(generator="markov_switching", k_regimes=2, n_paths=600),
+    # single-regime bootstrap nodes: the regime DP is bang-bang (corner weights), which makes the slope degenerate
+    base = ExperimentSpec(scenario=ScenarioSpec(generator="bootstrap", k_regimes=1, n_paths=600),
                           investor=InvestorSpec(start_age=45.0, retirement_age=65.0, max_age=100.0,
                                                 initial_wealth=400_000.0),
                           policy=PolicySpec(type="dp"))
@@ -55,7 +55,7 @@ def test_h1(spec: HypothesesSpec, progress: Progress) -> dict[str, Any]:
         for b in range(spec.n_boot):
             r_b, i_b, _ = resampler.simulate(1, real.shape[0], rng, None)
             try:
-                model = MarkovSwitching(r_b[0], i_b[0], k=2)
+                model = StationaryBootstrap(r_b[0], i_b[0], block_length=12.0)
                 pb, mb = build_problem(s, model=model)
                 boots.append(_slopes_at(policy_surfaces(grid_dp.solve(pb), mb, pb), spec.h1_ages))
             except Exception:
@@ -69,7 +69,7 @@ def test_h1(spec: HypothesesSpec, progress: Progress) -> dict[str, Any]:
     contains_zero_all = True
     for r in res:
         for ci in r["ci95"]:
-            if ci is None or not (ci[0] <= 0 <= ci[1]):
+            if ci is None or not (ci[0] <= 1e-9 and ci[1] >= -1e-9):
                 contains_zero_all = False
     return {"id": "H1", "statistic": "slope of optimal equity weight on q_t at fixed age (DP policy surfaces)",
             "benchmark": "age-only glidepath (zero slope)", "results": res, "falsified": bool(contains_zero_all),

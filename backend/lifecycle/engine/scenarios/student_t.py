@@ -37,7 +37,7 @@ def fit_mvt(x: NDArray[np.float64], nu: float, iters: int = 200) -> tuple[NDArra
             mu, sigma = mu_new, sigma_new
             break
         mu, sigma = mu_new, sigma_new
-    return mu, sigma
+    return np.asarray(mu, dtype=np.float64), np.asarray(sigma, dtype=np.float64)
 
 
 class MultivariateT:

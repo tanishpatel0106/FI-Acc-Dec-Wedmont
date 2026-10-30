@@ -56,3 +56,8 @@ module = "lifecycle.engine.*"
 strict = true
 disallow_untyped_calls = false
 warn_return_any = false
+
+# Numba @njit kernels are typed by Numba at compile time
+[[tool.mypy.overrides]]
+module = ["lifecycle.engine.lifecycle.kernel", "lifecycle.engine.optimize.grid_dp"]
+disallow_untyped_defs = false

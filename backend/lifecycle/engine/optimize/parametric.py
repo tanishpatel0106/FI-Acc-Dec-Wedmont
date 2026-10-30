@@ -87,11 +87,10 @@ def fit_parametric(train: Context, test: Context, risky: NDArray[np.float64], sa
 def best_constant_share(ctx: Context, risky: NDArray[np.float64], safe: NDArray[np.float64], spending: Spending,
                         shares: NDArray[np.float64] | None = None) -> tuple[float, float, list[tuple[float, float]]]:
     """Grid search the growth share of a constant mix (0..100% in 10% steps by default)."""
-    if shares is None:
-        shares = np.linspace(0, 1, 11)
+    grid = np.linspace(0, 1, 11) if shares is None else shares
     gamma = ctx.prefs.gamma
     table = []
-    for a in shares:
+    for a in grid:
         w = a * risky + (1 - a) * safe
         out = evaluate(ctx, pol.constant_mix(w, ctx.months), spending)
         ce, _ = ce_annual(out, gamma)

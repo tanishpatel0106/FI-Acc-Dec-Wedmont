@@ -33,6 +33,11 @@ const FAMILY = [
   { type: "parametric", label: "Parametric dynamic" },
 ];
 
+// colour follows the policy, never its rank; at most eight categorical slots
+const SHARE_COLORS: Record<string, number> = {
+  sixty_forty: 0, target_date: 1, glidepath: 2, risk_parity: 3, utility_static: 4, regime: 5, bucket: 6, parametric: 7,
+};
+
 function DPPanel() {
   const s = useBuilder();
   const [runId, setRunId] = useState<string | null>(null);
@@ -170,9 +175,9 @@ export function Optimizer() {
         )}
       </Section>
       {ready.length > 0 ? (
-        <Section title="Optimal growth-asset share by age" description="Mean across paths at the start of each year.">
-          <Plot height={300} data={ready.map((d, i) => ({ x: d.r!.ages, y: d.r!.risky_share?.mean ?? [], type: "scatter", mode: "lines",
-            name: d.f.label, line: { width: 2, color: t.series[i % 8] } })) as Data[]}
+        <Section title="Optimal growth-asset share by age" description="Mean across paths at the start of each year (eight policies with fixed colours; best-constant and mean–CVaR are flat and omitted).">
+          <Plot height={300} data={ready.filter((d) => SHARE_COLORS[d.f.type] !== undefined).map((d) => ({ x: d.r!.ages, y: d.r!.risky_share?.mean ?? [], type: "scatter", mode: "lines",
+            name: d.f.label, line: { width: 2, color: t.series[SHARE_COLORS[d.f.type]] } })) as Data[]}
             layout={{ yaxis: { tickformat: ".0%", range: [0, 1.02] }, xaxis: { title: { text: "Age" } } }} />
         </Section>
       ) : null}

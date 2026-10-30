@@ -72,7 +72,9 @@ function refreshAutorange(gd: HTMLElement, layout: Partial<Layout>) {
   for (const ax of ["xaxis", "yaxis"] as const) {
     if (layout[ax]?.range) continue;
     const r = full?.[ax]?.range;
-    const stale = !r || (r[0] === -1 && r[1] === 6) || (r[0] === "2000-01-01" && r[1] === "2001-01-01") || (r[0] === 0 && r[1] === 4);
+    // Plotly's empty-plot defaults: linear [-1, 6] / [-1, 4] / [0, 4], date [2000-01-01, 2001-01-01]
+    const stale = !r || (r[0] === -1 && (r[1] === 6 || r[1] === 4)) || (r[0] === "2000-01-01" && r[1] === "2001-01-01") ||
+      (r[0] === 0 && r[1] === 4);
     if (stale) upd[ax + ".autorange"] = true;
   }
   if (Object.keys(upd).length > 0) void plotlyLib.relayout(gd, upd);

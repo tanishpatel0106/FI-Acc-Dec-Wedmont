@@ -159,7 +159,7 @@ class MarkovSwitching:
                 "expected_duration_months": [float(1 / max(1 - self.P[s, s], 1e-9)) for s in range(self.k)]}
 
 
-def select_k(real: NDArray[np.float64], infl: NDArray[np.float64], candidates: tuple[int, ...] = (2, 3)) -> dict:
+def select_k(real: NDArray[np.float64], infl: NDArray[np.float64], candidates: tuple[int, ...] = (2, 3)) -> dict[str, Any]:
     out = {}
     for k in candidates:
         m = MarkovSwitching(real, infl, k=k)
