@@ -1,6 +1,7 @@
 """Command line: ingestion, seeding default exhibits, sweeps, reproduction and OpenAPI export.
 
-    python -m lifecycle.cli ingest [--wrds]
+    python -m lifecycle.cli ingest [--wrds] [--offline]
+    python -m lifecycle.cli snapshot
     python -m lifecycle.cli build-panel
     python -m lifecycle.cli seed [--full]
     python -m lifecycle.cli reproduce RUN_ID
@@ -18,7 +19,14 @@ from lifecycle.config import REPO_ROOT
 def cmd_ingest(args: argparse.Namespace) -> None:
     from lifecycle.data.ingest import run_all
 
-    run_all(include_wrds=args.wrds)
+    run_all(include_wrds=args.wrds, offline=args.offline)
+
+
+def cmd_snapshot(args: argparse.Namespace) -> None:
+    from lifecycle.data.snapshot import create_snapshot
+
+    m = create_snapshot()
+    print("snapshot written for vintage", m["vintage"])
 
 
 def cmd_build(args: argparse.Namespace) -> None:
@@ -114,7 +122,9 @@ def main() -> None:
     sub = ap.add_subparsers(dest="cmd", required=True)
     p = sub.add_parser("ingest")
     p.add_argument("--wrds", action="store_true", help="also pull WRDS (needs WRDS_USERNAME / Duo approval)")
+    p.add_argument("--offline", action="store_true", help="use the committed public snapshot instead of downloading")
     p.set_defaults(fn=cmd_ingest)
+    sub.add_parser("snapshot", help="refresh snapshots/public from the live sources").set_defaults(fn=cmd_snapshot)
     sub.add_parser("build-panel").set_defaults(fn=cmd_build)
     p = sub.add_parser("seed")
     p.add_argument("--full", action="store_true")

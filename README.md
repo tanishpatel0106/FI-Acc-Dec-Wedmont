@@ -20,7 +20,8 @@ Requirements: Python 3.12 with [`uv`](https://docs.astral.sh/uv/), Node 22.
 ```bash
 cp .env.example .env          # add WRDS_USERNAME / WRDS_PASSWORD (optional until you ingest WRDS)
 make setup                    # backend/.venv (uv) + web/node_modules
-make data                     # public data: French library, FRED, Fed GSW curves, NY Fed ACM, SSA life table
+make data-offline             # public data from the committed snapshot (snapshots/public), no network
+                              # or: make data   (live download of French, FRED, Fed GSW, NY Fed ACM, SSA)
 make seed                     # core exhibits: headline heatmaps, baselines, DP (about 20 min on a 4-core laptop)
 make dev                      # API on :8000 + web on :3000
 ```
@@ -30,7 +31,8 @@ Open <http://localhost:3000>.
 ### Adding WRDS
 
 ```bash
-make ingest-wrds              # one WRDS connection for all pulls -> approve the single Duo push on your phone
+make ingest-wrds OFFLINE=1    # one WRDS connection for all pulls -> approve the single Duo push on your phone
+                              # (OFFLINE=1 takes the public series from the snapshot instead of downloading them)
 make seed                     # new catalog hash -> new run IDs; old runs stay addressable
 ```
 

@@ -10,6 +10,7 @@ data/processed/
 data/cache/
 data/runs/
 *.parquet
+!snapshots/public/*.parquet
 *.duckdb
 *.sqlite
 *.sqlite3

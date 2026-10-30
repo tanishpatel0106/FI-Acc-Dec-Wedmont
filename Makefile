@@ -3,7 +3,7 @@ SHELL := /bin/bash
 PY := backend/.venv/bin/python
 UV ?= uv
 
-.PHONY: help setup setup-backend setup-web data ingest-wrds build-panel seed seed-full api web dev test test-backend test-web lint typecheck openapi reproduce paper docker-up clean-runs
+.PHONY: help setup setup-backend setup-web data data-offline snapshot ingest-wrds build-panel seed seed-full api web dev test test-backend test-web lint typecheck openapi reproduce paper docker-up clean-runs
 
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-14s\033[0m %s\n", $$1, $$2}'
@@ -19,8 +19,14 @@ setup-web: ## npm install for the Next.js app
 data: ## Ingest public sources (French, FRED, Fed GSW, NY Fed ACM, SSA) and build the panel
 	$(PY) -m lifecycle.cli ingest
 
-ingest-wrds: ## Ingest public + WRDS (reads WRDS_USERNAME / WRDS_PASSWORD from .env; approve the Duo push)
-	$(PY) -m lifecycle.cli ingest --wrds
+data-offline: ## Build the panel from the committed public snapshot (snapshots/public) - no network
+	$(PY) -m lifecycle.cli ingest --offline
+
+snapshot: ## Refresh snapshots/public from the live public sources
+	$(PY) -m lifecycle.cli snapshot
+
+ingest-wrds: ## Ingest WRDS + public (WRDS_USERNAME / WRDS_PASSWORD from .env; approve the Duo push). OFFLINE=1 uses the snapshot for public data
+	$(PY) -m lifecycle.cli ingest --wrds $(if $(OFFLINE),--offline,)
 
 build-panel: ## Rebuild the canonical panel + catalog from the raw vintages on disk
 	$(PY) -m lifecycle.cli build-panel

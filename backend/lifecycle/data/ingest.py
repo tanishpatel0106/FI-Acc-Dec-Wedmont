@@ -62,8 +62,14 @@ def run_wrds() -> None:
         wrds_client.close_all()
 
 
-def run_all(include_wrds: bool) -> dict:
-    run_public()
+def run_all(include_wrds: bool, offline: bool = False) -> dict:
+    if offline:
+        from lifecycle.data.snapshot import load_snapshot
+
+        print("loading the committed public-data snapshot (no network)...", flush=True)
+        load_snapshot()
+    else:
+        run_public()
     if include_wrds:
         run_wrds()
     meta = build_panel()
