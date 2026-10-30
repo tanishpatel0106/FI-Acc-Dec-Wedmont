@@ -1,0 +1,12 @@
+{
+  "kind": "sweep",
+  "label": "Decumulation heatmap, modern diversified universe, bootstrap, gamma=4",
+  "tier": "full",
+  "spec": {
+    "base": {"data": {"universe": "modern"}, "scenario": {"generator": "bootstrap", "n_paths": 2000, "n_train_paths": 1000},
+             "preferences": {"gamma": 4.0}},
+    "kind": "decumulation",
+    "optimizer": "parametric",
+    "label": "Decumulation heatmap, modern diversified universe, bootstrap, gamma=4"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "kind": "experiment",
+  "label": "Baseline: 60/40, 4% fixed real, retire at 65",
+  "tier": "core",
+  "spec": {"scenario": {"generator": "bootstrap", "n_paths": 10000}, "policy": {"type": "sixty_forty"},
+           "outputs": {"benchmark": "target_date"}}
+}

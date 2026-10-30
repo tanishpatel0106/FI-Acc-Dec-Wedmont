@@ -1,0 +1,47 @@
+name: ci
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron: "17 6 * * *"   # nightly smoke sweep
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    env:
+      LIFECYCLE_SYNTHETIC: "1"   # CI uses synthetic fixtures only; no WRDS data
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - name: Install
+        working-directory: backend
+        run: uv venv --python 3.12 .venv && uv pip install -e ".[dev,workers]"
+      - name: Lint
+        working-directory: backend
+        run: .venv/bin/ruff check lifecycle tests
+      - name: Unit, property and estimator tests
+        working-directory: backend
+        run: .venv/bin/python -m pytest -q
+      - name: Nightly smoke sweep (1,000 paths, synthetic)
+        if: github.event_name == 'schedule'
+        working-directory: backend
+        run: |
+          .venv/bin/python - <<'PY'
+          import os, tempfile
+          os.environ["LIFECYCLE_DATA_DIR"] = tempfile.mkdtemp()
+          from lifecycle.runs import executor, registry
+          from lifecycle.runs.spec import SweepSpec, ExperimentSpec, ScenarioSpec
+          spec = SweepSpec(base=ExperimentSpec(scenario=ScenarioSpec(n_paths=1000, n_train_paths=500)),
+                           optimizer="glidepath", withdrawal_rates=(0.03, 0.04, 0.05), years_relative=(0, 5))
+          rid = executor.run_sync("sweep", spec)
+          assert registry.get(rid)["status"] == "done", registry.get(rid)["error"]
+          PY
+
+  web:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm, cache-dependency-path: web/package-lock.json }
+      - working-directory: web
+        run: npm ci && npx tsc --noEmit && npx eslint . && npx vitest run && npm run build

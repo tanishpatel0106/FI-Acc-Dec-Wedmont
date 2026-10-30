@@ -1,0 +1,47 @@
+# secrets
+.env
+.env.*
+!.env.example
+.pgpass
+
+# data (WRDS data is never committed)
+data/raw/
+data/processed/
+data/cache/
+data/runs/
+*.parquet
+*.duckdb
+*.sqlite
+*.sqlite3
+
+# python
+__pycache__/
+*.pyc
+.venv/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+.hypothesis/
+*.egg-info/
+
+# node
+node_modules/
+.next/
+out/
+web/test-results/
+web/playwright-report/
+*.tsbuildinfo
+next-env.d.ts
+
+# paper build
+paper/build/
+paper/*.aux
+paper/*.log
+paper/*.out
+paper/*.pdf
+
+.DS_Store
+
+paper/figures/*
+!paper/figures/.gitkeep
+research/experiments/run_ids.json

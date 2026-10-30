@@ -1,0 +1,12 @@
+{
+  "kind": "sweep",
+  "label": "Decumulation heatmap, core, bootstrap, gamma=6",
+  "tier": "full",
+  "spec": {
+    "base": {"data": {"universe": "core"}, "scenario": {"generator": "bootstrap", "n_paths": 2000, "n_train_paths": 1000},
+             "preferences": {"gamma": 6.0}},
+    "kind": "decumulation",
+    "optimizer": "parametric",
+    "label": "Decumulation heatmap, core, bootstrap, gamma=6"
+  }
+}

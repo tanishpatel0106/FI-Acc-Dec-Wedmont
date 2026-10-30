@@ -1,0 +1,8 @@
+{
+  "kind": "experiment",
+  "label": "Guardrails spending (Guyton-Klinger) on 60/40 at 5%",
+  "tier": "core",
+  "spec": {"scenario": {"generator": "bootstrap", "n_paths": 5000},
+           "policy": {"type": "sixty_forty", "spending_rule": "guardrails", "withdrawal_rate": 0.05},
+           "outputs": {"benchmark": "sixty_forty"}}
+}

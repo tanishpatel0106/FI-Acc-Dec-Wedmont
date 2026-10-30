@@ -1,0 +1,12 @@
+{
+  "kind": "sweep",
+  "label": "Model-disagreement map: glidepath optimiser, core, markov_switching, gamma=4",
+  "tier": "core",
+  "spec": {
+    "base": {"data": {"universe": "core"}, "scenario": {"generator": "markov_switching", "n_paths": 2000, "n_train_paths": 1000},
+             "preferences": {"gamma": 4.0}},
+    "kind": "decumulation",
+    "optimizer": "glidepath",
+    "label": "Model-disagreement map: glidepath optimiser, core, markov_switching, gamma=4"
+  }
+}

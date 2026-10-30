@@ -1,0 +1,8 @@
+{
+  "kind": "experiment",
+  "label": "Grid DP, reduced 3-asset problem, 2-regime Markov switching, accumulation from 45",
+  "tier": "core",
+  "spec": {"scenario": {"generator": "markov_switching", "k_regimes": 2, "n_paths": 2000},
+           "investor": {"start_age": 45.0, "retirement_age": 65.0, "initial_wealth": 400000.0},
+           "policy": {"type": "dp"}}
+}
