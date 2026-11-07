@@ -96,6 +96,11 @@ def cmd_reproduce(args: argparse.Namespace) -> None:
     fn = executor._job_fn(row["kind"])
     after = clean(fn(spec, lambda s, f: None, args.run_id))
     keys = ["ce", "shortfall", "terminal_wealth", "matrices", "conditions", "pairs"]
+    from lifecycle.studies import registry as studies
+
+    if studies.is_study(row["kind"]):
+        # every derived block of a study must reproduce exactly (timings and run metadata excluded)
+        keys = [k for k in (before or {}) if k not in ("timings", "meta")]
     ok = True
     for k in keys:
         if before is None or k not in before:
@@ -108,6 +113,80 @@ def cmd_reproduce(args: argparse.Namespace) -> None:
     if not ok:
         sys.exit(1)
     print("reproduced", args.run_id)
+
+
+SEED_V2_ORDER = ("frontier", "signed_flow", "rebalance", "scenario_lab", "optimize", "compare_v2", "asof", "permanent",
+                 "evidence")
+
+
+def cmd_seed_v2(args: argparse.Namespace) -> None:
+    """Run the default v2 studies (each a versioned, hashed run) and record their IDs in research/results."""
+    from lifecycle.runs import executor, registry
+    from lifecycle.studies import registry as studies
+
+    out = {}
+    kinds = [k for k in SEED_V2_ORDER if not args.only or k in args.only]
+    for kind in kinds:
+        model = studies.spec_model(kind)
+        spec = model()
+        if kind == "permanent" and args.pp_universe:
+            from lifecycle.studies.common import StudyData
+
+            spec = spec.model_copy(update={"data": StudyData(universe=args.pp_universe)})
+        print("running", kind, "...", flush=True)
+        rid = executor.run_sync(kind, spec, "default " + kind, force=args.force)
+        row = registry.get(rid) or {}
+        out[kind] = {"run_id": rid, "status": row.get("status"), "error": (row.get("error") or "").split("\n")[0][:400] or None,
+                     "seconds": (row.get("timings") or {}).get("wall_seconds")}
+        print("  ", kind, rid, row.get("status"), (row.get("error") or "")[:200], flush=True)
+        if kind == "permanent" and row.get("status") == "failed" and not args.pp_universe:
+            from lifecycle.studies.common import StudyData
+
+            print("   permanent portfolio with gold unavailable; running the ex-gold variants on core_duration", flush=True)
+            spec2 = spec.model_copy(update={"data": StudyData(universe="core_duration")})
+            rid2 = executor.run_sync(kind, spec2, "permanent (core_duration, no gold)", force=args.force)
+            row2 = registry.get(rid2) or {}
+            out["permanent_core_duration"] = {"run_id": rid2, "status": row2.get("status"),
+                                              "error": (row2.get("error") or "").split("\n")[0][:400] or None}
+            print("  ", kind, rid2, row2.get("status"), flush=True)
+    folder = REPO_ROOT / "research" / "results"
+    folder.mkdir(parents=True, exist_ok=True)
+    (folder / "v2_run_ids.json").write_text(json.dumps(out, indent=2))
+    print(json.dumps(out, indent=2))
+
+
+def cmd_market_refresh(args: argparse.Namespace) -> None:
+    from lifecycle.data.ingest_treasury_daily import pull_treasury_daily
+
+    print(json.dumps(pull_treasury_daily(), indent=2))
+
+
+def cmd_entitlements(args: argparse.Namespace) -> None:
+    from lifecycle.data.entitlements import scan
+
+    print(json.dumps(scan(), indent=2, default=str))
+
+
+def cmd_selftest(args: argparse.Namespace) -> None:
+    """Run the backend test suite and record the outcome for the Overview pipeline timeline."""
+    import subprocess
+    from datetime import datetime, timezone
+
+    from lifecycle.config import processed_dir
+
+    res = subprocess.run([sys.executable, "-m", "pytest", "-p", "no:cacheprovider"], cwd=REPO_ROOT / "backend",
+                         capture_output=True, text=True)
+    lines = [ln for ln in res.stdout.strip().splitlines() if " passed" in ln or " failed" in ln]
+    tail = lines[-1] if lines else (res.stdout.strip().splitlines() or [""])[-1]
+    import re
+
+    passed = int(re.search(r"(\d+) passed", tail).group(1)) if re.search(r"(\d+) passed", tail) else 0
+    failed = int(re.search(r"(\d+) failed", tail).group(1)) if re.search(r"(\d+) failed", tail) else 0
+    rep = {"at": datetime.now(timezone.utc).isoformat(timespec="seconds"), "passed": passed, "failed": failed,
+           "summary": tail, "returncode": res.returncode}
+    (processed_dir() / "test_report.json").write_text(json.dumps(rep, indent=2))
+    print(json.dumps(rep, indent=2))
+    sys.exit(res.returncode)
 
 
 def cmd_openapi(args: argparse.Namespace) -> None:
@@ -135,6 +214,14 @@ def main() -> None:
     p = sub.add_parser("reproduce")
     p.add_argument("run_id")
     p.set_defaults(fn=cmd_reproduce)
+    p = sub.add_parser("seed-v2", help="run the default v2 studies (F1-F6)")
+    p.add_argument("--only", nargs="*", default=None)
+    p.add_argument("--pp-universe", default=None, help="universe for the Permanent Portfolio study")
+    p.add_argument("--force", action="store_true", help="re-execute even when a cached run exists")
+    p.set_defaults(fn=cmd_seed_v2)
+    sub.add_parser("market-refresh", help="download US Treasury daily par curves").set_defaults(fn=cmd_market_refresh)
+    sub.add_parser("entitlements", help="read-only WRDS entitlement/schema scan").set_defaults(fn=cmd_entitlements)
+    sub.add_parser("selftest", help="run pytest and record the result").set_defaults(fn=cmd_selftest)
     p = sub.add_parser("openapi")
     p.add_argument("out")
     p.set_defaults(fn=cmd_openapi)

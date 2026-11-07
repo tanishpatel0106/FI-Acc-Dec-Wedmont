@@ -122,6 +122,11 @@ def tensor(spec: ExperimentSpec, seed: int | None = None, n_paths: int | None = 
     u = universe(spec)
     model = fitted_model(spec, u)
     ten = generate(model, u.assets, n, months, seed, sr)
+    from lifecycle.engine.scenarios.pit_signals import decision_regime
+
+    asof = int(model.labels[-1]) if hasattr(model, "labels") and len(getattr(model, "labels", [])) else 0
+    ten.decision, sig = decision_regime(ten, model, "filtered_lagged", asof)
+    ten.meta["decision_signal"] = sig
     ten.meta["model"] = model.describe()
     ten.meta["window"] = [u.start.date().isoformat(), u.end.date().isoformat()]
     if hasattr(model, "last_starts"):

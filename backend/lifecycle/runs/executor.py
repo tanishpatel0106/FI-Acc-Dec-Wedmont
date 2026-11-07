@@ -29,6 +29,10 @@ class Cancelled(Exception):
 
 
 def _job_fn(kind: str) -> Callable[[Any, Callable[[str, float], None], str], dict[str, Any]]:
+    from lifecycle.studies import registry as studies
+
+    if studies.is_study(kind):
+        return studies.runner(kind)
     if kind == "experiment":
         from lifecycle.runs.experiment import run_experiment
 
@@ -59,7 +63,10 @@ def _job_fn(kind: str) -> Callable[[Any, Callable[[str, float], None], str], dic
 def _spec_model(kind: str, spec_json: dict[str, Any]) -> BaseModel:
     from lifecycle.research.hypotheses import HypothesesSpec
     from lifecycle.runs.spec import AttributionSpec, CompareSpec, ExperimentSpec, SweepSpec, ValidationSpec
+    from lifecycle.studies import registry as studies
 
+    if studies.is_study(kind):
+        return studies.spec_model(kind).model_validate(spec_json)
     model = {"experiment": ExperimentSpec, "sweep": SweepSpec, "compare": CompareSpec, "validation": ValidationSpec,
              "attribution": AttributionSpec, "hypotheses": HypothesesSpec}[kind]
     return model.model_validate(spec_json)
@@ -75,6 +82,9 @@ def with_catalog(spec: BaseModel) -> BaseModel:
     if isinstance(spec, SweepSpec):
         base = spec.base.model_copy(update={"data": spec.base.data.model_copy(update={"catalog_hash": chash})})
         return spec.model_copy(update={"base": base})
+    data = getattr(spec, "data", None)
+    if data is not None and hasattr(data, "catalog_hash"):
+        return spec.model_copy(update={"data": data.model_copy(update={"catalog_hash": chash})})
     return spec
 
 
@@ -93,7 +103,9 @@ def submit(kind: str, spec: BaseModel, label: str | None = None, force: bool = F
     row = registry.get(rid)
     assert row is not None
     if row["status"] == "done" and not force and registry.load_results(rid) is not None:
+        registry.audit("api", "cache_hit", rid, kind)
         return rid, "done"
+    registry.audit("api", "submit", rid, kind + (" (forced)" if force else ""))
     with _ALOCK:
         if rid in _ACTIVE:
             return rid, row["status"]
@@ -110,6 +122,7 @@ def submit(kind: str, spec: BaseModel, label: str | None = None, force: bool = F
 
 
 def cancel(run_id: str) -> None:
+    registry.audit("api", "cancel", run_id, "")
     _CANCEL.add(run_id)
 
 
@@ -135,11 +148,14 @@ def execute(run_id: str) -> None:
         registry.update(run_id, status="done", stage="done", progress=1.0, finished_at=registry.now(),
                         timings={"wall_seconds": time.time() - t0, **results.get("timings", {})},
                         warnings=results.get("warnings", []), summary=summary)
+        registry.audit("worker", "done", run_id, kind + " in %.1fs" % (time.time() - t0))
     except Cancelled:
         registry.update(run_id, status="cancelled", stage="cancelled", finished_at=registry.now())
+        registry.audit("worker", "cancelled", run_id, kind)
     except Exception as exc:
         registry.update(run_id, status="failed", stage="failed", finished_at=registry.now(),
-                        error=str(exc) + "\n" + traceback.format_exc()[-4000:])
+                        error=type(exc).__name__ + ": " + str(exc) + "\n" + traceback.format_exc()[-4000:])
+        registry.audit("worker", "failed", run_id, type(exc).__name__ + ": " + str(exc)[:300])
     finally:
         _CANCEL.discard(run_id)
         with _ALOCK:
@@ -178,4 +194,6 @@ def summary_of(kind: str, results: dict[str, Any]) -> dict[str, Any]:
         return out
     if kind == "sweep":
         return results.get("summary", {})
+    if isinstance(results.get("summary"), dict):
+        return dict(results["summary"])
     return {k: v for k, v in results.get("summary", {}).items()} if isinstance(results.get("summary"), dict) else {}

@@ -1,10 +1,10 @@
 import { Suspense } from "react";
-import { Compare } from "@/components/pages/Compare";
+import { CompareV2 } from "@/components/pages/v2/CompareV2";
 
 export default function Page() {
   return (
     <Suspense>
-      <Compare />
+      <CompareV2 />
     </Suspense>
   );
 }

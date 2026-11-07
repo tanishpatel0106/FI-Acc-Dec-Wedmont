@@ -3,7 +3,7 @@
   "info": {
     "title": "LIFECYCLE API",
     "description": "Multi-asset portfolio optimisation & lifetime utility research platform. Research output only - not investment advice.",
-    "version": "0.1.0"
+    "version": "0.2.0"
   },
   "paths": {
     "/v1/catalog/series": {
@@ -1077,6 +1077,7 @@
           "sweeps, comparison, validation, reports"
         ],
         "summary": "Attribution",
+        "description": "Marginal and Shapley utility; submit=false only reports whether the job exists.",
         "operationId": "attribution_v1_attribution__sweep_id__get",
         "parameters": [
           {
@@ -1116,6 +1117,16 @@
               "type": "integer",
               "default": 1000,
               "title": "N Paths"
+            }
+          },
+          {
+            "name": "submit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true,
+              "title": "Submit"
             }
           }
         ],
@@ -1182,6 +1193,16 @@
               "maximum": 50000,
               "default": 10000,
               "title": "Max Paths"
+            }
+          },
+          {
+            "name": "submit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true,
+              "title": "Submit"
             }
           }
         ],
@@ -1348,6 +1369,1809 @@
         }
       }
     },
+    "/v1/studies": {
+      "get": {
+        "tags": [
+          "v2 research"
+        ],
+        "summary": "List Studies",
+        "operationId": "list_studies_v1_studies_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response List Studies V1 Studies Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/studies/{kind}/defaults": {
+      "get": {
+        "tags": [
+          "v2 research"
+        ],
+        "summary": "Study Defaults",
+        "operationId": "study_defaults_v1_studies__kind__defaults_get",
+        "parameters": [
+          {
+            "name": "kind",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Kind"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Study Defaults V1 Studies  Kind  Defaults Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/studies/{kind}": {
+      "post": {
+        "tags": [
+          "v2 research"
+        ],
+        "summary": "Submit Study",
+        "operationId": "submit_study_v1_studies__kind__post",
+        "parameters": [
+          {
+            "name": "kind",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Kind"
+            }
+          },
+          {
+            "name": "submit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true,
+              "title": "Submit"
+            }
+          },
+          {
+            "name": "force",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Force"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": true,
+                "title": "Spec"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Submit Study V1 Studies  Kind  Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/studies/{kind}/latest": {
+      "get": {
+        "tags": [
+          "v2 research"
+        ],
+        "summary": "Latest Study",
+        "operationId": "latest_study_v1_studies__kind__latest_get",
+        "parameters": [
+          {
+            "name": "kind",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Kind"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Latest Study V1 Studies  Kind  Latest Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/studies/run/{run_id}": {
+      "get": {
+        "tags": [
+          "v2 research"
+        ],
+        "summary": "Study Run",
+        "operationId": "study_run_v1_studies_run__run_id__get",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Run Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Study Run V1 Studies Run  Run Id  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/studies/run/{run_id}/trace": {
+      "get": {
+        "tags": [
+          "v2 research"
+        ],
+        "summary": "Study Trace",
+        "description": "Deterministic single-path ledger trace (trades, costs, flows) re-simulated from the stored spec.",
+        "operationId": "study_trace_v1_studies_run__run_id__trace_get",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Run Id"
+            }
+          },
+          {
+            "name": "path",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 50000,
+              "minimum": 0,
+              "default": 0,
+              "title": "Path"
+            }
+          },
+          {
+            "name": "r",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "R"
+            }
+          },
+          {
+            "name": "b",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "B"
+            }
+          },
+          {
+            "name": "strategy",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Strategy"
+            }
+          },
+          {
+            "name": "policy",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Policy"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Study Trace V1 Studies Run  Run Id  Trace Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/studies/run/{run_id}/export": {
+      "get": {
+        "tags": [
+          "v2 research"
+        ],
+        "summary": "Study Export",
+        "description": "Derived results only (no raw WRDS observations exist in study payloads).",
+        "operationId": "study_export_v1_studies_run__run_id__export_get",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Run Id"
+            }
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "json",
+              "title": "Format"
+            }
+          },
+          {
+            "name": "block",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Block"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/research/{alias}": {
+      "post": {
+        "tags": [
+          "v2 research"
+        ],
+        "summary": "Research Alias Post",
+        "operationId": "research_alias_post_v1_research__alias__post",
+        "parameters": [
+          {
+            "name": "alias",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Alias"
+            }
+          },
+          {
+            "name": "submit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true,
+              "title": "Submit"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": true,
+                "title": "Spec"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Research Alias Post V1 Research  Alias  Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/research/{alias}/{run_id}": {
+      "get": {
+        "tags": [
+          "v2 research"
+        ],
+        "summary": "Research Alias Get",
+        "operationId": "research_alias_get_v1_research__alias___run_id__get",
+        "parameters": [
+          {
+            "name": "alias",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Alias"
+            }
+          },
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Run Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Research Alias Get V1 Research  Alias   Run Id  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/research-v2/hypotheses": {
+      "get": {
+        "tags": [
+          "v2 research"
+        ],
+        "summary": "Hypotheses V2",
+        "operationId": "hypotheses_v2_v1_research_v2_hypotheses_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Hypotheses V2 V1 Research V2 Hypotheses Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/research-v2/evidence/{run_id}": {
+      "get": {
+        "tags": [
+          "v2 research"
+        ],
+        "summary": "Evidence For",
+        "operationId": "evidence_for_v1_research_v2_evidence__run_id__get",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Run Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Evidence For V1 Research V2 Evidence  Run Id  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/market-state/latest": {
+      "get": {
+        "tags": [
+          "v2 research"
+        ],
+        "summary": "Market Latest",
+        "operationId": "market_latest_v1_market_state_latest_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Market Latest V1 Market State Latest Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/market-state/ribbon": {
+      "get": {
+        "tags": [
+          "v2 research"
+        ],
+        "summary": "Market Ribbon",
+        "operationId": "market_ribbon_v1_market_state_ribbon_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Market Ribbon V1 Market State Ribbon Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/market-state/audit": {
+      "get": {
+        "tags": [
+          "v2 research"
+        ],
+        "summary": "Market Audit",
+        "operationId": "market_audit_v1_market_state_audit_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Market Audit V1 Market State Audit Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/market-state/pit": {
+      "get": {
+        "tags": [
+          "v2 research"
+        ],
+        "summary": "Market Pit",
+        "operationId": "market_pit_v1_market_state_pit_get",
+        "parameters": [
+          {
+            "name": "series_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Series Id"
+            }
+          },
+          {
+            "name": "as_of",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "As Of"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Market Pit V1 Market State Pit Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/market-state/curve": {
+      "get": {
+        "tags": [
+          "v2 research"
+        ],
+        "summary": "Market Curve",
+        "operationId": "market_curve_v1_market_state_curve_get",
+        "parameters": [
+          {
+            "name": "as_of",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "As Of"
+            }
+          },
+          {
+            "name": "kind",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "nominal",
+              "title": "Kind"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Market Curve V1 Market State Curve Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/market-state/{as_of}": {
+      "get": {
+        "tags": [
+          "v2 research"
+        ],
+        "summary": "Market Asof",
+        "operationId": "market_asof_v1_market_state__as_of__get",
+        "parameters": [
+          {
+            "name": "as_of",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "As Of"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Market Asof V1 Market State  As Of  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/fixed-income/key-rates": {
+      "get": {
+        "tags": [
+          "v2 research"
+        ],
+        "summary": "Fi Key Rates",
+        "operationId": "fi_key_rates_v1_fixed_income_key_rates_get",
+        "parameters": [
+          {
+            "name": "date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Date"
+            }
+          },
+          {
+            "name": "withdrawal",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "default": 40000.0,
+              "title": "Withdrawal"
+            }
+          },
+          {
+            "name": "years",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 30,
+              "title": "Years"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Fi Key Rates V1 Fixed Income Key Rates Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/fixed-income/twist": {
+      "get": {
+        "tags": [
+          "v2 research"
+        ],
+        "summary": "Fi Twist",
+        "operationId": "fi_twist_v1_fixed_income_twist_get",
+        "parameters": [
+          {
+            "name": "date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Date"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Fi Twist V1 Fixed Income Twist Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/fixed-income/taylor": {
+      "get": {
+        "tags": [
+          "v2 research"
+        ],
+        "summary": "Fi Taylor",
+        "operationId": "fi_taylor_v1_fixed_income_taylor_get",
+        "parameters": [
+          {
+            "name": "date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Date"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Fi Taylor V1 Fixed Income Taylor Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/fixed-income/liability-gap": {
+      "get": {
+        "tags": [
+          "v2 research"
+        ],
+        "summary": "Fi Liability",
+        "operationId": "fi_liability_v1_fixed_income_liability_gap_get",
+        "parameters": [
+          {
+            "name": "date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Date"
+            }
+          },
+          {
+            "name": "withdrawal",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "default": 40000.0,
+              "title": "Withdrawal"
+            }
+          },
+          {
+            "name": "years",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 30,
+              "title": "Years"
+            }
+          },
+          {
+            "name": "pension",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "default": 0.0,
+              "title": "Pension"
+            }
+          },
+          {
+            "name": "mortality",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true,
+              "title": "Mortality"
+            }
+          },
+          {
+            "name": "inflation_shift_bp",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "default": 100.0,
+              "title": "Inflation Shift Bp"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Fi Liability V1 Fixed Income Liability Gap Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/fixed-income/ladder": {
+      "get": {
+        "tags": [
+          "v2 research"
+        ],
+        "summary": "Fi Ladder",
+        "operationId": "fi_ladder_v1_fixed_income_ladder_get",
+        "parameters": [
+          {
+            "name": "date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Date"
+            }
+          },
+          {
+            "name": "withdrawal",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "default": 40000.0,
+              "title": "Withdrawal"
+            }
+          },
+          {
+            "name": "years",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 30,
+              "title": "Years"
+            }
+          },
+          {
+            "name": "budget",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "default": 1000000.0,
+              "title": "Budget"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Fi Ladder V1 Fixed Income Ladder Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/fixed-income/coloss": {
+      "get": {
+        "tags": [
+          "v2 research"
+        ],
+        "summary": "Fi Coloss",
+        "operationId": "fi_coloss_v1_fixed_income_coloss_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Fi Coloss V1 Fixed Income Coloss Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/fixed-income/credit": {
+      "get": {
+        "tags": [
+          "v2 research"
+        ],
+        "summary": "Fi Credit",
+        "operationId": "fi_credit_v1_fixed_income_credit_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Fi Credit V1 Fixed Income Credit Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/data/entitlements": {
+      "get": {
+        "tags": [
+          "v2 research"
+        ],
+        "summary": "Data Entitlements",
+        "operationId": "data_entitlements_v1_data_entitlements_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Data Entitlements V1 Data Entitlements Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/data/coverage": {
+      "get": {
+        "tags": [
+          "v2 research"
+        ],
+        "summary": "Data Coverage",
+        "operationId": "data_coverage_v1_data_coverage_get",
+        "parameters": [
+          {
+            "name": "universe",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Universe"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Data Coverage V1 Data Coverage Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/data/vintages": {
+      "get": {
+        "tags": [
+          "v2 research"
+        ],
+        "summary": "Data Vintages",
+        "operationId": "data_vintages_v1_data_vintages_get",
+        "parameters": [
+          {
+            "name": "series_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Series Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Data Vintages V1 Data Vintages Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/data/refresh": {
+      "post": {
+        "tags": [
+          "v2 research"
+        ],
+        "summary": "Data Refresh",
+        "description": "Backend refresh job. Public groups only; WRDS refreshes run from the CLI on the authorised host.",
+        "operationId": "data_refresh_v1_data_refresh_post",
+        "parameters": [
+          {
+            "name": "group",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "treasury_daily",
+              "title": "Group"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Data Refresh V1 Data Refresh Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "v2 research"
+        ],
+        "summary": "Data Refresh Status",
+        "operationId": "data_refresh_status_v1_data_refresh_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Data Refresh Status V1 Data Refresh Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/data/health": {
+      "get": {
+        "tags": [
+          "v2 research"
+        ],
+        "summary": "Data Health",
+        "operationId": "data_health_v1_data_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Data Health V1 Data Health Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/runs/{run_id}/inspect": {
+      "get": {
+        "tags": [
+          "v2 research"
+        ],
+        "summary": "Run Inspect",
+        "operationId": "run_inspect_v1_runs__run_id__inspect_get",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Run Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Run Inspect V1 Runs  Run Id  Inspect Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/runs/compatibility": {
+      "get": {
+        "tags": [
+          "v2 research"
+        ],
+        "summary": "Run Compatibility",
+        "operationId": "run_compatibility_v1_runs_compatibility_get",
+        "parameters": [
+          {
+            "name": "a",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "A"
+            }
+          },
+          {
+            "name": "b",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "B"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Run Compatibility V1 Runs Compatibility Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/audit": {
+      "get": {
+        "tags": [
+          "v2 research"
+        ],
+        "summary": "Audit",
+        "operationId": "audit_v1_audit_get",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 2000,
+              "default": 200,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "run_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Run Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Audit V1 Audit Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/results/figures": {
+      "get": {
+        "tags": [
+          "v2 research"
+        ],
+        "summary": "Figures",
+        "operationId": "figures_v1_results_figures_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Figures V1 Results Figures Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/results/manifest": {
+      "get": {
+        "tags": [
+          "v2 research"
+        ],
+        "summary": "Manifest",
+        "operationId": "manifest_v1_results_manifest_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Manifest V1 Results Manifest Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/reports/build": {
+      "post": {
+        "tags": [
+          "v2 research"
+        ],
+        "summary": "Reports Build",
+        "operationId": "reports_build_v1_reports_build_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array",
+                "title": "Run Ids"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Reports Build V1 Reports Build Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/paper/preview": {
+      "get": {
+        "tags": [
+          "v2 research"
+        ],
+        "summary": "Paper Preview",
+        "operationId": "paper_preview_v1_paper_preview_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Paper Preview V1 Paper Preview Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/methodology/assumptions": {
+      "get": {
+        "tags": [
+          "v2 research"
+        ],
+        "summary": "Assumptions",
+        "operationId": "assumptions_v1_methodology_assumptions_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Assumptions V1 Methodology Assumptions Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/methodology/bibliography": {
+      "get": {
+        "tags": [
+          "v2 research"
+        ],
+        "summary": "Bibliography",
+        "operationId": "bibliography_v1_methodology_bibliography_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Bibliography V1 Methodology Bibliography Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/methodology/bibtex": {
+      "get": {
+        "tags": [
+          "v2 research"
+        ],
+        "summary": "Bibtex",
+        "operationId": "bibtex_v1_methodology_bibtex_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/overview/v2": {
+      "get": {
+        "tags": [
+          "v2 research"
+        ],
+        "summary": "Overview V2",
+        "operationId": "overview_v2_v1_overview_v2_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Overview V2 V1 Overview V2 Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/health": {
       "get": {
         "summary": "Health",
@@ -1399,7 +3223,12 @@
             "type": "string",
             "enum": [
               "core",
-              "modern"
+              "modern",
+              "core_long_history",
+              "core_duration",
+              "pp_modern_etf",
+              "pp_research_historical",
+              "liability_match"
             ],
             "title": "Universe",
             "default": "core"

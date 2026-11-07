@@ -74,4 +74,17 @@ def run_all(include_wrds: bool, offline: bool = False) -> dict:
         run_wrds()
     meta = build_panel()
     print("panel built: catalog_hash", meta["catalog_hash"], "series", meta["n_series"])
+    _audit({"at": meta["built_at"], "offline": offline, "wrds": include_wrds, "catalog_hash": meta["catalog_hash"],
+            "n_series": meta["n_series"]})
     return meta
+
+
+def _audit(entry: dict) -> None:
+    import json
+
+    from lifecycle.config import processed_dir
+
+    p = processed_dir() / "ingest_audit.json"
+    rows = json.loads(p.read_text()) if p.exists() else []
+    rows.append(entry)
+    p.write_text(json.dumps(rows[-200:], indent=2))

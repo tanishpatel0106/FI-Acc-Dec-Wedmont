@@ -15,8 +15,12 @@ class Frozen(BaseModel):
     model_config = ConfigDict(frozen=True, extra="forbid")
 
 
+UniverseName = Literal["core", "modern", "core_long_history", "core_duration", "pp_modern_etf",
+                       "pp_research_historical", "liability_match"]
+
+
 class DataSpec(Frozen):
-    universe: Literal["core", "modern"] = "core"
+    universe: UniverseName = "core"
     calibration_start: str | None = None
     calibration_end: str | None = None
     catalog_hash: str | None = None
@@ -112,7 +116,7 @@ class ValidationSpec(Frozen):
 
 class AttributionSpec(Frozen):
     sweep_id: str
-    universe: Literal["core", "modern"] = "modern"
+    universe: UniverseName = "modern"
     base: tuple[str, ...] = ("us_eq", "ust_10y")
     sleeves: tuple[str, ...] | None = None
     by_regime: bool = True

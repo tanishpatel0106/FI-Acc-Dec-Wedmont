@@ -24,7 +24,10 @@ _add(SeriesDef("us_eq", "US equity (value-weighted)", "equity", "total_return", 
 _add(SeriesDef("intl_eq", "Developed ex-US equity", "equity", "total_return", "decimal/month"))
 _add(SeriesDef("em_eq", "Emerging-market equity", "equity", "total_return", "decimal/month"))
 _add(SeriesDef("reit", "Listed REITs", "real_assets", "total_return", "decimal/month"))
-_add(SeriesDef("gold", "Gold", "real_assets", "total_return", "decimal/month"))
+_add(SeriesDef("gold", "Gold (observed fund total return, e.g. GLD via WRDS CRSP)", "real_assets", "total_return",
+               "decimal/month"))
+_add(SeriesDef("gold_hist", "Gold historical price (research-only, rights-approved public source)", "real_assets",
+               "price_return", "decimal/month"))
 _add(SeriesDef("tbill", "T-bills (1M)", "cash", "total_return", "decimal/month", defensive=True))
 _add(SeriesDef("ust_2y", "Treasury 2Y", "rates", "total_return", "decimal/month", defensive=True))
 _add(SeriesDef("ust_5y", "Treasury 5Y", "rates", "total_return", "decimal/month", defensive=True))
@@ -69,6 +72,28 @@ class UniverseDef:
 
 
 UNIVERSES: dict[str, UniverseDef] = {
+    # v2 universes (brief 4.4): explicit, non-overlapping definitions; nothing is spliced or back-filled
+    "core_long_history": UniverseDef(
+        "core_long_history", "Long-history core (US equity, T-bills, 10Y Treasury)",
+        required=("us_eq", "tbill", "ust_10y"),
+    ),
+    "core_duration": UniverseDef(
+        "core_duration", "Duration ladder (US equity, cash, 2/5/10/30Y Treasuries)",
+        required=("us_eq", "tbill", "ust_2y", "ust_5y", "ust_10y", "ust_30y"),
+    ),
+    "pp_modern_etf": UniverseDef(
+        "pp_modern_etf", "Permanent Portfolio, implementable (equity, long Treasury, gold fund, T-bills)",
+        required=("us_eq", "ust_30y", "gold", "tbill"),
+        optional=("tips", "ust_10y", "ust_5y", "ust_2y"),
+    ),
+    "pp_research_historical": UniverseDef(
+        "pp_research_historical", "Permanent Portfolio, long-history research proxy (approved gold price series)",
+        required=("us_eq", "ust_30y", "gold_hist", "tbill"),
+    ),
+    "liability_match": UniverseDef(
+        "liability_match", "Liability matching (equity, cash, TIPS, 2/5/10Y Treasuries)",
+        required=("us_eq", "tbill", "tips", "ust_2y", "ust_5y", "ust_10y"),
+    ),
     "core": UniverseDef(
         "core", "Long-history core",
         required=("us_eq", "tbill", "ust_10y"),

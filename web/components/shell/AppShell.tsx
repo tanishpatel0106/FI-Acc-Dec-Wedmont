@@ -5,7 +5,7 @@ import { motion } from "motion/react";
 import { useState } from "react";
 import {
   IconBook2, IconChartAreaLine, IconChartDots3, IconFlask2, IconGitCompare, IconHistory, IconLayoutDashboard,
-  IconMoon, IconSun, IconTable, IconTimeline, IconWaveSine,
+  IconActivity, IconArrowsExchange, IconMicroscope, IconMoon, IconScale, IconSquares, IconSun, IconTable, IconTimeline, IconWaveSine,
 } from "@tabler/icons-react";
 import { useTheme } from "next-themes";
 import { Sidebar, SidebarBody, useSidebar } from "@/components/ui/sidebar";
@@ -14,15 +14,21 @@ import { DataBadge } from "./DataBadge";
 import { cn } from "@/lib/utils";
 
 export const NAV = [
-  { href: "/", label: "Overview", icon: IconLayoutDashboard },
-  { href: "/lab", label: "01 Research Lab", icon: IconChartDots3 },
-  { href: "/lab/fixed-income", label: "Fixed Income", icon: IconWaveSine },
-  { href: "/simulate", label: "02 Lifecycle Simulator", icon: IconChartAreaLine },
-  { href: "/optimize", label: "03 Policy Optimizer", icon: IconFlask2 },
-  { href: "/withdrawal-lab", label: "04 Withdrawal Lab", icon: IconTable },
-  { href: "/compare", label: "05 Compare & Validate", icon: IconGitCompare },
-  { href: "/runs", label: "Runs & Reports", icon: IconHistory },
-  { href: "/methodology", label: "Methodology", icon: IconBook2 },
+  { href: "/", label: "A · Overview", icon: IconLayoutDashboard },
+  { href: "/withdrawal-lab", label: "B · Bond Necessity", icon: IconTable },
+  { href: "/lifecycle-flows", label: "C · Lifecycle Flows", icon: IconArrowsExchange },
+  { href: "/permanent-portfolio", label: "D · Permanent Portfolio", icon: IconSquares },
+  { href: "/rebalance", label: "E · Rebalancing", icon: IconScale },
+  { href: "/fixed-income", label: "F · Fixed Income", icon: IconWaveSine },
+  { href: "/market-state", label: "G · Market State", icon: IconActivity },
+  { href: "/scenarios", label: "H · Scenarios & Stress", icon: IconChartDots3 },
+  { href: "/optimize", label: "I · Optimize", icon: IconFlask2 },
+  { href: "/compare", label: "J · Compare", icon: IconGitCompare },
+  { href: "/research", label: "K · Research & Evidence", icon: IconMicroscope },
+  { href: "/runs", label: "L · Runs & Reports", icon: IconHistory },
+  { href: "/methodology", label: "M · Methodology", icon: IconBook2 },
+  { href: "/lab", label: "Research Lab (v1)", icon: IconChartDots3 },
+  { href: "/simulate", label: "Lifecycle Simulator (v1)", icon: IconChartAreaLine },
 ];
 
 function NavLink({ href, label, Icon, active }: { href: string; label: string; Icon: typeof IconBook2; active: boolean }) {
@@ -87,7 +93,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             <nav className="mt-6 flex flex-col gap-1">
               {NAV.map((n) => (
                 <NavLink key={n.href} href={n.href} label={n.label} Icon={n.icon}
-                  active={n.href === "/" ? pathname === "/" : pathname === n.href || (n.href !== "/lab" && pathname.startsWith(n.href))} />
+                  active={n.href === "/" ? pathname === "/" : pathname === n.href || (n.href !== "/lab" && pathname.startsWith(n.href + "/"))} />
               ))}
             </nav>
           </div>

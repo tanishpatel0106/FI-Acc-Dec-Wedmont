@@ -119,7 +119,8 @@ def kernel_config(ctx: Context, policy: WeightPolicy, spending: Spending) -> ker
 def evaluate(ctx: Context, policy: WeightPolicy, spending: Spending) -> kernel.SimOutput:
     cfg = kernel_config(ctx, policy, spending)
     ten = ctx.tensor
-    return kernel.simulate(ten.real_returns, ten.regime, ctx.labor, ctx.pension, cfg)
+    # decisions use the point-in-time signal, never the contemporaneous latent state (brief 1.2 item 1)
+    return kernel.simulate(ten.real_returns, ten.decision_regime(), ctx.labor, ctx.pension, cfg)
 
 
 def ce_annual(out: kernel.SimOutput, gamma: float) -> tuple[float, float]:

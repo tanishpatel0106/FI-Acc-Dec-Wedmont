@@ -1,10 +1,10 @@
 import { Suspense } from "react";
-import { Runs } from "@/components/pages/Runs";
+import { RunsV2 } from "@/components/pages/v2/RunsV2";
 
 export default function Page() {
   return (
     <Suspense>
-      <Runs />
+      <RunsV2 />
     </Suspense>
   );
 }

@@ -11,6 +11,24 @@ spec, then regenerate it from its run ID.
 
 Every number on screen comes from a versioned, reproducible backend run. The frontend never computes analytics.
 
+## LIFECYCLE v2
+
+v2 adds a holdings-ledger engine (desired / funded / unmet spending, signed planned net flows, trading
+policies with executed-notional costs, point-in-time regime signals), nine hashed research studies
+(bond-necessity frontier, signed-flow surface, Permanent Portfolio, rebalancing, scenarios & stress, as-of
+conditioning, multi-objective optimisation, policy comparison, H1–H12 evidence) and 13 research pages
+with **137 visualizations**, each tied to a run ID.
+
+- **Setup guide:** [`docs/SETUP.md`](docs/SETUP.md)
+- **Application rundown:** [`docs/APP_GUIDE.md`](docs/APP_GUIDE.md)
+- **Visualization index (all 137):** [`docs/VISUALIZATIONS.md`](docs/VISUALIZATIONS.md)
+- **Governance & data rights:** [`GOVERNANCE.md`](GOVERNANCE.md)
+- **Pre-analysis plan:** [`research/preregistration/`](research/preregistration/)
+
+```bash
+make setup && make data-offline && make seed-v2 && make dev   # public-only, about 3 minutes after installs
+```
+
 ---
 
 ## Quick start (local)
@@ -67,7 +85,7 @@ yield is repriced at this month's, so yields are never used as returns). They ca
 ### Tests
 
 ```bash
-make test-backend   # 27 tests: §9.1 accounting identities, Merton recovery, property tests, estimator recovery, API
+make test-backend   # 45 tests (27 v1 + 18 v2 ledger/study/API): §9.1 accounting identities, Merton recovery, property tests, estimator recovery, API
 make test-web       # tsc, eslint, vitest
 cd web && npx playwright test   # e2e + visual snapshots of all screens (needs `make api`)
 ```
