@@ -1,4 +1,4 @@
-# LIFECYCLE v2 — application rundown
+# LIFECYCLE — application rundown
 
 LIFECYCLE is a research terminal for one question: **when, why and in which form does defensive asset
 allocation improve lifetime portfolio sustainability as an investor crosses from net contributions to net
@@ -87,112 +87,54 @@ or on the Methodology page (MT-07).
 
 ---
 
-## 4. The pages
+## 4. The pages (one unified application)
 
-Navigation (left sidebar) follows the brief's pages A–M. Every page has a context ribbon (universe,
-window, generator, paths, benchmark, run, evidence), warnings (e.g. *model_generated returns*), and the
-study header with run ID, catalog hash and finish time.
+There is one page per route — no generation tabs. The sidebar is generated from
+`web/lib/research/routes.ts` and groups the 13 pages; each page has a "How to use this page" panel, the
+shared **research context ribbon**, domain-named sections (`?section=…`, deep-linkable with `#VIZ-ID`),
+a related-pages footer, and an information button on every visualization.
 
-### A · `/` Research overview & command center (OV-01…08)
-Headline verdict tiles with CIs, benchmark, universe, date and run ID — or "Not established" /
-"No feasible allocation"; the signed-q continuum strip; a mini bond-necessity contour; the CE-optimal vs
-survival-optimal KPI pair; the H1–H12 evidence matrix; a pipeline timeline with real timestamps (panel
-build, tests, each study); the data coverage grid with staleness; and a "reproduce this figure" launcher.
-The v1 overview is in the second tab.
+| Group | Page | Route | Sections | Main question |
+|---|---|---|---|---|
+| Research Home | Overview | `/` | hero, findings, page guide, question navigator, workflow, health, journeys | Where to begin; what is established |
+| Lifecycle & Portfolio Planning | Withdrawal Lab | `/withdrawal-lab` | overview · sustainability · bond-necessity · utility · outcomes · robustness · paths | When do bonds improve survival, at which withdrawal rates? |
+| | Lifecycle & Cash Flows | `/lifecycle-flows` | overview · simulator · policies · funding · household | Does signed net cash flow guide allocation better than age? |
+| | Permanent Portfolio | `/permanent-portfolio` | overview · conditional · composition · history | When does the four-sleeve design help, and which sleeve matters? |
+| | Rebalancing & Execution | `/rebalance` | overview · costs · cash-flows · rules · ledger | Which trading rule is worth its cost? |
+| | Portfolio Optimization | `/optimize` | overview · policy-family · dynamic · surfaces · attribution · robustness | Which allocation is optimal under which objective? |
+| Markets & Risk Research | Fixed Income & Credit | `/fixed-income` | curves · risk · returns · liabilities · credit | How much duration, and which bonds? |
+| | Market State | `/market-state` | snapshot · dependence · releases · conditional | What do dated public observations say now? |
+| | Scenarios & Risk | `/scenarios` | historical-analytics · dependence · factors · regimes · generators · stress · diagnostics | Are the generators credible; how do portfolios fare under stress? |
+| Research Validation | Strategy Comparison | `/compare` | policies · saved-runs · history · attribution · robustness | Which policy wins on identical paths, and robustly? |
+| | Research & Evidence | `/research` | hypotheses · validation · uncertainty · oos · data-quality · conclusions | What does the evidence support? |
+| | Runs & Reports | `/runs` | registry · reproduce · figures · health | Can every number be reproduced? |
+| | Methodology & Data | `/methodology` | pipeline · mathematics · data · references · limitations · reproduce · visualizations | How is every number produced? |
 
-### B · `/withdrawal-lab` Bond necessity & sustainable spending (WL-01…12, F1)
-The central exhibit. A withdrawal × bond-share survival heatmap with the target contour (click any cell for
-CI, CE, survival-while-alive, severity and a single-path funding-gap drilldown, WL-11); the b_min frontier
-for 80/85/90/95% targets with bootstrap bands and shaded "no feasible allocation" regions; survival curves
-by bond mix; maximum sustainable withdrawal (with the historical 4% rule as a reference only); CE- vs
-survival-optimal shares; a threshold sensitivity forest (target, horizon, generator, window, γ);
-first-shortfall timing (financial and alive-weighted); severity violins; model-disagreement overlay;
-model-conditional allocation ranges by horizon; and FI-12 (bond instruments across withdrawal rates). The
-v1 ΔCE heatmap is in the second tab.
+**Where the original modules went** (details and acceptance tests: [`PRESERVATION_MATRIX.md`](PRESERVATION_MATRIX.md)):
+CE utility sweeps → Withdrawal Lab › Utility & Welfare (WL-13…15); interactive simulator → Lifecycle ›
+Simulator (EX-01…06); research lab → Scenarios › Historical analytics / Dependence / Regimes / Factors
+(SC-13…25); policy family and grid DP → Optimization (OP-13…17); sweep attribution → Optimization ›
+Attribution (OP-11/12); saved-run comparison → Strategy Comparison › Saved runs (CO-11…13); run
+validation and H1–H4 → Research (RS-11…18); run history → Runs › Registry (RN-11); mathematical notes →
+Methodology › Mathematics (MT-08); original fixed-income panel → Fixed Income (instance views of FI-02/03/05/07).
 
-### C · `/lifecycle-flows` Signed contributions → retirement → withdrawals (LC-01…08, F2)
-The q × age optimal bond surface (CE or survival objective), age-only vs q-only vs full policies scored
-out of sample, bootstrapped marginal slopes with a zero reference, the funded-ratio map on the TIPS real
-curve with mortality, and a synthetic, labelled persona: wealth/consumption fans across age, policy
-transition map with planned net flows, a narrated single path with rebalancing ticks and the governing
-equations, and the accumulation contribution frontier (savings × start age).
+**Retired routes** redirect (query preserved): `/lab` → `/scenarios?section=historical-analytics`,
+`/lab/fixed-income` → `/fixed-income`, `/simulate` → `/lifecycle-flows?section=simulator`.
 
-### D · `/permanent-portfolio` Permanent Portfolio laboratory (PP-01…12, F3)
-Sleeve matrix with exact canonical sources and measured exposures; paired scorecard vs 60/40; conditional
-advantage by withdrawal × starting regime; growth × inflation quadrants (lagged, point-in-time
-classification); regime-adaptive weight river; gold incremental utility and hedge statistics; duration
-replacement with DV01; cash-buffer trade-off; defensive simplex (equity fixed at 25%); Browne band event
-timeline (annual review; breaches between reviews do not trade); historical cohort race; Shapley ablation;
-robust (minimax-regret) mix. **Without WRDS the gold sleeve is reported as unavailable** — the page shows
-the failed gold run and the gold-free variants, never a proxy.
+**Shared research context** (`web/lib/store.ts`, `useResearchContext`): investor, scenario, preferences,
+costs, withdrawal, horizon, as-of date and the comparison policy set. Every study header has
+"Run with current assumptions", which maps the context to that study's strict spec
+(`web/lib/research/context.ts`; validated against the strict backend models in
+`test_unified_app.py`). Pages never launch computation on load: they look up the latest persisted run.
 
-### E · `/rebalance` Rebalancing & cash-flow execution (RB-01…12, F4)
-Net ΔCE vs turnover frontier by strategy family with CIs; calendar/band × cost heatmaps; cash-flow
-turnover savings for contributors, zero-flow and withdrawers; the utility-net-of-cost rule's
-accepted/rejected decisions and holdout ΔCE; liquidity runway fans; event statistics; commission / spread /
-slippage decomposition and CE drag; withdrawal funding race; risk-budget drift with a lagged-estimate
-validation; and a per-path trade audit (weights, trades, costs, triggers) with a sources-and-uses
-waterfall whose residual checks the ledger.
+**Cross-page workflow:** Permanent Portfolio › Overview › "Compare with 60/40" carries the selected
+policies into Strategy Comparison (URL + context). Gold-holding variants have no gold-free equivalent in
+the comparison universe, so they are compared within the PP study (PP-02) and the page says so.
 
-### F · `/fixed-income` Rates, liability matching & credit (FI-01…14)
-Nominal/real GSW curves (any month-end), 2/5/10/30Y history heatmap, duration/DV01/convexity, key-rate
-durations whose sum is checked against effective duration, full repricing vs Taylor error, bear-steepener
-/ bull-flattener grids for nominal and TIPS, monthly return decomposition with disclosed residual, PCA with
-shape-checked labels, Baa−Aaa / Baa−10Y spreads, real liability PV with sensitivities, a TIPS-strip-style
-cash-flow matching ladder against a budget, the bond-value spectrum, stock–bond co-loss regimes and their
-shortfall consequence, and the credit-quality surface (unavailable without bond-level WRDS data; index
-statistics shown instead). The v1 panel is in the second tab.
-
-### G · `/market-state` Public-data as-of terminal (MS-01…12)
-A per-source ribbon (latest observation, retrieval vintage, staleness, licence) with a backend
-**Update** job; curves, 10Y nominal/real/breakeven with the ACM decomposition, a valuation dashboard,
-rolling correlations with Fisher-z bands and DCC, filtered regime probabilities with model vintage, a
-release timeline with a historical point-in-time selector, credit spreads, the WRDS ETF panel (or why it
-is unavailable), and the refresh audit. The as-of selector replays any month using publication lags. The
-`asof` study adds the conditional scenario fan (MS-07) and the scenario delta board (MS-10).
-
-### H · `/scenarios` Scenario, dependence & stress (SC-01…12, F5)
-Generator comparison with automatic pass/caution/fail checks; simulated vs historical distributions (Q–Q,
-histograms); path fans and sample paths per generator; joint-downside frequencies (observed, modelled,
-out-of-sample); rolling/DCC correlation with change points; Markov transition matrix, dwell times and
-state uncertainty; t-copula vs empirical tail counts; inflation–rate–bond scatter; the synthetic stress
-matrix (rate shock, inflation shock, −35% equity, 2022-like, stagflation, recession rally); shock timing
-(year 0/5/10/20); actual cohort maps; PIT mismatch diagnostics with red flags.
-
-### I · `/optimize` Multi-objective allocation (OP-01…10)
-Pareto set in (failure, CE) space with the constraint region; regime and q×age weight surfaces; Shapley
-and marginal sleeve values with CIs; an uncertainty band instead of a point optimum; funding-ratio policy
-surface; static vs fitted glidepath vs regime-conditional vs **oracle** on holdout paths; the objective
-switch (CE, success, CVaR, minimax regret, constrained CE); risk budget and duration; a parameter tornado;
-the optimiser's actual trace with its convergence message. The v1 optimizer is in the second tab.
-
-### J · `/compare` Policy & cohort comparison (CO-01…10, F6)
-Paired ΔCE forest, per-path scatter with failures, twin fans, the most divergent paths with their
-early-sequence explanation, a cohort winner matrix, a sortable trade-off table, order-free (Shapley)
-attribution of allocation / spending / rebalancing / costs, robustness across generators and windows with
-sign-reversal flags, public-vs-WRDS source substitution, and a first-failure timeline for the worst actual
-cohort. `/compare?id=<run>` opens the legacy run-vs-run comparison tab.
-
-### K · `/research` Hypotheses, validation & statistics (RS-01…10, F6)
-The pre-registered H1–H12 table (estimate, CI, Holm/BH p, window, verdict, grade, run link), the evidence
-heatmap, Monte Carlo convergence with an automatic stop rule, the b_min replication ridge, the
-chronological walk-forward scoreboard, generator/parameter disagreement, a return-order permutation test,
-coverage audit, an automated leakage checklist and a conclusion builder that writes only verified claims.
-
-### L · `/runs` Reproduction, diagnostics & reports (RN-01…10)
-Run registry (with cache hits from the audit log), inspector (spec, seeds, lock hash, git SHA,
-provenance), live SSE progress with cancel/retry, the F1–F6 figure gallery, run compatibility checks,
-the export centre (study JSON/CSV, experiment PDF/CSV/BibTeX, manifest), the reproduce command with
-data/engine-change warnings, data health, paper build preview and the audit trail.
-
-### M · `/methodology` Methodology (MT-01…07)
-Pipeline diagram, an equation explorer (ledger, utility, bond necessity, CIs, duration, rebalancing,
-filter), data dictionary, assumption registry, bibliography with live links, limitations and prohibited
-interpretations, and CLI/API recipes with every study's default spec.
-
-The v1 **Research Lab** (`/lab`) and **Lifecycle Simulator** (`/simulate`) remain as they were.
-
----
+**Engine semantics.** Runs from the original target-weight kernel (experiments, sweeps, saved-run
+comparisons, validations, attributions) and from the holdings ledger (research studies) coexist; every run
+reports `semantics` (`GET /v1/runs`, `/v1/runs/{id}/inspect`), and `/v1/runs/compatibility` refuses to pair
+runs from different engines.
 
 ## 5. What the current public-data runs show (catalog `f0ce88a6493ff732`, 2026-11-07)
 
@@ -240,26 +182,24 @@ research outputs at pilot-to-conditional evidence grades, not advice. Run IDs ar
 
 ---
 
-## 7. Code map (new in v2)
+## 7. Code map
 
 ```text
 backend/lifecycle/
   engine/lifecycle/ledger.py        Numba holdings ledger, trading triggers, funding orders, trace
   engine/scenarios/pit_signals.py   point-in-time regime signals (filtered, lagged, oracle)
-  studies/common.py                 shared specs, ledger runner, statistics (Wilson, paired ΔCE, severity)
-  studies/{frontier,signed_flow,permanent,rebalance,scenario_lab,asof,optimize_v2,compare_v2,evidence}.py
-  studies/registry.py               job kinds → spec model, runner, page
-  market_state.py, fixed_income_v2.py  derived market and rates views
-  data/ingest_treasury_daily.py     official Treasury daily par curves (separate daily store)
-  data/entitlements.py              WRDS entitlement scan + source-rights registry
-  api/routers/v2.py                 all v2 routes
-backend/tests/test_v2_engine.py, test_v2_studies.py
-research/preregistration/         hypotheses_v2.json (machine-readable), analysis_plan.md
-research/results/v2_run_ids.json  run IDs of the default studies
-web/lib/api/v2.ts                 study hooks (lookup / submit / trace / export)
-web/components/v2/{kit,charts}.tsx Viz frame, StudyGate, tables, tabs; Plotly chart kit
-web/components/pages/v2/*.tsx      pages A–M
-web/app/{lifecycle-flows,permanent-portfolio,rebalance,fixed-income,market-state,scenarios,research}/
+  studies/*.py, studies/registry.py the nine research studies (job kinds → spec, runner, page)
+  api/routers/v2.py                 studies, market state, fixed income, runs (+ semantics), figures, methodology
+backend/tests/test_unified_app.py   context specs vs strict models, unified run registry, semantics
+web/lib/research/routes.ts          pages, groups, sections, research questions, workflow, journeys
+web/lib/research/visualization-registry.ts  (+ viz/*.ts) explanation of every visualization
+web/lib/research/context.ts         research context → study spec
+web/components/visualizations/      VisualizationFrame, VisualizationInfo, ResearchTable, provenance, charts, Plot
+web/components/research/kit.tsx     StudyGate (lookup, run default / with current assumptions), KPIs, layout helpers
+web/components/research/page.tsx    ResearchPage layout, sections (Sec), context ribbon, how-to
+web/components/research/<domain>/   modules carried over from the original pages
+web/components/pages/*.tsx          the 13 pages
+web/tests/unit/visualization-registry.test.ts, research-context.test.ts; web/tests/e2e/unified.spec.ts
 ```
 
 ---

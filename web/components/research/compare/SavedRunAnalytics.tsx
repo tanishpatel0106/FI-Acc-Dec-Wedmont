@@ -8,7 +8,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge";
 import { Plot, useVizTokens } from "@/components/visualizations/Plot";
 import { Section as Card } from "@/components/common/Section";
-import { Viz } from "@/components/visualizations/VisualizationFrame";
+import { PendingFrames, Viz } from "@/components/visualizations/VisualizationFrame";
 import { Field, NativeSelect } from "@/components/common/Fields";
 import { Stat } from "@/components/common/Stat";
 import { InlineProgress } from "@/components/experiment/RunProgress";
@@ -196,7 +196,7 @@ export function RunValidation({ runs }: { runs: RunRow[] }) {
           </Viz>
           <Provenance meta={d} runId={d.run_id} />
         </>
-      ) : null}
+      ) : <PendingFrames ids={["RS-12", "RS-13", "RS-14", "RS-15", "RS-16", "RS-17", "RS-18"]} reason="select a saved run and run its validation." />}
     </div>
   );
 }
@@ -241,7 +241,7 @@ export function SweepAttribution() {
             </Table>
           </Viz>
         </>
-      ) : null}
+      ) : <PendingFrames ids={["OP-11", "OP-12"]} reason="select a completed CE sweep and compute its attribution." />}
     </div>
   );
 }
@@ -318,7 +318,7 @@ export function SavedRunComparison() {
           <Picker runs={pickable} onCompare={onCompare} />
         </Modal>
       </div>
-      {id ? <Comparison id={id} /> : <Viz id="CO-11" empty="Not computed: pick two to four finished experiments to compare them on common paths.">{null}</Viz>}
+      {id ? <Comparison id={id} /> : <PendingFrames ids={["CO-11", "CO-12", "CO-13"]} reason="pick two to four finished experiments to compare them on common paths." />}
     </div>
   );
 }

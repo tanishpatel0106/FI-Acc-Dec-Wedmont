@@ -11,17 +11,27 @@ spec, then regenerate it from its run ID.
 
 Every number on screen comes from a versioned, reproducible backend run. The frontend never computes analytics.
 
-## LIFECYCLE v2
+## One unified research application
+
+Thirteen pages in four groups (Research Home · Lifecycle & Portfolio Planning · Markets & Risk Research ·
+Research Validation), a homepage application guide ("Which page should I use?", a research-question
+navigator, the research workflow and three guided journeys), domain-named sections with deep links, a
+shared research context, and an information button on every visualization that explains what it shows,
+how to read it, how it is calculated, why it matters, its assumptions/limitations and its live provenance
+(registry: `web/lib/research/visualization-registry.ts`; coverage enforced by `make test-web`).
+
+### Engine and studies
 
 v2 adds a holdings-ledger engine (desired / funded / unmet spending, signed planned net flows, trading
 policies with executed-notional costs, point-in-time regime signals), nine hashed research studies
 (bond-necessity frontier, signed-flow surface, Permanent Portfolio, rebalancing, scenarios & stress, as-of
-conditioning, multi-objective optimisation, policy comparison, H1–H12 evidence) and 13 research pages
-with **137 visualizations**, each tied to a run ID.
+conditioning, multi-objective optimisation, policy comparison, H1–H12 evidence) and the original target-weight engine (simulator, policy family, CE sweeps, grid DP) — **184 registered
+visualizations**, each tied to a run ID.
 
 - **Setup guide:** [`docs/SETUP.md`](docs/SETUP.md)
 - **Application rundown:** [`docs/APP_GUIDE.md`](docs/APP_GUIDE.md)
-- **Visualization index (all 137):** [`docs/VISUALIZATIONS.md`](docs/VISUALIZATIONS.md)
+- **Visualization index:** [`docs/VISUALIZATIONS.md`](docs/VISUALIZATIONS.md) (+ Methodology › Visualization reference in the app)
+- **Feature-preservation audit:** [`docs/PRESERVATION_MATRIX.md`](docs/PRESERVATION_MATRIX.md)
 - **Governance & data rights:** [`GOVERNANCE.md`](GOVERNANCE.md)
 - **Pre-analysis plan:** [`research/preregistration/`](research/preregistration/)
 
@@ -106,7 +116,8 @@ figures from `research/experiments/run_ids.json` only.
 ```text
 backend/lifecycle/{data,engine,runs,api,workers,reports,research}   Python engine + FastAPI
 backend/tests/                                                     pytest (synthetic fixtures only)
-web/app, web/components/{ui,charts,experiment,pages,shell}         Next.js research terminal
+web/app, web/components/{ui,visualizations,research,experiment,pages,shell}  Next.js research application
+web/lib/research/{routes,visualization-registry,context}.ts       page guide, viz registry, research context
 research/experiments/*.json                                        versioned specs for every exhibit
 paper/                                                             LaTeX draft + figure builder
 data/                                                              gitignored: raw/, processed/, runs/

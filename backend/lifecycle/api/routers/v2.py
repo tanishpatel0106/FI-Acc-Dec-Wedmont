@@ -415,6 +415,49 @@ def data_health() -> dict:
 
 
 # ---- runs: inspection, compatibility, audit, reproduce, figures, paper ------------------------------------------
+# Accounting semantics of each run kind. The two engines are kept side by side (nothing is re-computed or
+# silently converted); every run reports which one produced it, and comparisons across them are flagged.
+TARGET_WEIGHT = "target_weight_kernel"   # original monthly kernel: target weights, proportional turnover cost
+HOLDINGS = "holdings_ledger"             # research-study kernel: executed-notional holdings ledger
+DERIVED = "derived_from_runs"            # aggregates other persisted runs (no own simulation)
+_SEMANTICS = {"experiment": TARGET_WEIGHT, "sweep": TARGET_WEIGHT, "compare": TARGET_WEIGHT, "validation": TARGET_WEIGHT,
+              "attribution": TARGET_WEIGHT, "hypotheses": DERIVED, "evidence": DERIVED}
+
+
+def semantics(kind: str) -> str:
+    """Accounting semantics recorded for a run kind (studies other than evidence use the holdings ledger)."""
+    if kind in _SEMANTICS:
+        return _SEMANTICS[kind]
+    return HOLDINGS if studies.is_study(kind) else "unknown"
+
+
+@router.get("/runs")
+def list_all_runs(kind: str | None = None, status: str | None = None, family: str | None = Query(None, pattern="^(study|experiment)$"),
+                  limit: int = Query(200, ge=1, le=2000)) -> dict:
+    """One registry for every run kind (experiments, sweeps, comparisons, validations, attributions,
+    hypotheses and the nine studies), each with its accounting semantics and page."""
+    rows = registry.list_runs(kind, limit)
+    out = []
+    for r in rows:
+        if status and r["status"] != status:
+            continue
+        is_study = studies.is_study(r["kind"])
+        if family == "study" and not is_study:
+            continue
+        if family == "experiment" and is_study:
+            continue
+        out.append({**r, "semantics": semantics(r["kind"]), "family": "study" if is_study else "experiment",
+                    "page": studies.studies()[r["kind"]]["page"] if is_study else _EXPERIMENT_PAGE.get(r["kind"])})
+    return envelope({"runs": out, "semantics": {TARGET_WEIGHT: "monthly target-weight kernel (Simulator, policy family, CE sweeps)",
+                                                HOLDINGS: "executed-notional holdings ledger (research studies)",
+                                                DERIVED: "aggregates persisted runs"}})
+
+
+_EXPERIMENT_PAGE = {"experiment": "/lifecycle-flows?section=simulator", "sweep": "/withdrawal-lab?section=utility",
+                    "compare": "/compare?section=saved-runs", "validation": "/research?section=validation",
+                    "attribution": "/optimize?section=attribution", "hypotheses": "/research?section=hypotheses"}
+
+
 @router.get("/runs/{run_id}/inspect")
 def run_inspect(run_id: str) -> dict:
     row = run_row_or_404(run_id)
@@ -432,6 +475,7 @@ def run_inspect(run_id: str) -> dict:
                      "data_class": uni.get("data_class") if isinstance(uni, dict) else None,
                      "raw_or_derived": "derived (aggregates and quantiles only)",
                      "reproduce": "python -m lifecycle.cli reproduce " + run_id, "parent_id": row.get("parent_id"),
+                     "semantics": semantics(row["kind"]),
                      "created_at": row.get("created_at"), "finished_at": row.get("finished_at"),
                      "audit": registry.audit_log(50, run_id)}, run_id, row["spec_hash"], row["catalog_hash"])
 
@@ -443,6 +487,10 @@ def run_compatibility(a: str, b: str) -> dict:
     reasons = []
     if ra["kind"] != rb["kind"]:
         reasons.append("different run kinds (%s vs %s)" % (ra["kind"], rb["kind"]))
+    sem_a, sem_b = semantics(ra["kind"]), semantics(rb["kind"])
+    if sem_a != sem_b:
+        reasons.append("different accounting semantics (%s vs %s): the runs come from different engines and "
+                       "cannot be paired" % (sem_a, sem_b))
     if ra.get("catalog_hash") != rb.get("catalog_hash"):
         reasons.append("different data catalogs (%s vs %s): recalibrate both on the same vintage" % (
             ra.get("catalog_hash"), rb.get("catalog_hash")))
@@ -460,7 +508,8 @@ def run_compatibility(a: str, b: str) -> dict:
         if va != vb and (va is not None or vb is not None):
             reasons.append("%s differs (%s vs %s)" % (lab, va, vb))
     paired = not any(r.split(" ")[0] in ("universe", "generator", "seed", "n_paths") for r in reasons)
-    return envelope({"compatible": len(reasons) == 0, "paired_comparison_possible": paired and ra["kind"] == rb["kind"],
+    return envelope({"compatible": len(reasons) == 0, "paired_comparison_possible": paired and ra["kind"] == rb["kind"] and sem_a == sem_b,
+                     "semantics": [sem_a, sem_b],
                      "reasons": reasons, "remedy": "submit a paired re-run with identical data, scenario and spending"
                      if reasons else None})
 

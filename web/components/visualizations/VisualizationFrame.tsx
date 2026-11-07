@@ -111,3 +111,15 @@ export function dataClassOf(res: any): DataClass {
   if (res?.warnings?.some?.((w: string) => w.includes("SYNTHETIC"))) return "illustrative";
   return "model_generated";
 }
+
+/**
+ * Honest placeholders for visualizations that need a user action first (run an experiment, pick saved runs,
+ * solve the DP…): each keeps its frame, ID and information button, and states what computes it.
+ */
+export function PendingFrames({ ids, reason }: { ids: string[]; reason: React.ReactNode }) {
+  return (
+    <div className="grid gap-4 lg:grid-cols-2">
+      {ids.map((id) => <VisualizationFrame key={id} id={id} empty={<span>Not computed: {reason}</span>}>{null}</VisualizationFrame>)}
+    </div>
+  );
+}

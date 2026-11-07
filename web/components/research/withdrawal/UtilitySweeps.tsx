@@ -14,7 +14,7 @@ import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
 import { ResultSummary } from "@/components/experiment/ResultSummary";
 import { InlineProgress } from "@/components/experiment/RunProgress";
 import { Provenance } from "@/components/experiment/Provenance";
-import { Viz } from "@/components/research/kit";
+import { PendingFrames, Viz } from "@/components/visualizations/VisualizationFrame";
 import { apiGet, apiPost } from "@/lib/api/client";
 import { useResults, useSurface, useSweeps } from "@/lib/api/hooks";
 import type { RunRow, SweepCell } from "@/lib/api/types";
@@ -190,7 +190,7 @@ export function UtilitySweeps() {
       </div>
 
       {!match ? (
-        <Viz id="WL-13" empty={<span>Not computed: no cached sweep for this combination yet.</span>}>{null}</Viz>
+        <PendingFrames ids={["WL-13", "WL-14", "WL-15"]} reason="no cached sweep for this combination yet (press Run this sweep)." />
       ) : null}
       {!match ? (
           <div className="mt-3 flex flex-col items-center gap-3 py-6 text-center text-sm text-muted-foreground">

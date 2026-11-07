@@ -7,6 +7,7 @@ import { Section } from "@/components/common/Section";
 import { InvestorForm } from "@/components/experiment/InvestorForm";
 import { RunProgress } from "@/components/experiment/RunProgress";
 import { ResultSummary } from "@/components/experiment/ResultSummary";
+import { PendingFrames } from "@/components/visualizations/VisualizationFrame";
 import { apiPost } from "@/lib/api/client";
 import { useResults, useRunStatus } from "@/lib/api/hooks";
 import { builderFromQuery, builderToQuery, specFromBuilder, useBuilder } from "@/lib/store";
@@ -96,6 +97,7 @@ export function Simulator() {
               </div>
             </Section>
           )}
+          {!results.data ? <div className="mt-4"><PendingFrames ids={["EX-01", "EX-02", "EX-03", "EX-04", "EX-05", "EX-06"]} reason="configure an investor and press Run experiment." /></div> : null}
         </div>
       </div>
     </div>

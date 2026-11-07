@@ -6,7 +6,6 @@ import { ResearchPage, Sec } from "@/components/research/page";
 import { RunHistory } from "@/components/research/runs/RunHistory";
 import { DataTable, Empty, Grid, GradeTag, Kpi, Viz } from "@/components/research/kit";
 import { API_BASE, apiPost, eventsUrl, reportUrl } from "@/lib/api/client";
-import { useRuns } from "@/lib/api/hooks";
 import { exportUrl, useV2 } from "@/lib/api/v2";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -46,7 +45,7 @@ function LiveProgress({ runId, kind, spec }: { runId: string; kind: string; spec
 
 function Body() {
   const params = useSearchParams();
-  const runs = useRuns(undefined, 300);
+  const runs = useV2<any>("/v1/runs", { limit: 300 }, { refetch: 10_000 });
   const router = useRouter();
   const sel = params.get("id");
   const setSel = (id: string) => {
@@ -77,7 +76,7 @@ function Body() {
       <Viz id="RN-01" title="Run registry" question="Every persisted run: status, kind, parent, data vintage, policy, timestamps, cache hits and failure reasons. Click a row ID to inspect." cls="observed"
         definition="Run ID = SHA-256 of the canonical spec + data catalog hash. Identical specs hit the cache.">
         <div className="max-h-96 overflow-auto"><DataTable rows={rows} columns={[{ key: "run_id", label: "run", fmt: (v) => <button className="font-mono underline" onClick={() => setSel(v)}>{v.slice(0, 10)}</button> },
-          { key: "kind", label: "type" }, { key: "status", label: "status" }, { key: "label", label: "label" }, { key: "parent_id", label: "parent", fmt: (v) => (v ? v.slice(0, 8) : "–") },
+          { key: "kind", label: "type" }, { key: "semantics", label: "engine semantics" }, { key: "status", label: "status" }, { key: "label", label: "label" }, { key: "parent_id", label: "parent", fmt: (v) => (v ? v.slice(0, 8) : "–") },
           { key: "catalog_hash", label: "data vintage", fmt: (v) => (v ? String(v).slice(0, 8) : "–") }, { key: "summary", label: "policy / summary", fmt: (v) => (v ? String(v.policy ?? v.universe ?? JSON.stringify(v).slice(0, 60)) : "–") },
           { key: "created_at", label: "created" }, { key: "finished_at", label: "finished" }, { key: "cache", label: "cache hit" }, { key: "error", label: "error", fmt: (v) => (v ? String(v).split("\n")[0].slice(0, 80) : "") }]} /></div>
       </Viz>

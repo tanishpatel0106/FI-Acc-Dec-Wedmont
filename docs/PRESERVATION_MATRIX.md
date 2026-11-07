@@ -57,7 +57,7 @@ test, **MAN** = manually checked in a headless browser run against the seeded pu
 
 | Old | Now | Behaviour |
 |---|---|---|
-| sidebar "Research Lab (v1)" `/lab` | Scenarios & Risk | permanent redirect → `/scenarios?section=historical-analytics` (query preserved) |
+| sidebar "Research Lab (v1)" `/lab` | Scenarios & Risk | redirect (307) → `/scenarios?section=historical-analytics` (query preserved) |
 | `/lab/fixed-income` | Fixed Income & Credit | redirect → `/fixed-income` |
 | sidebar "Lifecycle Simulator (v1)" `/simulate` | Lifecycle & Cash Flows | redirect → `/lifecycle-flows?section=simulator` (spec query params preserved) |
 | v2/legacy page tabs on 7 pages | domain-named sections | removed |
@@ -68,5 +68,5 @@ test, **MAN** = manually checked in a headless browser run against the seeded pu
 
 No scientific code was removed. v1 job kinds (`experiment`, `sweep`, `compare`, `validation`, `attribution`,
 `hypotheses`) and v2 study kinds share one registry. Each run now reports its accounting semantics
-(`legacy_target_weight_kernel` or `holdings_ledger_v2`) via `GET /v1/runs`, and comparisons across the two
+(`target_weight_kernel` or `holdings_ledger`) via `GET /v1/runs`, and comparisons across the two
 families are flagged by `/v1/runs/compatibility`.

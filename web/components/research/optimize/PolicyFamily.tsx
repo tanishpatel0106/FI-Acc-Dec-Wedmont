@@ -6,7 +6,7 @@ import type { Data } from "plotly.js";
 import { toast } from "sonner";
 import { Plot, useVizTokens } from "@/components/visualizations/Plot";
 import { WeightPath } from "@/components/visualizations/WeightPath";
-import { Viz } from "@/components/visualizations/VisualizationFrame";
+import { PendingFrames, Viz } from "@/components/visualizations/VisualizationFrame";
 import { Field, NativeSelect } from "@/components/common/Fields";
 import { Stat } from "@/components/common/Stat";
 import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
@@ -106,7 +106,7 @@ export function DPPanel() {
           </Viz>
           <div className="flex flex-wrap gap-2">{(r.warnings ?? []).map((w) => <Badge key={w} variant="outline">⚠ {w}</Badge>)}</div>
         </div>
-      ) : !runId ? <Viz id="OP-15" empty="Not computed: press Solve DP to run the grid dynamic programme for the current research context.">{null}</Viz> : null}
+      ) : !runId ? <PendingFrames ids={["OP-15", "OP-16", "OP-17"]} reason="press Solve DP to run the grid dynamic programme for the current research context." /> : null}
     </div>
   );
 }
@@ -196,7 +196,7 @@ export function PolicyFamily() {
             name: d.f.label, line: { width: 2, color: t.series[SHARE_COLORS[d.f.type]] } })) as Data[]}
             layout={{ yaxis: { tickformat: ".0%", range: [0, 1.02] }, xaxis: { title: { text: "Age" } } }} />
         </Viz>
-      ) : null}
+      ) : <PendingFrames ids={["OP-14"]} reason="appears once at least one policy of the family has finished." />}
       <ExpandableCard open={!!openItem?.r} layoutId="policy-card" onClose={() => setOpen(null)}>
         {openItem?.r ? (
           <div className="space-y-3">
