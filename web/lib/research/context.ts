@@ -49,6 +49,9 @@ export function studySpecFromContext(kind: StudyKind, c: ResearchContext): Conte
       return { spec: { data: { universe: uni(["multi_asset_public", "multi_asset_full"], "multi_asset_public") },
         scenario: { ...scenario, generator: c.generator === "markov_switching" || c.generator === "bootstrap" || c.generator === "student_t" ? c.generator : "markov_switching" },
         investor, preferences: prefs, costs, withdrawal: c.withdrawalRate }, notes };
+    case "historical_replay":
+      return { spec: { start: "2007-01", investor: { start_age: Math.min(Math.max(c.startAge, 18), 80), initial_wealth: c.wealth, salary: c.income,
+        savings_rate: c.savingsRate, retirement_age: Math.min(Math.max(c.retirementAge, 40), 80) }, preferences: prefs, costs }, notes };
     case "evidence":
       return { spec: { scenario: { generator: "bootstrap", n_paths: c.nPaths, seed: c.seed } }, notes };
   }

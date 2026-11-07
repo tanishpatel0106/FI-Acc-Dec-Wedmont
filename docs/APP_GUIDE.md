@@ -177,6 +177,47 @@ weight, risk parity, inverse volatility, volatility targeting, the multi-asset P
 following all lose to 60/40 for the retiree (intervals below zero); every policy loses to 60/40 for the saver.
 The fitted trend/volatility tilts are zero. Directions hold under the bootstrap generator.
 
+## 4c. Historical Portfolio Replay (Lifecycle & Cash Flows › Historical Portfolio Replay)
+
+Study `historical_replay` (`backend/lifecycle/studies/historical_replay.py`; charts HR-01…HR-15). One dated
+investor (preset: age 20 in January 2007, $10,000, $45,000 salary with a real age profile plus realised CPI
+indexation each January, 15% saved, retire at 65, γ = 4) is advanced **month by month** to the latest
+observation.
+
+- **Execution:** the canonical Numba holdings ledger is called for one month at a time with the actual
+  holdings (`LedgerConfig.h0`, `t0`, `spend0`). `tests/test_sequential_ledger.py` proves that 1-month calls
+  equal a whole-horizon run exactly, and whole-horizon studies are unchanged.
+- **Point-in-time information:** at the decision date (first day of month t) the engine sees returns through
+  t−1, yields through t−1 and CPI through t−2 (at least a 15-day publication lag is enforced). Every mean,
+  covariance, volatility, trend and the 2-state regime model (refitted yearly on an expanding window) comes
+  from that information set. `tests/test_historical_replay.py` rewrites future returns and checks that
+  earlier decisions do not change.
+- **Eligibility:** a sleeve needs 36 valid monthly returns and must trade that month. In `fixed` mode the
+  universe is the set eligible for the whole window, for comparability. In `expanding` mode sleeves enter
+  when eligible, the target is recomputed and the band rule decides what to trade. Additions and removals
+  are recorded.
+- **Three layers:** a strategic target (policy objective), a bounded tactical deviation (≤ 10 points) and
+  execution (5-point bands checked monthly; contributions directed toward the target). Every month records
+  pre- and post-trade weights, all three target layers, trades, costs, the trigger, binding constraints and
+  model notes.
+- **Policies:** static 60/40; target-date glidepath; classic Permanent Portfolio (25% equity / 30Y / gold /
+  cash; reported unavailable when gold is not ingested, never proxied); generalised multi-asset
+  all-weather; risk parity; trend; inverse volatility; volatility-targeted 60/40 (12-month risk, 10% target);
+  regime-adaptive CRRA mean-variance; CRRA parametric; and **lifecycle-adaptive**. The lifecycle-adaptive
+  policy is a myopic CRRA allocation on total wealth (financial + human capital = PV of future
+  contributions), with a safe sleeve sized by liabilities / total wealth and matched to the liability
+  duration (half TIPS within 15 years of retirement), plus the bounded tactical tilt.
+- **Forward continuation:** from the exact final holdings and age, 500 block-bootstrap paths (joint real
+  returns and CPI from the boundary information set) run to age 95. Every path recomputes the policy every
+  month; market estimates are frozen at the boundary. Contributions continue to retirement, then spending
+  is net of the pension.
+- **Experiments:** cohorts aged 20/40/60 in the start year; walk-forward start years 1996/2001/2007/2012;
+  60/120-month and expanding estimation windows; lifecycle ablations (no human capital, no liability
+  hedge, no market signals, frozen first target, no rebalancing).
+- **Integration:** Rebalancing › ledger (trades by policy), Compare › history (policies on one history),
+  Permanent Portfolio › multi-asset (classic vs generalised), Optimization › multi-asset (ablations),
+  Research › OOS (walk-forward), Runs (registry), plus a homepage question and journey.
+
 ## 5. What the current public-data runs show (catalog `f0ce88a6493ff732`, 2026-11-07)
 
 These come from the default studies on the committed public snapshot (US data 1953–2026; Treasury

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ResearchPage, Sec } from "@/components/research/page";
 import { MultiAssetAllWeather } from "@/components/research/multi-asset/MultiAsset";
+import { ReplayPanel } from "@/components/research/lifecycle/HistoricalReplay";
 import { useResearchContext } from "@/lib/store";
 import { ContextBar, DataTable, Empty, Grid, Kpi, Seg, StudyGate, Viz, Warnings, dataClassOf } from "@/components/research/kit";
 import { Bars, Forest, Heat, Lines, Scatter, Ternary, ci, pct, spct, useAssetColor, usd } from "@/components/visualizations/charts";
@@ -233,7 +234,7 @@ export function PermanentPortfolio() {
           {(env) => <Body env={env} />}
         </StudyGate>
       </Sec>
-      <Sec id="multi-asset"><MultiAssetAllWeather /></Sec>
+      <Sec id="multi-asset"><MultiAssetAllWeather /><h2 className="mt-6 text-base font-semibold">Classic vs generalised Permanent Portfolio for the historical investor</h2><ReplayPanel view="pp" /></Sec>
     </ResearchPage>
   );
 }

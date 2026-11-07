@@ -4,6 +4,7 @@ import { DPPanel, PolicyFamily } from "@/components/research/optimize/PolicyFami
 import { SweepAttribution } from "@/components/research/compare/SavedRunAnalytics";
 import { ResearchPage, Sec } from "@/components/research/page";
 import { DynamicMultiAsset } from "@/components/research/multi-asset/MultiAsset";
+import { ReplayPanel } from "@/components/research/lifecycle/HistoricalReplay";
 import { ContextBar, DataTable, Grid, Kpi, Seg, StudyGate, Viz, Warnings, dataClassOf } from "@/components/research/kit";
 import { Bars, Forest, Heat, Histo, Lines, Scatter, pct, spct, usd } from "@/components/visualizations/charts";
 import { useStudyLatest } from "@/lib/api/v2";
@@ -104,7 +105,7 @@ export function Optimize() {
       <Sec id={STUDY_SECTIONS}>
         <StudyGate kind="optimize" title="Multi-objective study">{(env) => <Body env={env} />}</StudyGate>
       </Sec>
-      <Sec id="multi-asset"><DynamicMultiAsset /></Sec>
+      <Sec id="multi-asset"><DynamicMultiAsset /><h2 className="mt-6 text-base font-semibold">Lifecycle-adaptive policy: what each ingredient contributed (historical replay)</h2><ReplayPanel view="ablations" /></Sec>
       <Sec id="attribution"><SweepAttribution /></Sec>
       <Sec id="policy-family"><PolicyFamily /></Sec>
       <Sec id="dynamic">

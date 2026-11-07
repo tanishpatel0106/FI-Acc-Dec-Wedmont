@@ -6,6 +6,7 @@ import { useTrace } from "@/lib/api/v2";
 import { Tex } from "@/components/common/Tex";
 import { ResearchPage, Sec } from "@/components/research/page";
 import { Simulator } from "@/components/research/lifecycle/Simulator";
+import { HistoricalReplay } from "@/components/research/lifecycle/HistoricalReplay";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const qFmt = (v: number) => (v > 0 ? "+" : "") + (v * 100).toFixed(1) + "%";
@@ -137,6 +138,7 @@ export function LifecycleFlows() {
           {(env) => <Body env={env} />}
         </StudyGate>
       </Sec>
+      <Sec id="replay"><HistoricalReplay /></Sec>
       <Sec id="simulator"><Simulator /></Sec>
     </ResearchPage>
   );

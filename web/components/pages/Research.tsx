@@ -1,5 +1,6 @@
 "use client";
 import { ResearchPage, Sec } from "@/components/research/page";
+import { ReplayPanel } from "@/components/research/lifecycle/HistoricalReplay";
 import { HypothesisTests, RunValidation, usePickableRuns } from "@/components/research/compare/SavedRunAnalytics";
 import { DataTable, Grid, GradeTag, StudyGate, Viz } from "@/components/research/kit";
 import { Forest, Heat, Lines, SampleHist, pct } from "@/components/visualizations/charts";
@@ -128,6 +129,7 @@ export function Research() {
         <h2 className="mt-6 text-base font-semibold">Original hypotheses H1–H4 (sweep, attribution and DP runs)</h2>
         <HypothesisTests />
       </Sec>
+      <Sec id="oos"><h2 className="mt-6 text-base font-semibold">Historical investor: chronological walk-forward start years</h2><ReplayPanel view="walkforward" /></Sec>
       <Sec id="validation"><Validation /></Sec>
     </ResearchPage>
   );

@@ -446,5 +446,41 @@
       "half_spread_bps": 6
     },
     "withdrawal": 0.06
+  },
+  "historical_replay:default": {
+    "start": "2007-01",
+    "investor": {
+      "start_age": 65,
+      "initial_wealth": 1000000,
+      "salary": 100000,
+      "savings_rate": 0.1,
+      "retirement_age": 65
+    },
+    "preferences": {
+      "gamma": 4,
+      "beta_annual": 0.97
+    },
+    "costs": {
+      "commission_bps": 0,
+      "half_spread_bps": 0
+    }
+  },
+  "historical_replay:stress": {
+    "start": "2007-01",
+    "investor": {
+      "start_age": 65,
+      "initial_wealth": 1000000,
+      "salary": 100000,
+      "savings_rate": 0.1,
+      "retirement_age": 60
+    },
+    "preferences": {
+      "gamma": 8,
+      "beta_annual": 0.97
+    },
+    "costs": {
+      "commission_bps": 4,
+      "half_spread_bps": 6
+    }
   }
 }

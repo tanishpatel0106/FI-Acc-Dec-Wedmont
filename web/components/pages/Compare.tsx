@@ -4,6 +4,7 @@ import { useSearchParams } from "next/navigation";
 import { SavedRunComparison } from "@/components/research/compare/SavedRunAnalytics";
 import { ContextBar, DataTable, Empty, Grid, StudyGate, Viz, Warnings, dataClassOf } from "@/components/research/kit";
 import { ResearchPage, Sec } from "@/components/research/page";
+import { ReplayPanel } from "@/components/research/lifecycle/HistoricalReplay";
 import { useResearchContext } from "@/lib/store";
 import { Bars, Fan, Forest, Heat, Lines, Scatter, Waterfall, pct, spct, usd } from "@/components/visualizations/charts";
 import { useVizTokens } from "@/components/visualizations/Plot";
@@ -114,6 +115,7 @@ export function Compare() {
       <Sec id={["policies", "history", "attribution", "robustness"]}>
         <StudyGate kind="compare_v2" title="Policy comparison study">{(env) => <Body env={env} />}</StudyGate>
       </Sec>
+      <Sec id="history"><h2 className="mt-6 text-base font-semibold">Historical investor: policies on one dated history</h2><ReplayPanel view="policies" /></Sec>
       <Sec id="saved-runs"><SavedRunComparison /></Sec>
     </ResearchPage>
   );

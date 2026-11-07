@@ -66,7 +66,8 @@ def pull_fx() -> pd.DataFrame:
         rets[ccy] = r
         for ts, v in r.items():
             rows.append({"month_end": ts, "series_id": "fx_" + ccy, "value": float(v), "quantity": "total_return",
-                         "provenance": "index_derived", "source": "derived:fx_deposit(" + spot_id + "," + rate_id + ")"})
+                         "provenance": "index_derived", "source": "derived:fx_deposit(" + spot_id + "," + rate_id + ")",
+                         "available_from": ts})   # a realised deposit return: known to the holder at month end
     if all(c in rets for c in BASKET):
         frame = pd.concat([rets[c] for c in BASKET], axis=1, join="inner")
         basket = frame.mean(axis=1)
@@ -74,7 +75,8 @@ def pull_fx() -> pd.DataFrame:
             rows.append({"month_end": ts, "series_id": "fx_basket", "value": float(v), "quantity": "total_return",
                          "provenance": "index_derived",
                          "source": "derived:fx_basket(equal-weight " + ",".join(c.upper() for c in BASKET) +
-                                   "; H.10 month-end spot; OECD call money)"})
+                                   "; H.10 month-end spot; OECD call money)",
+                         "available_from": ts})
     else:
         print("warning: fx_basket not built (missing components:", [c for c in BASKET if c not in rets], ")")
     return finalize_rows(rows)

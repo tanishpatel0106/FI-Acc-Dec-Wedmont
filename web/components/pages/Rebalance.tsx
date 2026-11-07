@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { ResearchPage, Sec } from "@/components/research/page";
+import { ReplayPanel } from "@/components/research/lifecycle/HistoricalReplay";
 import { ContextBar, DataTable, Grid, Kpi, StudyGate, Viz, Warnings, dataClassOf } from "@/components/research/kit";
 import { NativeSelect } from "@/components/common/Fields";
 import { Bars, Fan, Forest, Heat, Lines, Scatter, Waterfall, pct, spct, useAssetColor, usd } from "@/components/visualizations/charts";
@@ -157,6 +158,7 @@ export function Rebalance() {
       <StudyGate kind="rebalance" title="Rebalancing study" description="16 trading strategies on a 55/35/10 target, cost grid 0–20 bps, reserve 0–3 years, 2,000 paths.">
         {(env) => <Body env={env} />}
       </StudyGate>
+      <Sec id="ledger"><h2 className="mt-6 text-base font-semibold">Historical investor trades by policy</h2><ReplayPanel view="trades" /></Sec>
     </ResearchPage>
   );
 }

@@ -72,9 +72,10 @@ export const PAGES: PageInfo[] = [
     howTo: ["Use the Interactive Lifecycle Simulator to run one investor end to end.", "Read the q × age surface; switch objective between CE and survival.",
       "Check Age vs Cash-Flow Policies for out-of-sample evidence."],
     limitations: ["In the q-surface age acts through horizon and survival only; the simulator adds labour income.", "Policies are fitted on training paths and scored on disjoint test paths."],
-    related: ["withdrawal", "optimize", "compare"], studies: ["signed_flow"],
+    related: ["withdrawal", "optimize", "compare", "permanent", "rebalance"], studies: ["signed_flow", "historical_replay"],
     sections: [
       { id: "overview", title: "Signed-Flow Allocation", summary: "Optimal bond share over planned q and age." },
+      { id: "replay", title: "Historical Portfolio Replay", summary: "One dated investor month by month through history, with point-in-time decisions, trades and a forward continuation." },
       { id: "simulator", title: "Interactive Lifecycle Simulator", summary: "Investor builder, run, progress and full results." },
       { id: "policies", title: "Age vs Cash-Flow Policies", summary: "Restricted policies scored out of sample; marginal slopes." },
       { id: "funding", title: "Funding & Liquidity", summary: "Funded ratio on the real curve with mortality." },
@@ -298,6 +299,9 @@ export const QUESTIONS: ResearchQuestion[] = [
   { id: "multi-asset", question: "Should allocation move dynamically across equity, rates, credit, currencies and commodities?", start: { page: "optimize", section: "multi-asset" },
     next: [{ page: "permanent", section: "multi-asset" }, { page: "rebalance", section: "costs" }, { page: "research", section: "hypotheses" }],
     charts: ["MA-04", "MA-08", "MA-09", "MA-10"], configure: "Multi-asset study: public tier by default (1990–); after the WRDS ingest set data.universe to multi_asset_full for gold, commodities and high yield." },
+  { id: "historical-investor", question: "How would one investor's portfolio have evolved through 2008, 2020 and 2022 — and what next?", start: { page: "lifecycle", section: "replay" },
+    next: [{ page: "lifecycle", section: "replay" }, { page: "rebalance", section: "ledger" }, { page: "compare", section: "history" }],
+    charts: ["HR-01", "HR-08", "HR-10", "HR-11"], configure: "Historical replay preset: age 20 in January 2007, $10,000, $45,000 salary, 15% saved, retire at 65, γ = 4; monthly decisions, 5-point bands." },
   { id: "rebalance", question: "How should I rebalance a retirement portfolio?", start: { page: "rebalance", section: "overview" },
     next: [{ page: "rebalance", section: "costs" }, { page: "rebalance", section: "ledger" }, { page: "compare", section: "robustness" }],
     charts: ["RB-01", "RB-05", "RB-03", "RB-04"], configure: "Rebalancing study: fixed 55/35/10 target, 4% withdrawal, 5 bps per side; vary only the trading rule." },
@@ -334,6 +338,11 @@ export const WORKFLOW: WorkflowStage[] = [
 export interface Journey { title: string; steps: { page: PageKey; section?: string; goal: string }[] }
 
 export const JOURNEYS: Journey[] = [
+  { title: "Historical Investor Journey", steps: [
+    { page: "lifecycle", section: "replay", goal: "Replay a 20-year-old from January 2007, month by month, through the crises." },
+    { page: "lifecycle", section: "replay", goal: "Inspect any month: state, signals, target, trades and costs." },
+    { page: "compare", section: "history", goal: "Compare policies on the same investor and history." },
+    { page: "research", section: "oos", goal: "Check cohorts, start years and windows before trusting a ranking." }] },
   { title: "Retirement Sustainability Research", steps: [
     { page: "withdrawal", section: "overview", goal: "Locate where bonds become necessary and how sure we are." },
     { page: "lifecycle", section: "simulator", goal: "Check the same investor across accumulation and decumulation." },

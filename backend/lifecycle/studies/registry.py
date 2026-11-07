@@ -11,6 +11,7 @@ def _load() -> dict[str, dict[str, Any]]:
         compare_v2,
         evidence,
         frontier,
+        historical_replay,
         multi_asset,
         optimize_v2,
         permanent,
@@ -38,6 +39,8 @@ def _load() -> dict[str, dict[str, Any]]:
                        "experiments": "E24, E26, E36", "figure": "F6"},
         "multi_asset": {"spec": multi_asset.MultiAssetSpec, "run": multi_asset.run_multi_asset,
                         "page": "/optimize?section=multi-asset", "experiments": "E37-E40", "figure": None},
+        "historical_replay": {"spec": historical_replay.HistoricalReplaySpec, "run": historical_replay.run_historical_replay,
+                              "page": "/lifecycle-flows?section=replay", "experiments": "E41-E45", "figure": None},
         "evidence": {"spec": evidence.EvidenceSpec, "run": evidence.run_evidence, "page": "/research",
                      "experiments": "E28, H1-H12", "figure": "F6"},
     }

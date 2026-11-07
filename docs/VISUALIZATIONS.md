@@ -31,6 +31,7 @@ matches the information panels. Deep link: `<route>?section=<section>#<VIZ-ID>`.
 | RS-12 … RS-18 | Run validation: convergence, parameter, model, sequence, windows, tails, cohort replay | Research › Validation |
 | RN-11 | Run history timeline | Runs › Registry |
 | MT-08 | Mathematical notes | Methodology › Mathematics |
+| HR-01 … HR-15 | Historical replay: allocation timeline, target vs actual, wealth, contributions vs returns, rolling risk, market state, trades, decision inspector, funding ratio, policy comparison, historical-to-future projection, future allocation, lifetime outcomes, cohorts/walk-forward, ablations | Lifecycle & Cash Flows › Historical Portfolio Replay (instances on Rebalancing, Compare, Permanent Portfolio, Optimization, Research) |
 | MA-01 … MA-03 | Asset-class coverage by tier, static multi-asset designs, static designs vs 60/40 | Permanent Portfolio › Multi-Asset All-Weather |
 | MA-04 … MA-10 | Policy-family ΔCE, welfare vs failure, dynamic weight path, regime block weights, implementation cost, saver vs retiree, generator robustness | Portfolio Optimization › Dynamic Multi-Asset Allocation |
 

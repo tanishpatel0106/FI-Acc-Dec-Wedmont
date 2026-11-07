@@ -66,12 +66,12 @@ REASONS = ["none", "initial", "calendar", "band breach", "Browne 15/35 review br
            "utility gain > cost", "trade rejected (cost > gain)"]
 
 # integer parameter slots
-I_RETIRE, I_SPEND, I_TRADE, I_CADENCE, I_CHECK, I_CF, I_CASH, I_EDGE, I_REC, I_TRACE, I_K = range(11)
-N_IP = 11
+I_RETIRE, I_SPEND, I_TRADE, I_CADENCE, I_CHECK, I_CF, I_CASH, I_EDGE, I_REC, I_TRACE, I_K, I_T0 = range(12)
+N_IP = 12   # I_T0: global month offset of local month 0 (sequential execution; 0 for whole-horizon runs)
 # float parameter slots
 (F_W0, F_RATE, F_SAVE, F_GUP, F_GLO, F_GSTEP, F_ABS, F_REL, F_FLOOR, F_CEIL, F_COMM, F_SPREAD, F_SLIP,
- F_SLIPSCALE, F_RESERVE, F_GAMMA, F_ETA, F_KSHIFT, F_SCALE, F_UFLOOR, F_WREF, F_Q, F_RISK, F_REVIEW) = range(24)
-N_FP = 24
+ F_SLIPSCALE, F_RESERVE, F_GAMMA, F_ETA, F_KSHIFT, F_SCALE, F_UFLOOR, F_WREF, F_Q, F_RISK, F_REVIEW, F_SPEND0) = range(25)
+N_FP = 25   # F_SPEND0: annual spending level carried in from a previous sequential call (0 = not yet set)
 
 
 @njit(cache=True)
@@ -88,7 +88,7 @@ def _trade_cost(dollars, comm, spread, slip, slip_scale):
 
 
 @njit(cache=True)
-def _path(j, R, dec_regime, labor, pension, wtgt_sched, defensive, cov, amort, ip, fp, disc, beq,
+def _path(j, R, dec_regime, labor, pension, wtgt_sched, defensive, cov, amort, ip, fp, disc, beq, h0, h_out, s_out,
           o_u, o_first, o_unmet, o_desired, o_funded, o_term, o_mdd, o_turn, o_ntr, o_cost, o_costc, o_costs,
           o_costl, o_flowturn, o_acc, o_rej, o_contrib,
           y_w, y_c, y_un, y_des, y_run, y_wts, y_turn,
@@ -121,7 +121,8 @@ def _path(j, R, dec_regime, labor, pension, wtgt_sched, defensive, cov, amort, i
     tr = np.zeros(A)
     sell = np.zeros(A)
     W = fp[F_W0]
-    spend = 0.0
+    spend = fp[F_SPEND0]
+    t0 = ip[I_T0]
     first = -1
     unmet_tot = 0.0
     des_tot = 0.0
@@ -142,6 +143,7 @@ def _path(j, R, dec_regime, labor, pension, wtgt_sched, defensive, cov, amort, i
     mdd = 0.0
     started = False
     for t in range(T):
+        g = t + t0          # global month: retirement, calendar and review timing use it; arrays use t
         yr = t // 12
         y = labor[j, t]
         p = pension[j, t]
@@ -153,10 +155,13 @@ def _path(j, R, dec_regime, labor, pension, wtgt_sched, defensive, cov, amort, i
         for a in range(A):
             tgt[a] = wtgt_sched[t, k, a]
         if not started:
+            h0s = 0.0
             for a in range(A):
-                h[a] = tgt[a] * W
+                h0s += h0[j, a]
+            for a in range(A):
+                h[a] = h0[j, a] if h0s > 0.0 else tgt[a] * W
             started = True
-            if trace:
+            if trace and h0s == 0.0:
                 t_reason[t] = RS_INITIAL
         W = 0.0
         for a in range(A):
@@ -175,9 +180,9 @@ def _path(j, R, dec_regime, labor, pension, wtgt_sched, defensive, cov, amort, i
             else:
                 contrib = -f
             cons_other = y + p
-        elif t >= retire_m:
-            ms = t - retire_m
-            if ms == 0:
+        elif g >= retire_m:
+            ms = g - retire_m
+            if spend == 0.0 and (ms == 0 or (t == 0 and t0 > 0)):
                 if spend_mode == SP_AMORTIZED:
                     spend = amort[t] * W
                 else:
@@ -315,7 +320,7 @@ def _path(j, R, dec_regime, labor, pension, wtgt_sched, defensive, cov, amort, i
                     t_cost[t] += c
 
         # ---- reserve-adjusted target (cash buffer of reserve_years of desired draws) -------
-        if fp[F_RESERVE] > 0.0 and cash >= 0 and W > 0.0 and t >= retire_m:
+        if fp[F_RESERVE] > 0.0 and cash >= 0 and W > 0.0 and g >= retire_m:
             res = fp[F_RESERVE] * spend
             rs = min(res / W, 1.0)
             for a in range(A):
@@ -330,27 +335,27 @@ def _path(j, R, dec_regime, labor, pension, wtgt_sched, defensive, cov, amort, i
                 t_pre[t, a] = w[a]
                 t_tgt[t, a] = tgt[a]
         reason = RS_NONE
-        if W > 0.0 and t > 0:
+        if W > 0.0 and g > 0:
             if trade_mode == TR_CALENDAR:
-                if t % cadence == 0:
+                if g % cadence == 0:
                     reason = RS_CALENDAR
             elif trade_mode == TR_ABS_BAND:
-                if t % check == 0:
+                if g % check == 0:
                     for a in range(A):
                         if abs(w[a] - tgt[a]) > fp[F_ABS] + 1e-12:
                             reason = RS_BAND
             elif trade_mode == TR_REL_BAND:
-                if t % check == 0:
+                if g % check == 0:
                     for a in range(A):
                         if tgt[a] > 0.0 and abs(w[a] - tgt[a]) > fp[F_REL] * tgt[a] + 1e-12:
                             reason = RS_BAND
             elif trade_mode == TR_BROWNE:
-                if t % check == 0:
+                if g % check == 0:
                     for a in range(A):
                         if tgt[a] > 0.0 and (w[a] < fp[F_FLOOR] - 1e-12 or w[a] > fp[F_CEIL] + 1e-12):
                             reason = RS_BROWNE
             elif trade_mode == TR_RISK_BAND or trade_mode == TR_UTILITY:
-                if t % check == 0:
+                if g % check == 0:
                     vw = 0.0
                     vt = 0.0
                     vd = 0.0
@@ -467,6 +472,9 @@ def _path(j, R, dec_regime, labor, pension, wtgt_sched, defensive, cov, amort, i
         W = Wn
     if rec == 1 and n_years < y_w.shape[1]:
         y_w[j, n_years] = W
+    for a in range(A):
+        h_out[j, a] = h[a]
+    s_out[j] = spend
     o_u[j] = util
     o_first[j] = first
     o_unmet[j] = unmet_tot
@@ -487,14 +495,14 @@ def _path(j, R, dec_regime, labor, pension, wtgt_sched, defensive, cov, amort, i
 
 
 @njit(parallel=True, cache=True)
-def _kernel(R, dec_regime, labor, pension, wtgt_sched, defensive, cov, amort, ip, fp, disc, beq,
+def _kernel(R, dec_regime, labor, pension, wtgt_sched, defensive, cov, amort, ip, fp, disc, beq, h0, h_out, s_out,
             o_u, o_first, o_unmet, o_desired, o_funded, o_term, o_mdd, o_turn, o_ntr, o_cost, o_costc, o_costs,
             o_costl, o_flowturn, o_acc, o_rej, o_contrib,
             y_w, y_c, y_un, y_des, y_run, y_wts, y_turn,
             t_pre, t_post, t_tgt, t_trade, t_cost, t_flow, t_reason, t_wealth):
     N = R.shape[0]
     for j in prange(N):
-        _path(j, R, dec_regime, labor, pension, wtgt_sched, defensive, cov, amort, ip, fp, disc, beq,
+        _path(j, R, dec_regime, labor, pension, wtgt_sched, defensive, cov, amort, ip, fp, disc, beq, h0, h_out, s_out,
               o_u, o_first, o_unmet, o_desired, o_funded, o_term, o_mdd, o_turn, o_ntr, o_cost, o_costc, o_costs,
               o_costl, o_flowturn, o_acc, o_rej, o_contrib,
               y_w, y_c, y_un, y_des, y_run, y_wts, y_turn,
@@ -548,6 +556,11 @@ class LedgerConfig:
     guard_step: float = 0.1
     record_years: bool = True
     trace_path: int = -1
+    # sequential execution (historical replay): start from these dollar holdings at global month t0,
+    # carrying the annual spending level. Defaults reproduce whole-horizon runs exactly.
+    h0: NDArray[np.float64] | None = None    # (N, A) starting holdings; None -> invest w0 at the first target
+    t0: int = 0
+    spend0: float = 0.0
 
 
 @dataclass
@@ -578,6 +591,8 @@ class LedgerOutput:
     turnover_y: NDArray[np.float64]
     sum_disc: float
     trace: dict[str, NDArray[np.float64]] = field(default_factory=dict)
+    holdings_end: NDArray[np.float64] | None = None   # (N, A) dollar holdings after the last month's returns
+    spend_end: NDArray[np.float64] | None = None      # (N,) annual spending level after the last month
 
 
 def simulate(R: NDArray[np.float64], dec_regime: NDArray[np.int64], labor: NDArray[np.float64],
@@ -600,6 +615,7 @@ def simulate(R: NDArray[np.float64], dec_regime: NDArray[np.int64], labor: NDArr
     ip[I_EDGE] = 1 if tr.to_band_edge else 0
     ip[I_REC] = 1 if cfg.record_years else 0
     ip[I_TRACE] = cfg.trace_path
+    ip[I_T0] = cfg.t0
     fp = np.zeros(N_FP)
     fp[F_W0] = cfg.w0
     fp[F_RATE] = cfg.rate
@@ -625,6 +641,7 @@ def simulate(R: NDArray[np.float64], dec_regime: NDArray[np.int64], labor: NDArr
     fp[F_Q] = cfg.q_signed
     fp[F_RISK] = tr.risk_threshold
     fp[F_REVIEW] = tr.review_months
+    fp[F_SPEND0] = cfg.spend0
     if tr.reserve_years > 0 and cfg.cash_index < 0:
         raise ValueError("a cash reserve needs a cash sleeve in the universe")
     if tr.funding == "cash_first" and cfg.cash_index < 0:
@@ -640,6 +657,11 @@ def simulate(R: NDArray[np.float64], dec_regime: NDArray[np.int64], labor: NDArr
              turn=f(N), ntr=np.zeros(N, dtype=np.int64), cost=f(N), costc=f(N), costs=f(N), costl=f(N),
              flowturn=f(N), acc=np.zeros(N, dtype=np.int64), rej=np.zeros(N, dtype=np.int64), contrib=f(N))
     yy = dict(w=f(Nr, Y + 1), c=f(Nr, Y), un=f(Nr, Y), des=f(Nr, Y), run=f(Nr, Y), wts=f(Nr, Y, A), turn=f(Nr, Y))
+    h0 = np.zeros((N, A)) if cfg.h0 is None else np.ascontiguousarray(cfg.h0, dtype=np.float64)
+    if h0.shape != (N, A) or np.any(h0 < 0):
+        raise ValueError("h0 must be non-negative dollar holdings of shape (N, A)")
+    h_out = np.zeros((N, A))
+    s_out = np.zeros(N)
     tt = dict(pre=f(Tt, A), post=f(Tt, A), tgt=f(Tt, A), trade=f(Tt, A), cost=f(Tt), flow=f(Tt, 4),
               reason=np.zeros(Tt, dtype=np.int64), wealth=f(Tt))
     _kernel(np.ascontiguousarray(R, dtype=np.float64), np.ascontiguousarray(dec_regime[:, :T], dtype=np.int64),
@@ -647,6 +669,7 @@ def simulate(R: NDArray[np.float64], dec_regime: NDArray[np.int64], labor: NDArr
             sched, np.ascontiguousarray(defensive, dtype=np.float64), np.ascontiguousarray(cov, dtype=np.float64),
             np.ascontiguousarray(amort[:T], dtype=np.float64), ip, fp,
             np.ascontiguousarray(cfg.disc[:T], dtype=np.float64), np.ascontiguousarray(cfg.beq[:T], dtype=np.float64),
+            h0, h_out, s_out,
             o["u"], o["first"], o["unmet"], o["desired"], o["funded"], o["term"], o["mdd"], o["turn"], o["ntr"],
             o["cost"], o["costc"], o["costs"], o["costl"], o["flowturn"], o["acc"], o["rej"], o["contrib"],
             yy["w"], yy["c"], yy["un"], yy["des"], yy["run"], yy["wts"], yy["turn"],
@@ -655,7 +678,7 @@ def simulate(R: NDArray[np.float64], dec_regime: NDArray[np.int64], labor: NDArr
     return LedgerOutput(o["u"], o["first"], o["unmet"], o["desired"], o["funded"], o["contrib"], o["term"], o["mdd"],
                         o["turn"], o["ntr"], o["cost"], o["costc"], o["costs"], o["costl"], o["flowturn"], o["acc"],
                         o["rej"], yy["w"], yy["c"], yy["un"], yy["des"], yy["run"], yy["wts"], yy["turn"],
-                        float(np.sum(cfg.disc[:T])), trace)
+                        float(np.sum(cfg.disc[:T])), trace, h_out, s_out)
 
 
 def constant_schedule(w: NDArray[np.float64], months: int) -> NDArray[np.float64]:

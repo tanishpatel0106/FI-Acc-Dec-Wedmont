@@ -144,7 +144,7 @@
       "first_month": "1971-01-31",
       "last_month": "2026-10-31",
       "source": "https://fred.stlouisfed.org/ (H.10 daily spot DEX*, OECD call money IRSTCI01*M156N)",
-      "sha256": "e49659950f7d1a030d105ab21a34d01f4afd62b3a5bbeb7f30c554a72bd1f7be",
+      "sha256": "de30082d0a1d920bea49428d19631ad59310b0414c08aa4d735f11084d2a4d24",
       "pulled_at": "2026-11-07"
     }
   },

@@ -84,7 +84,7 @@ test("homepage application guide links every page and answers research questions
     const start = page.locator(`[data-nav-start="${q.id}"]`);
     await expect(start).toHaveAttribute("href", new RegExp("^" + PAGES.find((p) => p.key === q.start.page)!.path.replace(/[/]/g, "\\/")));
   }
-  await expect(page.getByTestId("journeys").locator("article")).toHaveCount(3);
+  await expect(page.getByTestId("journeys").locator("article")).toHaveCount(4);
   await page.locator('[data-guide-link="/permanent-portfolio"]').click();
   await expect(page).toHaveURL(/\/permanent-portfolio/);
 });
