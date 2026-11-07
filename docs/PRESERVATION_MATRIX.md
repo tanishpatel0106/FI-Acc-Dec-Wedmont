@@ -70,3 +70,16 @@ No scientific code was removed. v1 job kinds (`experiment`, `sweep`, `compare`, 
 `hypotheses`) and v2 study kinds share one registry. Each run now reports its accounting semantics
 (`target_weight_kernel` or `holdings_ledger`) via `GET /v1/runs`, and comparisons across the two
 families are flagged by `/v1/runs/compatibility`.
+
+## Verification results (2026-11-07, public snapshot, catalog f0ce88a6493ff732)
+
+| Check | Command | Result |
+|---|---|---|
+| Backend tests (incl. context specs vs strict models, unified run registry, semantics) | `make test-backend` | 67 passed |
+| Type-check, lint, unit tests (registry coverage: 184 entries, none orphaned or incomplete) | `make test-web` | tsc clean · eslint 0 errors (1 pre-existing warning in InvestorForm) · 200 passed |
+| Production build | `cd web && npx next build` | 13 routes, success |
+| End-to-end (13 routes, grouped nav, no generation labels, info panels by keyboard/Escape, deep links, redirects, theme, export, no auto-launch, every registered visualization reachable, six workflows) | `cd web && npx playwright test --trace off` (API on :8000 with the nine seeded studies) | 26 passed |
+
+Action-gated visualizations (simulator results, saved-run comparison, run validation, sweep attribution,
+grid DP, policy family, CE sweeps) render a "Not computed" frame with the information button until the user
+runs them; no original-engine experiments or sweeps exist in the local registry at the time of this check.
