@@ -392,5 +392,59 @@
       "n_paths": 500,
       "seed": 20261030
     }
+  },
+  "multi_asset:default": {
+    "data": {
+      "universe": "multi_asset_public"
+    },
+    "scenario": {
+      "generator": "bootstrap",
+      "n_paths": 2000,
+      "seed": 20261030
+    },
+    "investor": {
+      "age": 65,
+      "retirement_age": 65,
+      "horizon_years": 30,
+      "initial_wealth": 1000000,
+      "mortality": true,
+      "sex": "unisex"
+    },
+    "preferences": {
+      "gamma": 4,
+      "beta_annual": 0.97
+    },
+    "costs": {
+      "commission_bps": 0,
+      "half_spread_bps": 0
+    },
+    "withdrawal": 0.04
+  },
+  "multi_asset:stress": {
+    "data": {
+      "universe": "multi_asset_public"
+    },
+    "scenario": {
+      "generator": "student_t",
+      "n_paths": 500,
+      "seed": 20261030
+    },
+    "investor": {
+      "age": 60,
+      "retirement_age": 60,
+      "horizon_years": 35,
+      "initial_wealth": 1000000,
+      "mortality": true,
+      "sex": "unisex"
+    },
+    "preferences": {
+      "gamma": 8,
+      "beta_annual": 0.97
+    },
+    "costs": {
+      "commission_bps": 4,
+      "half_spread_bps": 6
+    },
+    "withdrawal": 0.06
   }
 }

@@ -136,6 +136,47 @@ comparisons, validations, attributions) and from the holdings ledger (research s
 reports `semantics` (`GET /v1/runs`, `/v1/runs/{id}/inspect`), and `/v1/runs/compatibility` refuses to pair
 runs from different engines.
 
+## 4b. Multi-asset Permanent Portfolio and dynamic allocation
+
+**Study `multi_asset`** (`backend/lifecycle/studies/multi_asset.py`; pages: Permanent Portfolio › Multi-Asset
+All-Weather, Portfolio Optimization › Dynamic Multi-Asset Allocation; charts MA-01…MA-10).
+
+| Tier | Universe | Sleeves | Window | Source |
+|---|---|---|---|---|
+| Public | `multi_asset_public` | US / developed ex-US / EM equity, 10Y and 30Y Treasury, IG credit, G10 currency basket, T-bills | 1990-09 → latest | Ken French, FRED (Treasury and credit repriced from yields), FRED H.10 + OECD call money |
+| Full | `multi_asset_full` | public tier + TIPS, high yield (HYG), gold (GLD), broad commodities (DBC) | from ~2007 (youngest fund) | adds WRDS CRSP fund returns (`make ingest-wrds`) |
+
+The tiers are never spliced: the full tier refuses to build until every WRDS sleeve exists.
+
+**Currencies** (`backend/lifecycle/data/ingest_fx.py`): an equal-weight basket of GBP, JPY, CAD and AUD
+overnight deposits for a USD investor, r = S<sub>t</sub>/S<sub>t−1</sub>·(1 + i<sub>t−1</sub>/12) − 1, with H.10
+month-end spot and one rate definition (OECD call money) for every currency. CHF is excluded because its rate
+series stops in 2024 (no splice). Added to the committed snapshot with `python -m lifecycle.cli snapshot --only fx`.
+
+**Building blocks**: growth (equity), duration (Treasuries, TIPS), credit (IG, HY), real & currency (gold,
+commodities, currencies), cash; sleeves inside a block are inverse-volatility weighted on the calibration window.
+
+**Policy families** (long-only, no leverage, holdings ledger, costs on executed notional):
+
+- **Static:** 60/40 benchmark; equal weight; multi-asset Permanent Portfolio (25% each to growth, duration, real & currency, cash); static risk parity (equal risk contribution).
+- **Regime:** block weights per point-in-time regime (filtered, lagged Markov signal), fitted on training paths.
+- **Trend:** 12-month time-series momentum; a sleeve with negative trailing excess return moves to cash.
+- **Risk:** inverse trailing volatility; volatility targeting of the risk-parity mix (8%, remainder in cash).
+- **Utility:** CRRA-optimal static block mix and a CRRA parametric policy (trend and volatility tilts), fitted on seed set A and scored on seed set B.
+
+Dynamic policies give each path its own weight schedule (the ledger's state index is the path). Signals use
+returns through t−1; the first months use the last observed calibration months. Investors: a retiree (4% real
+draw, 30 years) and a saver (contributions from 35, then draws); robustness re-evaluates the frozen policies
+under the bootstrap generator.
+
+**Current public-tier run** (`866430c843f4e384d63e`, Markov-switching, 2,000 test paths; ΔCE vs 60/40, 95% CI):
+CRRA static +14% (+3% to +24%) and CRRA parametric +13% (+2% to +23%) — both concentrated in investment-grade
+credit, which the public tier reprices from the Aaa yield **without default losses**, so treat this as an
+upper bound until WRDS credit returns replace it. Regime-based +5.5% (−5% to +17%, not significant). Equal
+weight, risk parity, inverse volatility, volatility targeting, the multi-asset Permanent Portfolio and trend
+following all lose to 60/40 for the retiree (intervals below zero); every policy loses to 60/40 for the saver.
+The fitted trend/volatility tilts are zero. Directions hold under the bootstrap generator.
+
 ## 5. What the current public-data runs show (catalog `f0ce88a6493ff732`, 2026-11-07)
 
 These come from the default studies on the committed public snapshot (US data 1953–2026; Treasury

@@ -20,12 +20,19 @@ shared research context, and an information button on every visualization that e
 how to read it, how it is calculated, why it matters, its assumptions/limitations and its live provenance
 (registry: `web/lib/research/visualization-registry.ts`; coverage enforced by `make test-web`).
 
+### Multi-asset allocation
+
+The Permanent Portfolio idea and dynamic asset allocation across equity, rates, credit, currencies,
+commodities and cash: two data tiers (public from 1990; full with WRDS gold, commodities and high yield),
+ten policies in five families (static, regime, trend, risk-based, utility-optimal), fitted on training
+paths and scored out of sample for a retiree and a saver. See `docs/APP_GUIDE.md` §4b.
+
 ### Engine and studies
 
 v2 adds a holdings-ledger engine (desired / funded / unmet spending, signed planned net flows, trading
 policies with executed-notional costs, point-in-time regime signals), nine hashed research studies
 (bond-necessity frontier, signed-flow surface, Permanent Portfolio, rebalancing, scenarios & stress, as-of
-conditioning, multi-objective optimisation, policy comparison, H1–H12 evidence) and the original target-weight engine (simulator, policy family, CE sweeps, grid DP) — **184 registered
+conditioning, multi-objective optimisation, policy comparison, H1–H12 evidence) and the original target-weight engine (simulator, policy family, CE sweeps, grid DP) — **194 registered
 visualizations**, each tied to a run ID.
 
 - **Setup guide:** [`docs/SETUP.md`](docs/SETUP.md)

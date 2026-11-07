@@ -8,10 +8,10 @@ from lifecycle.data.normalize import build_panel, write_raw
 
 def run_public() -> None:
     """Pull every public source concurrently; a failing source is reported and the rest continue."""
-    from lifecycle.data import ingest_acm, ingest_fred, ingest_french, ingest_gsw, ingest_ssa
+    from lifecycle.data import ingest_acm, ingest_fred, ingest_french, ingest_fx, ingest_gsw, ingest_ssa
 
     steps = [("french", ingest_french.pull_french), ("fred", ingest_fred.pull_fred),
-             ("gsw", ingest_gsw.pull_gsw), ("acm", ingest_acm.pull_acm)]
+             ("gsw", ingest_gsw.pull_gsw), ("acm", ingest_acm.pull_acm), ("fx", ingest_fx.pull_fx)]
 
     def one(name, fn):
         t0 = time.time()

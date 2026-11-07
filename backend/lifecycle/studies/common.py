@@ -181,7 +181,9 @@ def run(ctx: Context, sched: NDArray[np.float64], tr: ledger.TradingSpec, *, spe
         rate: float = 0.04, q: float = 0.0, w_ref: float | None = None, record: bool = False, trace: int = -1,
         cov: NDArray[np.float64] | None = None, gamma: float | None = None, util_floor: float = 3000.0,
         zero_income: bool = False, defensive: NDArray[np.float64] | None = None,
-        tensor: ScenarioTensor | None = None) -> ledger.LedgerOutput:
+        tensor: ScenarioTensor | None = None, state: NDArray[np.int64] | None = None) -> ledger.LedgerOutput:
+    """Run the holdings ledger. `state` (N, T) overrides the decision regime as the index into the schedule's
+    second axis; passing state[j, t] = j with a (T, N, A) schedule gives every path its own target weights."""
     ten = tensor if tensor is not None else ctx.tensor
     assets = ten.assets
     T = ten.n_months
@@ -205,7 +207,8 @@ def run(ctx: Context, sched: NDArray[np.float64], tr: ledger.TradingSpec, *, spe
         gamma=ctx.prefs.gamma if gamma is None else gamma, w_ref=w_ref if w_ref is not None else inv.initial_wealth,
         q_signed=q, util_floor_monthly=util_floor / 12.0, defensive=defensive, cash_index=cash, cov=cov,
         record_years=record, trace_path=trace)
-    return ledger.simulate(ten.real_returns, ten.decision_regime(), labor, pension, cfg)
+    dec = ten.decision_regime() if state is None else state
+    return ledger.simulate(ten.real_returns, dec, labor, pension, cfg)
 
 
 def weights_vector(weights: dict[str, float], assets: tuple[str, ...]) -> NDArray[np.float64]:

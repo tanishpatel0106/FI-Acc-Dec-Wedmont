@@ -23,7 +23,12 @@ def cmd_ingest(args: argparse.Namespace) -> None:
 
 
 def cmd_snapshot(args: argparse.Namespace) -> None:
-    from lifecycle.data.snapshot import create_snapshot
+    from lifecycle.data.snapshot import add_source, create_snapshot
+
+    if getattr(args, "only", None):
+        info = add_source(args.only)
+        print("snapshot source", args.only, "updated:", info["rows"], "rows", info["first_month"], "->", info["last_month"])
+        return
 
     m = create_snapshot()
     print("snapshot written for vintage", m["vintage"])
@@ -203,7 +208,9 @@ def main() -> None:
     p.add_argument("--wrds", action="store_true", help="also pull WRDS (needs WRDS_USERNAME / Duo approval)")
     p.add_argument("--offline", action="store_true", help="use the committed public snapshot instead of downloading")
     p.set_defaults(fn=cmd_ingest)
-    sub.add_parser("snapshot", help="refresh snapshots/public from the live sources").set_defaults(fn=cmd_snapshot)
+    p = sub.add_parser("snapshot", help="refresh snapshots/public from the live sources")
+    p.add_argument("--only", choices=["fx"], help="add/refresh one source without touching the others")
+    p.set_defaults(fn=cmd_snapshot)
     sub.add_parser("build-panel").set_defaults(fn=cmd_build)
     p = sub.add_parser("seed")
     p.add_argument("--full", action="store_true")

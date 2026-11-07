@@ -5,7 +5,8 @@ import { create } from "zustand";
  * Shared research context: one set of investor, scenario, policy and market assumptions used by the
  * lifecycle simulator, the optimiser and (through studySpecFromContext) every research study.
  */
-export type UniverseKey = "core" | "modern" | "core_long_history" | "core_duration" | "pp_modern_etf" | "pp_research_historical" | "liability_match";
+export type UniverseKey = "core" | "modern" | "core_long_history" | "core_duration" | "pp_modern_etf" | "pp_research_historical" | "liability_match"
+  | "multi_asset_public" | "multi_asset_full";
 
 export interface BuilderState {
   universe: UniverseKey;

@@ -123,6 +123,29 @@
       "source": "ssa:oact.table4c6",
       "provenance": "observed",
       "sha256": "2460610d180f1ef8e96e10e628d7f041c5c1b14c70297ddca3af46935a6897d3"
+    },
+    "fx": {
+      "rows": 7384,
+      "series": [
+        "fx_aud",
+        "fx_basket",
+        "fx_cad",
+        "fx_gbp",
+        "fx_jpy",
+        "fxs_aud",
+        "fxs_cad",
+        "fxs_gbp",
+        "fxs_jpy",
+        "y_cm_aud",
+        "y_cm_cad",
+        "y_cm_gbp",
+        "y_cm_jpy"
+      ],
+      "first_month": "1971-01-31",
+      "last_month": "2026-10-31",
+      "source": "https://fred.stlouisfed.org/ (H.10 daily spot DEX*, OECD call money IRSTCI01*M156N)",
+      "sha256": "e49659950f7d1a030d105ab21a34d01f4afd62b3a5bbeb7f30c554a72bd1f7be",
+      "pulled_at": "2026-11-07"
     }
   },
   "note": "public sources only; WRDS data is never committed"

@@ -36,7 +36,17 @@ _add(SeriesDef("ust_20y", "Treasury 20Y", "rates", "total_return", "decimal/mont
 _add(SeriesDef("ust_30y", "Treasury 30Y", "rates", "total_return", "decimal/month", defensive=True))
 _add(SeriesDef("tips", "TIPS", "rates", "total_return", "decimal/month", defensive=True))
 _add(SeriesDef("ig_credit", "Investment-grade credit", "credit", "total_return", "decimal/month"))
-_add(SeriesDef("hy_credit", "High-yield credit", "credit", "total_return", "decimal/month"))
+_add(SeriesDef("hy_credit", "High-yield credit (observed fund total return, e.g. HYG via WRDS CRSP)", "credit",
+               "total_return", "decimal/month"))
+_add(SeriesDef("commodities", "Broad commodities (observed fund total return, e.g. DBC via WRDS CRSP)", "commodities",
+               "total_return", "decimal/month"))
+_add(SeriesDef("fx_basket", "Currencies: equal-weight GBP/JPY/CAD/AUD deposits for a USD investor", "currency",
+               "total_return", "decimal/month"))
+for _c in ["gbp", "jpy", "cad", "aud"]:
+    _add(SeriesDef("fx_" + _c, _c.upper() + " overnight deposit (USD investor)", "currency", "total_return", "decimal/month"))
+    _add(SeriesDef("fxs_" + _c, "USD per " + _c.upper() + " (month-end spot)", "state", "index_level", "level",
+                   investable=False))
+    _add(SeriesDef("y_cm_" + _c, _c.upper() + " call-money rate", "state", "yield", "decimal/year", investable=False))
 _add(SeriesDef("cpi_nsa", "CPI-U NSA inflation", "inflation", "rate", "decimal/month", investable=False))
 _add(SeriesDef("cpi_sa", "CPI-U SA inflation", "inflation", "rate", "decimal/month", investable=False))
 
@@ -93,6 +103,18 @@ UNIVERSES: dict[str, UniverseDef] = {
     "liability_match": UniverseDef(
         "liability_match", "Liability matching (equity, cash, TIPS, 2/5/10Y Treasuries)",
         required=("us_eq", "tbill", "tips", "ust_2y", "ust_5y", "ust_10y"),
+    ),
+    # multi-asset tiers: the public tier has long history; the full tier adds WRDS-only sleeves (gold,
+    # commodities, high yield) and therefore starts when the youngest fund starts. They are never spliced.
+    "multi_asset_public": UniverseDef(
+        "multi_asset_public", "Multi-asset, public tier (US/intl/EM equity, 10Y and 30Y Treasury, IG credit, "
+                              "currencies, T-bills)",
+        required=("us_eq", "intl_eq", "em_eq", "ust_10y", "ust_30y", "ig_credit", "fx_basket", "tbill"),
+    ),
+    "multi_asset_full": UniverseDef(
+        "multi_asset_full", "Multi-asset, full tier (public tier + TIPS, high yield, gold, commodities; WRDS)",
+        required=("us_eq", "intl_eq", "em_eq", "ust_10y", "ust_30y", "tips", "ig_credit", "hy_credit", "gold",
+                  "commodities", "fx_basket", "tbill"),
     ),
     "core": UniverseDef(
         "core", "Long-history core",

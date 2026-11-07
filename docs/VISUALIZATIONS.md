@@ -31,6 +31,8 @@ matches the information panels. Deep link: `<route>?section=<section>#<VIZ-ID>`.
 | RS-12 … RS-18 | Run validation: convergence, parameter, model, sequence, windows, tails, cohort replay | Research › Validation |
 | RN-11 | Run history timeline | Runs › Registry |
 | MT-08 | Mathematical notes | Methodology › Mathematics |
+| MA-01 … MA-03 | Asset-class coverage by tier, static multi-asset designs, static designs vs 60/40 | Permanent Portfolio › Multi-Asset All-Weather |
+| MA-04 … MA-10 | Policy-family ΔCE, welfare vs failure, dynamic weight path, regime block weights, implementation cost, saver vs retiree, generator robustness | Portfolio Optimization › Dynamic Multi-Asset Allocation |
 
 ## Catalog visualizations
 

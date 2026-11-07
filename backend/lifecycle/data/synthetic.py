@@ -46,6 +46,13 @@ def synthetic_panel(seed: int = 7, start: str = "1926-01-31", months: int = 1200
         for m in range(2, 21):
             y = level[t] - 0.02 + 0.006 * (1 - np.exp(-m / 5.0))
             rows.append((idx[t], "gsw_real_%02d" % m, float(y), "yield", "model_generated", "synthetic:gsw_real"))
+    # extra sleeves drawn from a separate stream so the original fixture series stay bit-identical
+    rng2 = np.random.default_rng(seed + 101)
+    for sid, (mu, vol, load) in {"fx_basket": (0.03, 0.07, 0.4), "commodities": (0.04, 0.18, 0.3)}.items():
+        z = load * common + np.sqrt(1 - load ** 2) * rng2.normal(0, 1, months)
+        r = mu / 12 + vol / np.sqrt(12) * z
+        for t in range(936, months):
+            rows.append((idx[t], sid, float(r[t]), "total_return", "model_generated", "synthetic:" + sid))
     frame = pd.DataFrame(rows, columns=["month_end", "series_id", "value", "quantity", "provenance", "source"])
     frame["vintage"] = pd.Timestamp("2026-01-01")
     frame["available_from"] = frame["month_end"]

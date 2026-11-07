@@ -11,6 +11,7 @@ def _load() -> dict[str, dict[str, Any]]:
         compare_v2,
         evidence,
         frontier,
+        multi_asset,
         optimize_v2,
         permanent,
         rebalance,
@@ -35,6 +36,8 @@ def _load() -> dict[str, dict[str, Any]]:
                      "experiments": "E07, E30, E33-E34", "figure": None},
         "compare_v2": {"spec": compare_v2.CompareV2Spec, "run": compare_v2.run_compare_v2, "page": "/compare",
                        "experiments": "E24, E26, E36", "figure": "F6"},
+        "multi_asset": {"spec": multi_asset.MultiAssetSpec, "run": multi_asset.run_multi_asset,
+                        "page": "/optimize?section=multi-asset", "experiments": "E37-E40", "figure": None},
         "evidence": {"spec": evidence.EvidenceSpec, "run": evidence.run_evidence, "page": "/research",
                      "experiments": "E28, H1-H12", "figure": "F6"},
     }

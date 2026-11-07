@@ -3,6 +3,7 @@ import { useState } from "react";
 import { DPPanel, PolicyFamily } from "@/components/research/optimize/PolicyFamily";
 import { SweepAttribution } from "@/components/research/compare/SavedRunAnalytics";
 import { ResearchPage, Sec } from "@/components/research/page";
+import { DynamicMultiAsset } from "@/components/research/multi-asset/MultiAsset";
 import { ContextBar, DataTable, Grid, Kpi, Seg, StudyGate, Viz, Warnings, dataClassOf } from "@/components/research/kit";
 import { Bars, Forest, Heat, Histo, Lines, Scatter, pct, spct, usd } from "@/components/visualizations/charts";
 import { useStudyLatest } from "@/lib/api/v2";
@@ -103,6 +104,7 @@ export function Optimize() {
       <Sec id={STUDY_SECTIONS}>
         <StudyGate kind="optimize" title="Multi-objective study">{(env) => <Body env={env} />}</StudyGate>
       </Sec>
+      <Sec id="multi-asset"><DynamicMultiAsset /></Sec>
       <Sec id="attribution"><SweepAttribution /></Sec>
       <Sec id="policy-family"><PolicyFamily /></Sec>
       <Sec id="dynamic">

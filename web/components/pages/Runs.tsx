@@ -9,7 +9,7 @@ import { API_BASE, apiPost, eventsUrl, reportUrl } from "@/lib/api/client";
 import { exportUrl, useV2 } from "@/lib/api/v2";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
-const STUDY_KINDS = ["frontier", "signed_flow", "permanent", "rebalance", "scenario_lab", "asof", "optimize", "compare_v2", "evidence"];
+const STUDY_KINDS = ["frontier", "signed_flow", "permanent", "rebalance", "scenario_lab", "asof", "optimize", "compare_v2", "evidence", "multi_asset"];
 const STAGES = ["queued", "generating_scenarios", "simulating", "optimising", "uncertainty", "robustness", "summarising", "done"];
 
 function LiveProgress({ runId, kind, spec }: { runId: string; kind: string; spec: any }) {

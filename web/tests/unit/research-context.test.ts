@@ -9,7 +9,7 @@ import { DEFAULTS, type ResearchContext } from "@/lib/store";
 import { studySpecFromContext } from "@/lib/research/context";
 import type { StudyKind } from "@/lib/api/v2";
 
-const KINDS: StudyKind[] = ["frontier", "signed_flow", "permanent", "rebalance", "scenario_lab", "asof", "optimize", "compare_v2", "evidence"];
+const KINDS: StudyKind[] = ["frontier", "signed_flow", "permanent", "rebalance", "scenario_lab", "asof", "optimize", "compare_v2", "evidence", "multi_asset"];
 const base = { ...DEFAULTS } as ResearchContext;
 const stress: ResearchContext = { ...base, universe: "pp_modern_etf", generator: "student_t", nPaths: 500, gamma: 8, withdrawalRate: 0.06,
   horizonYears: 35, costBps: 10, asOf: "2008-09-30", comparePolicies: "sixty_forty,pp_ex_gold", compareFocus: "pp_ex_gold", retirementAge: 60 };
@@ -19,7 +19,7 @@ describe("studySpecFromContext", () => {
     for (const k of KINDS) {
       const { spec, notes } = studySpecFromContext(k, stress);
       expect(spec, k).toBeTypeOf("object");
-      if (["frontier", "signed_flow", "rebalance", "scenario_lab", "asof", "optimize", "compare_v2"].includes(k)) {
+      if (["frontier", "signed_flow", "rebalance", "scenario_lab", "asof", "optimize", "compare_v2", "multi_asset"].includes(k)) {
         expect(notes.join(" "), k).toMatch(/not usable by this study/);
       }
     }

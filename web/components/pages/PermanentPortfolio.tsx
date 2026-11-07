@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ResearchPage, Sec } from "@/components/research/page";
+import { MultiAssetAllWeather } from "@/components/research/multi-asset/MultiAsset";
 import { useResearchContext } from "@/lib/store";
 import { ContextBar, DataTable, Empty, Grid, Kpi, Seg, StudyGate, Viz, Warnings, dataClassOf } from "@/components/research/kit";
 import { Bars, Forest, Heat, Lines, Scatter, Ternary, ci, pct, spct, useAssetColor, usd } from "@/components/visualizations/charts";
@@ -226,10 +227,13 @@ function CompareWith6040({ score, benchmark }: { score: any[]; benchmark: string
 export function PermanentPortfolio() {
   return (
     <ResearchPage page="permanent" intro="Classic Browne 25/25/25/25 (stocks, long Treasuries, gold, T-bills) with the annual 15/35 review, against 60/40, best static, duration and TIPS variants, ablations and regime-adaptive and robust versions — on one shared, matched sample.">
-      <GoldStatus />
-      <StudyGate kind="permanent" title="Permanent Portfolio study" description="Default universe pp_modern_etf needs an observed gold series (WRDS GLD). Without WRDS, edit the spec to universe core_duration for the gold-free ablations.">
-        {(env) => <Body env={env} />}
-      </StudyGate>
+      <Sec id={["overview", "conditional", "composition", "history"]}>
+        <GoldStatus />
+        <StudyGate kind="permanent" title="Permanent Portfolio study" description="Default universe pp_modern_etf needs an observed gold series (WRDS GLD). Without WRDS, edit the spec to universe core_duration for the gold-free ablations.">
+          {(env) => <Body env={env} />}
+        </StudyGate>
+      </Sec>
+      <Sec id="multi-asset"><MultiAssetAllWeather /></Sec>
     </ResearchPage>
   );
 }

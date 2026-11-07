@@ -45,6 +45,10 @@ export function studySpecFromContext(kind: StudyKind, c: ResearchContext): Conte
     case "compare_v2":
       return { spec: { data: { universe: uni(["core_duration"], "core_duration") }, scenario, investor, preferences: prefs, costs, withdrawal: c.withdrawalRate,
         policies: c.comparePolicies.split(",").filter(Boolean), focus: c.compareFocus }, notes };
+    case "multi_asset":
+      return { spec: { data: { universe: uni(["multi_asset_public", "multi_asset_full"], "multi_asset_public") },
+        scenario: { ...scenario, generator: c.generator === "markov_switching" || c.generator === "bootstrap" || c.generator === "student_t" ? c.generator : "markov_switching" },
+        investor, preferences: prefs, costs, withdrawal: c.withdrawalRate }, notes };
     case "evidence":
       return { spec: { scenario: { generator: "bootstrap", n_paths: c.nPaths, seed: c.seed } }, notes };
   }

@@ -4,7 +4,7 @@ import { API_BASE, apiGet, apiPost } from "./client";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export type StudyKind =
-  | "frontier" | "signed_flow" | "permanent" | "rebalance" | "scenario_lab" | "asof" | "optimize" | "compare_v2" | "evidence";
+  | "frontier" | "signed_flow" | "permanent" | "rebalance" | "scenario_lab" | "asof" | "optimize" | "compare_v2" | "evidence" | "multi_asset";
 
 export interface StudyEnvelope {
   status: "none" | "queued" | "running" | "done" | "failed" | "cancelled";
