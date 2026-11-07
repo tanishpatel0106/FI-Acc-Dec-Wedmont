@@ -1,8 +1,14 @@
 "use client";
 import { create } from "zustand";
 
+/**
+ * Shared research context: one set of investor, scenario, policy and market assumptions used by the
+ * lifecycle simulator, the optimiser and (through studySpecFromContext) every research study.
+ */
+export type UniverseKey = "core" | "modern" | "core_long_history" | "core_duration" | "pp_modern_etf" | "pp_research_historical" | "liability_match";
+
 export interface BuilderState {
-  universe: "core" | "modern";
+  universe: UniverseKey;
   generator: "historical" | "bootstrap" | "student_t" | "markov_switching" | "curve_factor";
   nPaths: number;
   seed: number;
@@ -25,6 +31,11 @@ export interface BuilderState {
   benchmark: "sixty_forty" | "target_date" | "best_constant" | "none";
   sex: "male" | "female" | "unisex";
   mortality: boolean;
+  horizonYears: number;
+  asOf: string;
+  comparePolicies: string;   // comma-separated policy keys carried into Strategy Comparison
+  compareFocus: string;
+  ppUniverse: UniverseKey;
   set: (patch: Partial<BuilderState>) => void;
 }
 
@@ -52,16 +63,26 @@ export const DEFAULTS = {
   benchmark: "sixty_forty" as const,
   sex: "unisex" as const,
   mortality: true,
+  horizonYears: 30,
+  asOf: "",
+  comparePolicies: "sixty_forty,all_equity,forty_sixty,pp_ex_gold,equity_cash_buffer,target_date",
+  compareFocus: "target_date",
+  ppUniverse: "pp_modern_etf" as UniverseKey,
 };
 
-export const useBuilder = create<BuilderState>((set) => ({
+export const useResearchContext = create<BuilderState>((set) => ({
   ...DEFAULTS,
   set: (patch) => set(patch),
 }));
 
+/** Back-compatible name used by the simulator and optimiser components. */
+export const useBuilder = useResearchContext;
+
+export type ResearchContext = Omit<BuilderState, "set">;
+
 export function specFromBuilder(s: Omit<BuilderState, "set">, policyOverride?: string) {
   return {
-    data: { universe: s.universe },
+    data: { universe: s.universe === "core_long_history" || s.universe === "core_duration" || s.universe === "liability_match" ? "core" : s.universe === "core" || s.universe === "modern" ? s.universe : "core" },
     scenario: { generator: s.generator, n_paths: s.nPaths, seed: s.seed, n_train_paths: Math.min(1000, s.nPaths) },
     investor: {
       start_age: s.startAge,

@@ -1,10 +1,10 @@
 import { Suspense } from "react";
-import { WithdrawalLabV2 } from "@/components/pages/v2/WithdrawalLabV2";
+import { WithdrawalLab } from "@/components/pages/WithdrawalLab";
 
 export default function Page() {
   return (
     <Suspense>
-      <WithdrawalLabV2 />
+      <WithdrawalLab />
     </Suspense>
   );
 }

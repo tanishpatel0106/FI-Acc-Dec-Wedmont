@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { MarketState } from "@/components/pages/v2/MarketState";
+import { MarketState } from "@/components/pages/MarketState";
 
 export default function Page() {
   return (

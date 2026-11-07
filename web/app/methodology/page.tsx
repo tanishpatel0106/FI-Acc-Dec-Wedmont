@@ -1,10 +1,10 @@
 import { Suspense } from "react";
-import { MethodologyV2 } from "@/components/pages/v2/MethodologyV2";
+import { Methodology } from "@/components/pages/Methodology";
 
 export default function Page() {
   return (
     <Suspense>
-      <MethodologyV2 />
+      <Methodology />
     </Suspense>
   );
 }

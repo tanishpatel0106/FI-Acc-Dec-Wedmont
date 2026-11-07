@@ -1,10 +1,10 @@
 import { Suspense } from "react";
-import { FixedIncomeV2 } from "@/components/pages/v2/FixedIncomeV2";
+import { FixedIncome } from "@/components/pages/FixedIncome";
 
 export default function Page() {
   return (
     <Suspense>
-      <FixedIncomeV2 />
+      <FixedIncome />
     </Suspense>
   );
 }

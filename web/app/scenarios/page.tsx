@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { Scenarios } from "@/components/pages/v2/Scenarios";
+import { Scenarios } from "@/components/pages/Scenarios";
 
 export default function Page() {
   return (
