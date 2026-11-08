@@ -6,6 +6,7 @@ import type { VizEntry } from "./viz/define";
 import { MARKETS } from "./viz/markets";
 import { MULTIASSET } from "./viz/multiasset";
 import { REPLAY } from "./viz/replay";
+import { LIFESIM } from "./viz/lifesim";
 import { PLANNING } from "./viz/planning";
 import { PORTFOLIO } from "./viz/portfolio";
 import { VALIDATION } from "./viz/validation";
@@ -14,7 +15,7 @@ import { PAGE_BY_KEY } from "./routes";
 export type { VizEntry } from "./viz/define";
 export { REQUIRED_FIELDS } from "./viz/define";
 
-export const VISUALIZATIONS: VizEntry[] = [...PLANNING, ...REPLAY, ...PORTFOLIO, ...MULTIASSET, ...MARKETS, ...VALIDATION];
+export const VISUALIZATIONS: VizEntry[] = [...PLANNING, ...REPLAY, ...LIFESIM, ...PORTFOLIO, ...MULTIASSET, ...MARKETS, ...VALIDATION];
 
 export const VIZ_BY_ID: Record<string, VizEntry> = Object.fromEntries(VISUALIZATIONS.map((e) => [e.id, e]));
 

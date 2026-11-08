@@ -218,6 +218,31 @@ observation.
   Permanent Portfolio › multi-asset (classic vs generalised), Optimization › multi-asset (ablations),
   Research › OOS (walk-forward), Runs (registry), plus a homepage question and journey.
 
+## 4d. Interactive Lifecycle Simulator — multi-asset engine with a start date
+
+Lifecycle & Cash Flows › Interactive Lifecycle Simulator now leads with the **multi-asset lifecycle simulation**
+(study `lifecycle_sim`, charts LS-01…LS-05). The classic equity/bond simulator stays below it, unchanged.
+
+- **Start date and investor:** for example age 20 in January 2007 with $10,000 and a $45,000 salary. A form
+  edits the start month, age, wealth, salary, savings, retirement age, spending and pension ratios, γ,
+  universe mode, rebalancing, paths and policies. The page then follows the submitted run.
+- **Scenario source:** `simulated_from_start` uses no hindsight. Estimates and the bootstrap sample come only
+  from data published before the start date. `history_then_simulated` lives through actual history to the
+  latest month (the replay engine), then continues from the exact realised holdings.
+- **All asset classes:** US, developed and EM equity, 10Y and 30Y Treasuries, TIPS, IG credit, currencies,
+  cash, plus gold, commodities and high yield when ingested. A sleeve with less than 15 years of joint
+  history at the information date is excluded from the forward universe and the run says so.
+- **Lifecycle Permanent Portfolio (`pp_lifecycle`):** growth share = 25% + ½ × human-capital share of total
+  wealth. That is about 75% growth at 20 and the classic 25% at retirement. The rest is split equally
+  (Browne's one sleeve per economic season) across liability-duration-matched Treasuries/TIPS, real &
+  currency assets and cash, so allocations change continuously through life. The policy is also available
+  in the historical replay.
+- **Engine changes in this release:** expected returns are shrunk 90% toward an equilibrium prior implied by a
+  risk-parity reference portfolio (Black–Litterman style). The lifecycle risky mix is half mean-variance,
+  half risk parity, with its Merton exposure taken from the equilibrium premium. Every replay policy, forward
+  run and experiment is fault-isolated: a failure is reported on that row with its error, and the rest of
+  the study completes.
+
 ## 5. What the current public-data runs show (catalog `f0ce88a6493ff732`, 2026-11-07)
 
 These come from the default studies on the committed public snapshot (US data 1953–2026; Treasury

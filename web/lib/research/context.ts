@@ -52,6 +52,9 @@ export function studySpecFromContext(kind: StudyKind, c: ResearchContext): Conte
     case "historical_replay":
       return { spec: { start: "2007-01", investor: { start_age: Math.min(Math.max(c.startAge, 18), 80), initial_wealth: c.wealth, salary: c.income,
         savings_rate: c.savingsRate, retirement_age: Math.min(Math.max(c.retirementAge, 40), 80) }, preferences: prefs, costs }, notes };
+    case "lifecycle_sim":
+      return { spec: { start: "2007-01", investor: { start_age: Math.min(Math.max(c.startAge, 18), 80), initial_wealth: c.wealth, salary: c.income,
+        savings_rate: c.savingsRate, retirement_age: Math.min(Math.max(c.retirementAge, 40), 80) }, preferences: prefs, costs, n_paths: Math.min(Math.max(c.nPaths, 50), 5000) }, notes };
     case "evidence":
       return { spec: { scenario: { generator: "bootstrap", n_paths: c.nPaths, seed: c.seed } }, notes };
   }

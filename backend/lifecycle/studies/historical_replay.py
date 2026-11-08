@@ -58,6 +58,7 @@ POLICIES = {
     "regime_adaptive": ("regime", "Regime-adaptive CRRA mean-variance (filtered Markov regimes)"),
     "crra_parametric": ("utility", "CRRA mean-variance with trend and volatility tilts"),
     "lifecycle_adaptive": ("lifecycle", "Lifecycle-adaptive: total wealth (human capital), liability hedge, funding ratio"),
+    "pp_lifecycle": ("lifecycle", "Lifecycle Permanent Portfolio: growth share from the investor's state, defensive part split Browne-style"),
 }
 EVENTS = [("2008-09", "Lehman Brothers bankruptcy"), ("2009-03", "Equity market trough"),
           ("2013-05", "Taper tantrum"), ("2020-03", "COVID-19 crash"), ("2022-01", "2022 inflation / rate shock begins"),
@@ -102,7 +103,8 @@ class HistoricalReplaySpec(S.Frozen):
     target_vol: float = Field(0.10, gt=0.01, le=0.3)          # vol_target scales the 60/40 benchmark
     tactical_limit: float = Field(0.10, ge=0, le=0.3)
     max_sleeve: float = Field(0.60, gt=0.1, le=1.0)
-    mean_shrinkage: float = Field(0.5, ge=0, le=1)
+    mean_shrinkage: float = Field(0.9, ge=0, le=1)           # weight on the equilibrium prior
+    forward_min_sample_months: int = Field(180, ge=60, le=600)  # forward bootstrap needs this much joint history
     prior_sharpe: float = Field(0.25, ge=0, le=1)
     forward_paths: int = Field(500, ge=0, le=5000)
     forward_block_months: int = Field(12, ge=1, le=60)
@@ -315,8 +317,17 @@ class MarketModel:
         cov = np.cov(X, rowvar=False) * 12
         cov = 0.5 * cov + 0.5 * np.diag(np.diag(cov)) + 1e-8 * np.eye(len(elig))
         vol = np.sqrt(np.diag(cov))
-        mu_ex = (1 - spec.mean_shrinkage) * ex.mean(axis=0) * 12 + spec.mean_shrinkage * spec.prior_sharpe * vol
-        mu_ex[elig.index("tbill")] = 0.0
+        # equilibrium prior (Black-Litterman style): excess returns implied by a risk-parity reference portfolio
+        # whose Sharpe ratio is `prior_sharpe`; sample means are shrunk toward it (they are noisy and window-specific)
+        ci_ = elig.index("tbill")
+        rk_ = [k for k in range(len(elig)) if k != ci_]
+        w_ref = np.zeros(len(elig))
+        w_ref[rk_] = erc(cov[np.ix_(rk_, rk_)])
+        delta = spec.prior_sharpe / max(float(np.sqrt(w_ref @ cov @ w_ref)), 1e-6)
+        prior_ex = delta * cov @ w_ref
+        prior_ex[ci_] = 0.0
+        mu_ex = (1 - spec.mean_shrinkage) * ex.mean(axis=0) * 12 + spec.mean_shrinkage * prior_ex
+        mu_ex[ci_] = 0.0
         tr = Rk[elig].iloc[-spec.trend_months:]
         trend = (np.prod(1 + tr.to_numpy(), axis=0) - np.prod(1 + tr["tbill"].to_numpy()))
         vv = Rk[elig].iloc[-spec.vol_months:].to_numpy()
@@ -340,7 +351,7 @@ class MarketModel:
             corr = float(c36.corr().iloc[0, 1]) if len(c36) >= 24 else None
         regime = self._regime(t, D, cpi_known, Rk)
         return {"date": me, "decision_date": D, "eligible": elig, "history_months": hist_len, "cov": cov, "vol": vol,
-                "mu_ex": mu_ex, "rf": rf_m * 12, "trend": trend, "vol_short": vol_short, "window": [str(win.index[0].date()), str(win.index[-1].date())],
+                "mu_ex": mu_ex, "prior_ex": prior_ex, "rf": rf_m * 12, "trend": trend, "vol_short": vol_short, "window": [str(win.index[0].date()), str(win.index[-1].date())],
                 "n_window": len(win), "states": st, "infl12": infl12, "real_rate": float(real_rate), "corr_eq_bond_36m": corr,
                 "regime": regime, "info_last_return": str(prev.date()), "info_last_cpi": str(cpi_known.index[-1].date()) if len(cpi_known) else None,
                 "win_returns": win}
@@ -457,11 +468,11 @@ def target(policy: str, m: dict[str, Any], st: dict[str, Any], spec: HistoricalR
     elif policy == "crra_parametric":
         strat = mv_opt(mu, cov, gamma, spec.max_sleeve)
         g = blocks(elig).get("growth", [])
-        if g and spec.tactical_limit > 0:
-            gw = strat[g].sum()
-            tr = float(np.sign(np.dot(m["trend"][g], strat[g]) / max(gw, 1e-12)))
+        gw = strat[g].sum() if g else 0.0
+        if g and spec.tactical_limit > 0 and gw > 1e-9:
+            tr = float(np.sign(np.dot(m["trend"][g], strat[g]) / gw))
             vr = float(np.dot(m["vol_short"][g], strat[g]) / max(np.dot(vol[g], strat[g]), 1e-12))
-            mult = np.exp(0.25 * tr) * vr ** -0.5
+            mult = np.exp(0.25 * tr) * max(vr, 1e-3) ** -0.5
             new = np.clip(gw * mult, gw - spec.tactical_limit, gw + spec.tactical_limit)
             new = float(np.clip(new, 0, min(1.0, gw + strat[cash])))
             d = new - gw
@@ -471,6 +482,8 @@ def target(policy: str, m: dict[str, Any], st: dict[str, Any], spec: HistoricalR
             notes.update({"growth_trend_sign": tr, "vol_ratio": vr})
     elif policy == "lifecycle_adaptive":
         strat, tact, notes = lifecycle_target(m, st, spec)
+    elif policy == "pp_lifecycle":
+        strat, notes = pp_lifecycle_target(m, st, spec)
     else:
         raise ValueError("unknown policy " + policy)
     if strat is None:
@@ -502,38 +515,37 @@ def regime_moments(m: dict[str, Any], rg: dict[str, Any]) -> tuple[NDArray[np.fl
     mu = sum(p[k] * mus[k] for k in range(2))
     cov = sum(p[k] * (covs[k] + np.outer(mus[k] - mu, mus[k] - mu)) for k in range(2))
     cov = 0.5 * cov + 0.5 * np.diag(np.diag(cov)) + 1e-8 * np.eye(len(mu))
-    vol = np.sqrt(np.diag(cov))
-    shrunk = m["rf"] + 0.5 * (mu - m["rf"]) + 0.5 * 0.25 * vol
+    shrunk = m["rf"] + 0.25 * (mu - m["rf"]) + 0.75 * m["prior_ex"]
     shrunk[m["eligible"].index("tbill")] = m["rf"]
     return shrunk, cov
 
 
-def lifecycle_target(m: dict[str, Any], st: dict[str, Any], spec: HistoricalReplaySpec):
-    """Strategic: myopic CRRA on total wealth (financial + human capital) with a liability-duration-matched safe
-    sleeve whose size grows with liabilities relative to total wealth. Tactical: bounded trend / volatility tilt."""
-    elig = m["eligible"]
-    n = len(elig)
-    ix = {c: i for i, c in enumerate(elig)}
-    cash = ix["tbill"]
-    gamma = spec.preferences.gamma
-    b = blocks(elig)
+def lc_risky(m: dict[str, Any], spec: HistoricalReplaySpec):
+    """Risky mix and Merton exposure on total wealth (depends on market estimates only; cached per snapshot)."""
+    key = "_lc_risky_%g_%g" % (spec.preferences.gamma, spec.max_sleeve)
+    if key in m:
+        return m[key]
+    b = blocks(m["eligible"])
     risky = sorted(b.get("growth", []) + b.get("credit", []) + b.get("real", []))
-    dur = b.get("duration", [])
     mu = m["mu_ex"] + m["rf"]
     cov = m["cov"]
-    strat = np.zeros(n)
-    tact = np.zeros(n)
-    # risky mix: CRRA mean-variance over the risky sleeves; its Merton exposure on TOTAL wealth
-    mix = mv_opt(mu[risky], cov[np.ix_(risky, risky)], gamma, min(1.0, spec.max_sleeve / 0.8))
+    gamma = spec.preferences.gamma
+    mv = mv_opt(mu[risky], cov[np.ix_(risky, risky)], gamma, min(1.0, spec.max_sleeve / 0.8))
+    mix = 0.5 * mv + 0.5 * erc(cov[np.ix_(risky, risky)])     # robust: half mean-variance, half risk-parity reference
     mu_m = float(mix @ mu[risky])
     var_m = float(mix @ cov[np.ix_(risky, risky)] @ mix)
-    alpha = float(np.clip((mu_m - m["rf"]) / (gamma * max(var_m, 1e-6)), 0.0, 1.5))
-    W = max(st["wealth"], 1.0)
-    tw = W + st["human_capital"]
-    s = float(np.clip(alpha * tw / W, 0.0, 1.0))
-    # safe bucket: liability hedge share = PV(liabilities) / total wealth, duration-matched
-    hedge = float(np.clip(st["pv_liabilities"] / max(tw, 1.0), 0.0, 1.0))
-    safe = 1 - s
+    # exposure from the equilibrium-implied premium of the mix (sample means only shape the mix): noisy
+    # window-specific means would otherwise pin the Merton share at its bound
+    prem = float(mix @ m["prior_ex"][risky]) if "prior_ex" in m else mu_m - m["rf"]
+    alpha = float(np.clip(prem / (gamma * max(var_m, 1e-6)), 0.0, 1.5))
+    m[key] = (risky, mix, alpha, mu_m, var_m)
+    return m[key]
+
+
+def bond_mix(m: dict[str, Any], st: dict[str, Any]) -> tuple[NDArray[np.float64], float]:
+    """Duration-matched weights inside the safe sleeve (sum 1 over duration sleeves; zeros if none)."""
+    elig = m["eligible"]
+    ix = {c: i for i, c in enumerate(elig)}
     durs = {}
     y10 = (m["states"].get("y_dgs10") or 0.04)
     y30 = (m["states"].get("y_dgs30") or y10)
@@ -544,19 +556,81 @@ def lifecycle_target(m: dict[str, Any], st: dict[str, Any], spec: HistoricalRepl
             durs[c] = par_duration(y30, 30)
         elif c == "tips":
             durs[c] = par_duration(max(m["states"].get("y_dfii10") or 0.01, 1e-3), 10)
+    w = np.zeros(len(elig))
     target_d = min(st["liability_duration"], max(durs.values()) if durs else 0.0)
-    bond_w = np.zeros(n)
-    if dur and durs:
-        nominal = [c for c in ("ust_10y", "ust_30y") if c in durs]
-        if len(nominal) == 2:
-            d1, d2 = durs["ust_10y"], durs["ust_30y"]
-            x = float(np.clip((target_d - d1) / max(d2 - d1, 1e-6), 0, 1))
-            bond_w[ix["ust_10y"]], bond_w[ix["ust_30y"]] = 1 - x, x
-        elif nominal:
-            bond_w[ix[nominal[0]]] = 1.0
-        if "tips" in ix and st["years_to_retirement"] <= 15:     # real liabilities near retirement: half in TIPS
-            bond_w = 0.5 * bond_w
-            bond_w[ix["tips"]] += 0.5
+    nominal = [c for c in ("ust_10y", "ust_30y") if c in durs]
+    if len(nominal) == 2:
+        d1, d2 = durs["ust_10y"], durs["ust_30y"]
+        x = float(np.clip((target_d - d1) / max(d2 - d1, 1e-6), 0, 1))
+        w[ix["ust_10y"]], w[ix["ust_30y"]] = 1 - x, x
+    elif nominal:
+        w[ix[nominal[0]]] = 1.0
+    if "tips" in ix and st["years_to_retirement"] <= 15:
+        w = 0.5 * w
+        w[ix["tips"]] += 0.5
+    return (w / w.sum() if w.sum() > 0 else w), target_d
+
+
+def pp_lifecycle_target(m: dict[str, Any], st: dict[str, Any], spec: HistoricalReplaySpec):
+    """Permanent-Portfolio logic made lifecycle-aware: the growth block is the Merton total-wealth share bounded
+    to [25%, 75%]; the defensive remainder is split equally (Browne's one sleeve per economic season) across
+    liability-duration-matched bonds, real & currency assets and cash. It converges to the classic 25/25/25/25
+    as human capital is consumed and the investor approaches retirement."""
+    elig = m["eligible"]
+    n = len(elig)
+    cash = elig.index("tbill")
+    b = blocks(elig)
+    W = max(st["wealth"], 1.0)
+    hc_share = st["human_capital"] / (W + st["human_capital"])
+    g = 0.25 + 0.5 * hc_share          # 75% growth when wealth is mostly future earnings, 25% (classic PP) when none
+    strat = np.zeros(n)
+    gi = b.get("growth", [])
+    if gi:
+        iv = 1 / np.maximum(m["vol"][gi], 1e-4)
+        strat[gi] = g * iv / iv.sum()
+    else:
+        strat[cash] += g
+    seasons = []
+    bw, td = bond_mix(m, st)
+    if bw.sum() > 0:
+        seasons.append(("duration", bw))
+    ri = b.get("real", [])
+    if ri:
+        v = np.zeros(n)
+        iv = 1 / np.maximum(m["vol"][ri], 1e-4)
+        v[ri] = iv / iv.sum()
+        seasons.append(("real", v))
+    cv = np.zeros(n)
+    cv[cash] = 1.0
+    seasons.append(("cash", cv))
+    for _, v in seasons:
+        strat += (1 - g) / len(seasons) * v
+    return strat, {"objective": "Permanent-Portfolio diversification across economic seasons; growth share = 25% + 0.5 x human-capital share of total wealth",
+                   "growth_share": g, "human_capital_share": hc_share, "defensive_seasons": [k for k, _ in seasons],
+                   "target_duration": td, "human_capital": st["human_capital"], "funding_ratio": st["funding_ratio"]}
+
+
+def lifecycle_target(m: dict[str, Any], st: dict[str, Any], spec: HistoricalReplaySpec):
+    """Strategic: myopic CRRA on total wealth (financial + human capital) with a liability-duration-matched safe
+    sleeve whose size grows with liabilities relative to total wealth. Tactical: bounded trend / volatility tilt."""
+    elig = m["eligible"]
+    n = len(elig)
+    ix = {c: i for i, c in enumerate(elig)}
+    cash = ix["tbill"]
+    b = blocks(elig)
+    risky = sorted(b.get("growth", []) + b.get("credit", []) + b.get("real", []))
+    cov = m["cov"]
+    strat = np.zeros(n)
+    tact = np.zeros(n)
+    # risky mix: CRRA mean-variance over the risky sleeves; its Merton exposure on TOTAL wealth
+    _, mix, alpha, mu_m, var_m = lc_risky(m, spec)
+    W = max(st["wealth"], 1.0)
+    tw = W + st["human_capital"]
+    s = float(np.clip(alpha * tw / W, 0.0, 1.0))
+    # safe bucket: liability hedge share = PV(liabilities) / total wealth, duration-matched
+    hedge = float(np.clip(st["pv_liabilities"] / max(tw, 1.0), 0.0, 1.0))
+    safe = 1 - s
+    bond_w, target_d = bond_mix(m, st)
     for j, i in enumerate(risky):
         strat[i] = s * mix[j]
     if bond_w.sum() > 0:
@@ -619,8 +693,6 @@ def replay(spec: HistoricalReplaySpec, h: History, policies: list[str], progress
            ablation: str | None = None) -> dict[str, Any]:
     inv = spec.investor
     cand = list(h.R.columns)
-    A = len(cand)
-    T = len(h.dates)
     snaps = market_snapshots(spec, h, progress)
     retire_m = int(round((inv.retirement_age - inv.start_age) * 12))
     fixed_set: list[str] | None = None
@@ -635,6 +707,25 @@ def replay(spec: HistoricalReplaySpec, h: History, policies: list[str], progress
     to_real_last = idx[-1] / idx
     out: dict[str, Any] = {}
     for pi, pol in enumerate(policies):
+        try:
+            out[pol] = _replay_policy(pol, spec, h, snaps, fixed_set, cand, to_real_last, detail, ablation, retire_m)
+        except S.IncompatibleUniverse:
+            raise
+        except Exception as exc:     # isolate: one policy's failure is reported, the others still run
+            import traceback
+            out[pol] = {"available": False, "failed": True, "reason": "%s: %s" % (type(exc).__name__, exc),
+                        "traceback": traceback.format_exc()[-1500:]}
+        if progress:
+            progress("replayed %s" % pol, 0.3 + 0.35 * (pi + 1) / len(policies))
+    return {"policies": out, "snaps": snaps, "candidates": cand, "fixed_set": fixed_set, "dropped": dropped,
+            "to_real_last": to_real_last}
+
+
+def _replay_policy(pol, spec, h, snaps, fixed_set, cand, to_real_last, detail, ablation, retire_m):
+    inv = spec.investor
+    A = len(cand)
+    T = len(h.dates)
+    if True:
         Wh = np.zeros(A)
         W = inv.initial_wealth
         salary = inv.salary
@@ -739,21 +830,17 @@ def replay(spec: HistoricalReplaySpec, h: History, policies: list[str], progress
             rec["rc"].append(_full(rc, elig, cand))
             prev_elig = list(elig)
         if not available:
-            out[pol] = {"available": False, "reason": unavailable_reason(pol, h, spec)}
-            continue
-        out[pol] = summarise(pol, rec, h, to_real_last, spec, detail, cand)
-        out[pol]["_state"] = {"holdings": Wh, "salary": salary, "spend": spend, "last_target": rec["target"][-1]}
-        if progress:
-            progress("replayed %s" % pol, 0.3 + 0.35 * (pi + 1) / len(policies))
-    return {"policies": out, "snaps": snaps, "candidates": cand, "fixed_set": fixed_set, "dropped": dropped,
-            "to_real_last": to_real_last}
+            return {"available": False, "reason": unavailable_reason(pol, h, spec)}
+        res = summarise(pol, rec, h, to_real_last, spec, detail, cand)
+        res["_state"] = {"holdings": Wh, "salary": salary, "spend": spend, "last_target": rec["target"][-1]}
+        return res
 
 
 def restrict(m: dict[str, Any], keep: list[str]) -> dict[str, Any]:
     ii = [m["eligible"].index(c) for c in keep]
     mm = dict(m)
     mm["eligible"] = list(keep)
-    for k in ("mu_ex", "vol", "trend", "vol_short"):
+    for k in ("mu_ex", "prior_ex", "vol", "trend", "vol_short"):
         mm[k] = m[k][ii]
     mm["cov"] = m["cov"][np.ix_(ii, ii)]
     mm["win_returns"] = m["win_returns"][keep]
@@ -888,11 +975,11 @@ def forward_targets(pol: str, m: dict[str, Any], spec: HistoricalReplaySpec, st:
         strat = cache["mv"]
         g = blocks(elig).get("growth", [])
         W = np.broadcast_to(strat, (N, n)).copy()
-        if g and spec.tactical_limit > 0:
-            gw = strat[g].sum()
-            tr = np.sign(trend[:, g] @ strat[g] / max(gw, 1e-12))
+        gw = strat[g].sum() if g else 0.0
+        if g and spec.tactical_limit > 0 and gw > 1e-9:
+            tr = np.sign(trend[:, g] @ strat[g] / gw)
             vr = (vs[:, g] @ strat[g]) / max(np.dot(m["vol"][g], strat[g]), 1e-12)
-            new = np.clip(gw * np.exp(0.25 * tr) * np.maximum(vr, 1e-6) ** -0.5, gw - spec.tactical_limit, gw + spec.tactical_limit)
+            new = np.clip(gw * np.exp(0.25 * tr) * np.maximum(vr, 1e-3) ** -0.5, gw - spec.tactical_limit, gw + spec.tactical_limit)
             new = np.clip(new, 0, min(1.0, gw + strat[cash]))
             d = new - gw
             if gw > 0:
@@ -900,6 +987,27 @@ def forward_targets(pol: str, m: dict[str, Any], spec: HistoricalReplaySpec, st:
             W[:, cash] -= d
         W = np.maximum(W, 0)
         return W / W.sum(axis=1, keepdims=True)
+    if pol == "pp_lifecycle":
+        if "ppl" not in cache:
+            probe, nt = pp_lifecycle_target(m, {**st, "wealth": 1.0, "human_capital": 0.0}, spec)
+            g0 = nt["growth_share"]
+            b = blocks(elig)
+            gi = b.get("growth", [])
+            grow = np.zeros(n)
+            grow[gi] = probe[gi] / g0 if gi else 0.0
+            if not gi:
+                grow[cash] = 1.0
+            defn = (probe - g0 * grow) / max(1 - g0, 1e-12)
+            cache["ppl"] = (grow, defn)
+        grow, defn = cache["ppl"]
+        # the duration split depends on the liability duration (age); recompute the defensive part each call
+        _, nt2 = pp_lifecycle_target(m, {**st, "wealth": 1.0, "human_capital": 0.0}, spec)
+        probe2, _ = pp_lifecycle_target(m, {**st, "wealth": 1.0, "human_capital": 0.0}, spec)
+        g0 = nt2["growth_share"]
+        defn = (probe2 - g0 * grow) / max(1 - g0, 1e-12)
+        g = 0.25 + 0.5 * st["human_capital"] / (np.maximum(Wn, 1.0) + st["human_capital"])
+        out = g[:, None] * grow[None, :] + (1 - g)[:, None] * defn[None, :]
+        return out / out.sum(axis=1, keepdims=True)
     if pol == "lifecycle_adaptive":
         if "lc" not in cache:
             cache["lc"] = lifecycle_target(m, {**st, "wealth": 1e12, "human_capital": 0.0, "pv_liabilities": 0.0}, spec)
@@ -946,18 +1054,31 @@ def forward_targets(pol: str, m: dict[str, Any], spec: HistoricalReplaySpec, st:
 
 
 def forward(spec: HistoricalReplaySpec, h: History, cand: list[str], pol: str, rng_seed: int,
-            snap: dict[str, Any], hold: NDArray[np.float64], salary: float) -> dict[str, Any]:
-    """Bootstrap continuation from the exact final state (dollars of the last historical month) to the final age."""
+            snap: dict[str, Any], hold: NDArray[np.float64], salary: float, age0: float | None = None,
+            as_of: pd.Timestamp | None = None, n_paths: int | None = None) -> dict[str, Any]:
+    """Bootstrap continuation from an exact state (holdings in dollars of the as-of month) to the final age.
+    `as_of` is the last month of the information set (default: the last historical month)."""
     inv = spec.investor
+    hist = snap.get("history_months", {})
+    keep = [c for c in snap["eligible"] if c == "tbill" or hist.get(c, 0) >= spec.forward_min_sample_months]
+    excluded = [c for c in snap["eligible"] if c not in keep]
+    if excluded:
+        snap = restrict(snap, keep)
+        hold = hold.copy()
+        for c in excluded:                       # sleeves too young to bootstrap: their dollars start in cash
+            hold[cand.index("tbill")] += hold[cand.index(c)]
+            hold[cand.index(c)] = 0.0
     elig = snap["eligible"]
     A = len(cand)
-    N = spec.forward_paths
-    age0 = inv.start_age + len(h.dates) / 12.0
+    N = spec.forward_paths if n_paths is None else n_paths
+    if age0 is None:
+        age0 = inv.start_age + len(h.dates) / 12.0
     months = int(round((inv.final_age - age0) * 12))
     if months <= 0 or N == 0:
         return {"available": False, "reason": "investor is past the final age or no forward paths requested"}
-    D = h.dates[-1] + pd.Timedelta(days=1)
-    Rk = info_returns(h, D, h.dates[-1])[elig].dropna()
+    last = h.dates[-1] if as_of is None else as_of
+    D = last + pd.Timedelta(days=1)
+    Rk = info_returns(h, D, last)[elig].dropna()
     cpi = h.cpi.reindex(Rk.index)
     keep = cpi.notna().to_numpy()
     X = Rk.to_numpy()[keep]
@@ -1053,12 +1174,14 @@ def forward(spec: HistoricalReplaySpec, h: History, cand: list[str], pol: str, r
             w_at_ret = hh.sum(axis=1).copy()
         if t % 12 == 0:
             ws = hh / np.maximum(hh.sum(axis=1, keepdims=True), 1e-9)
-            alloc.append({"age": round(age, 2), "q": {c: np.round(np.quantile(ws[:, cand.index(c)], [0.1, 0.5, 0.9]), 4).tolist() for c in elig}})
+            alloc.append({"age": round(age, 2), "q": {c: np.round(np.quantile(ws[:, cand.index(c)], [0.1, 0.5, 0.9]), 4).tolist() for c in elig},
+                          "mean": {c: round(float(ws[:, cand.index(c)].mean()), 4) for c in elig}})
             wealth_q.append({"age": round(age, 2), "q": np.round(np.quantile(hh.sum(axis=1), [0.05, 0.25, 0.5, 0.75, 0.95]), 0).tolist()})
     ce = ce_from_utility(float(np.mean(util)), gamma, disc_sum) * 1000.0 * 12.0
     term = hh.sum(axis=1)
     return {"available": True, "paths": N, "months": months, "start_age": round(age0, 2), "retirement_month": retire_m,
             "start_wealth": float(hold.sum()), "start_holdings": dict(zip(cand, np.round(hold, 2).tolist())),
+            "forward_universe": elig, "excluded_short_history": excluded,
             "ce_consumption": float(ce), "p_no_shortfall": float((first < 0).mean()),
             "unmet_mean": float(unmet.mean()), "unmet_cvar95": S.cvar(unmet),
             "wealth_at_retirement": None if w_at_ret is None else np.round(np.quantile(w_at_ret, [0.05, 0.25, 0.5, 0.75, 0.95]), 0).tolist(),
@@ -1090,11 +1213,17 @@ def run_historical_replay(spec: HistoricalReplaySpec, progress: S.Progress) -> d
             continue
         stt = rp.pop("_state")
         hold_real = stt["holdings"]          # dollars of the last historical month = real dollars at the boundary
-        fwd[pol] = forward(spec, h, cand, pol, spec.seed + 13, last, hold_real, stt["salary"])
+        try:
+            fwd[pol] = forward(spec, h, cand, pol, spec.seed + 13, last, hold_real, stt["salary"])
+        except Exception as exc:
+            fwd[pol] = {"available": False, "failed": True, "reason": "%s: %s" % (type(exc).__name__, exc)}
         progress("forward %s" % pol, 0.66 + 0.2 * (k + 1) / len(pols))
     for pol in pols:
         base["policies"][pol].pop("_state", None)
-    exps = experiments(spec, h, progress) if spec.experiments else None
+    try:
+        exps = experiments(spec, h, progress) if spec.experiments else None
+    except Exception as exc:
+        exps = {"error": "%s: %s" % (type(exc).__name__, exc), "cohorts": [], "start_years": [], "windows": [], "ablations": []}
     progress("summarising", 0.97)
     market = market_series(snaps, h)
     elig_timeline = [{"date": str(s["date"].date()), "eligible": s["eligible"]} for s in snaps]
@@ -1161,9 +1290,12 @@ def experiments(spec: HistoricalReplaySpec, h: History, progress) -> dict[str, A
     out: dict[str, Any] = {"cohorts": [], "start_years": [], "windows": [], "ablations": []}
 
     def row(sp, pols, ablation=None):
-        hh = load_history(sp)
-        res = replay(sp, hh, pols, None, detail=False, ablation=ablation)
-        return {p: {k: v for k, v in res["policies"][p].items() if k not in ("_state",)} for p in pols}
+        try:
+            hh = load_history(sp)
+            res = replay(sp, hh, pols, None, detail=False, ablation=ablation)
+            return {p: {k: v for k, v in res["policies"][p].items() if k not in ("_state", "traceback")} for p in pols}
+        except Exception as exc:
+            return {p: {"available": False, "failed": True, "reason": "%s: %s" % (type(exc).__name__, exc)} for p in pols}
 
     for age, w0, sal in ((20, 10_000, 45_000), (40, 150_000, 80_000), (60, 600_000, 100_000)):
         sp = spec.model_copy(update={"investor": spec.investor.model_copy(update={"start_age": float(age), "initial_wealth": float(w0), "salary": float(sal)}),

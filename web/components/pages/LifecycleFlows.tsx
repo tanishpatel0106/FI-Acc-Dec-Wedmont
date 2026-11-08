@@ -7,6 +7,7 @@ import { Tex } from "@/components/common/Tex";
 import { ResearchPage, Sec } from "@/components/research/page";
 import { Simulator } from "@/components/research/lifecycle/Simulator";
 import { HistoricalReplay } from "@/components/research/lifecycle/HistoricalReplay";
+import { MultiAssetSimulator } from "@/components/research/lifecycle/MultiAssetSimulator";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const qFmt = (v: number) => (v > 0 ? "+" : "") + (v * 100).toFixed(1) + "%";
@@ -139,7 +140,12 @@ export function LifecycleFlows() {
         </StudyGate>
       </Sec>
       <Sec id="replay"><HistoricalReplay /></Sec>
-      <Sec id="simulator"><Simulator /></Sec>
+      <Sec id="simulator">
+        <h2 className="text-base font-semibold">Multi-asset lifecycle simulation (dated start, all asset classes)</h2>
+        <MultiAssetSimulator />
+        <h2 className="mt-8 text-base font-semibold">Classic equity/bond simulator (target-weight kernel)</h2>
+        <Simulator />
+      </Sec>
     </ResearchPage>
   );
 }

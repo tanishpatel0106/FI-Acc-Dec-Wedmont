@@ -5,6 +5,7 @@ import { IconPlayerPause, IconPlayerPlay, IconPlayerTrackNext, IconPlayerTrackPr
 import { ContextBar, DataTable, Grid, StudyGate, Viz, Warnings } from "@/components/research/kit";
 import { Plot, useVizTokens } from "@/components/visualizations/Plot";
 import { pct, spct, usd, useAssetColor } from "@/components/visualizations/charts";
+import { InvestorStartForm } from "./MultiAssetSimulator";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 type Res = any;
@@ -110,7 +111,7 @@ function Body({ env }: { env: any }) {
       </div>
       <Timeline r={r} i={i} setI={setI} playing={playing} setPlaying={setPlaying} speed={speed} setSpeed={setSpeed} />
       <Viz id="HR-08" runId={runId} cls="model_generated" selection={{ month: d[i], policy: pol }}>
-        <div className="grid gap-3 text-xs md:grid-cols-2 xl:grid-cols-4" data-testid="decision-inspector">
+        <div className="grid gap-3 text-xs md:grid-cols-2" data-testid="decision-inspector">
           <div className="rounded border border-border p-2"><div className="mb-1 font-semibold">Investor state</div>
             <div>Age {s.salary ? (r.investor.start_age + i / 12).toFixed(1) : "–"} · salary {usd(s.salary[i])} · contribution {usd(s.contrib[i])}/mo</div>
             <div>Wealth {usd(s.wealth_post[i])} (after flows and trades) · years to retirement {Math.max(r.investor.retirement_age - r.investor.start_age - i / 12, 0).toFixed(1)}</div>
@@ -242,7 +243,12 @@ const DESC = "Preset: age 20 in January 2007, $10,000 invested, $45,000 salary w
 
 /** Lifecycle & Cash Flows › Historical Portfolio Replay. */
 export function HistoricalReplay() {
-  return <StudyGate kind="historical_replay" title="Historical investor replay" description={DESC} runLabel="Run the 2007 preset">{(env) => <Body env={env} />}</StudyGate>;
+  return (
+    <StudyGate kind="historical_replay" title="Historical investor replay" description={DESC} runLabel="Run the 2007 preset"
+      controls={(run, shown) => <InvestorStartForm shown={shown} onRun={run} kind="historical_replay" />}>
+      {(env) => <Body env={env} />}
+    </StudyGate>
+  );
 }
 
 /** Compact replay views reused on other pages (same persisted run, same registry IDs, instance-suffixed). */
