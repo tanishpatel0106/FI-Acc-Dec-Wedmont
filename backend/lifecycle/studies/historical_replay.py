@@ -138,6 +138,10 @@ def load_history(spec: HistoricalReplaySpec) -> History:
     if "tbill" not in present:
         raise S.IncompatibleUniverse("the replay needs T-bills (cash)")
     R, A = _wide(present)
+    # a month's market total return is observable at that month end (the price is public); vendor file lags
+    # (e.g. CRSP/WRDS ingestion dates) are kept in the catalog but do not hide prices a trader could see
+    A = pd.DataFrame(np.where(R.notna().to_numpy(), np.array(R.index, dtype="datetime64[ns]")[:, None], np.datetime64("NaT")),
+                     index=R.index, columns=R.columns)
     st_ids = [s for s in ("y_tb3ms", "y_dgs10", "y_dgs30", "y_dfii10", "y_aaa", "y_baa", "s_vixcls") if panel.has_series(s)]
     Sv, Sa = _wide(st_ids)
     cpi_v, cpi_a = _wide(["cpi_nsa"])
@@ -299,6 +303,9 @@ class MarketModel:
             trades_now = not np.isnan(h.R.at[me, c]) if me in h.R.index else False
             if n >= spec.min_history_months and trades_now:
                 elig.append(c)
+        if "tbill" not in elig:
+            raise S.IncompatibleUniverse("T-bill (cash) returns are missing for %s or have fewer than %d months of history "
+                                         "before it; the replay needs a cash sleeve every month" % (me.date(), spec.min_history_months))
         win = Rk[elig].dropna()
         if spec.estimation_window_months is not None:
             win = win.iloc[-spec.estimation_window_months:]

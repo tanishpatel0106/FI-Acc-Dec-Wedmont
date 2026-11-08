@@ -139,3 +139,20 @@ def test_forward_starts_from_the_exact_final_state(run):
     f = H.forward(spec2, h, res["candidates"], "lifecycle_adaptive", 1, snap, hold, r["series"]["salary"][-1])
     assert f["available"] and f["start_wealth"] == pytest.approx(r["series"]["wealth"][-1], rel=1e-4)
     assert 0 <= f["p_no_shortfall"] <= 1 and f["months"] > 0
+
+
+def test_vendor_publication_lag_on_returns_does_not_drop_cash(monkeypatch):
+    """Regression: return files with an ingestion lag (WRDS) made T-bills look unknown and crashed the replay."""
+    real_wide = H._wide
+
+    def lagged(ids):
+        v, a = real_wide(ids)
+        return v, a + pd.Timedelta(days=40)
+    monkeypatch.setattr(H, "_wide", lagged)
+    H._SNAPS.clear()
+    spec = H.HistoricalReplaySpec(start="2010-01", end="2011-06", forward_paths=0, experiments=False, min_history_months=24,
+                                  estimation_window_months=60, policies=("sixty_forty", "lifecycle_adaptive"))
+    h = H.load_history(spec)
+    res = H.replay(spec, h, list(spec.policies))
+    assert all("tbill" in s["eligible"] for s in res["snaps"])
+    assert res["policies"]["lifecycle_adaptive"]["available"]

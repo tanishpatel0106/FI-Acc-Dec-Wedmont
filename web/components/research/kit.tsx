@@ -4,7 +4,8 @@ import { toast } from "sonner";
 import { IconAlertTriangle, IconPlayerPlay, IconAdjustments } from "@tabler/icons-react";
 import { InlineProgress } from "@/components/experiment/RunProgress";
 import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
-import { submitStudy, useInvalidateStudy, useStudyDefaults, useStudyLatest, type StudyEnvelope, type StudyKind } from "@/lib/api/v2";
+import { submitStudy, useInvalidateStudy, useStudyDefaults, useStudyLatest, useStudyRun, type StudyEnvelope, type StudyKind } from "@/lib/api/v2";
+import { create } from "zustand";
 import { shortId } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import { useResearchContext } from "@/lib/store";
@@ -23,11 +24,22 @@ export type EvidenceGrade = "robust" | "conditional" | "diagnostic" | "fragile" 
  * Never launches computation on view: the user clicks "Run default" or "Run with current assumptions"
  * (the shared research context mapped onto this study's spec). Identical specs hit the cache.
  */
-export function StudyGate({ kind, title, description, children, specOverride, runLabel }: {
+/** The run each study page is showing after the user submits one (session-wide, shared by every gate of a kind). */
+const useActiveRuns = create<{ runs: Partial<Record<StudyKind, string>>; set: (k: StudyKind, id: string | null) => void }>((set) => ({
+  runs: {}, set: (k, id) => set((st) => ({ runs: { ...st.runs, [k]: id ?? undefined } })),
+}));
+
+export function StudyGate({ kind, title, description, children, specOverride, runLabel, controls }: {
   kind: StudyKind; title: string; description?: React.ReactNode; children: (env: StudyEnvelope) => React.ReactNode;
   specOverride?: any; runLabel?: string;
+  /** Optional assumptions form: receives a submit function and the spec of the run being shown. */
+  controls?: (submit: (spec: any) => void, shownSpec: any) => React.ReactNode;
 }) {
-  const latest = useStudyLatest(kind);
+  const latestQ = useStudyLatest(kind);
+  const activeId = useActiveRuns((x) => x.runs[kind]) ?? null;
+  const setActive = useActiveRuns((x) => x.set);
+  const activeQ = useStudyRun(activeId);
+  const latest = activeId ? activeQ : latestQ;
   const defaults = useStudyDefaults(kind);
   const invalidate = useInvalidateStudy();
   const ctx = useResearchContext();
@@ -37,7 +49,8 @@ export function StudyGate({ kind, title, description, children, specOverride, ru
   async function run(force = false, spec?: any) {
     try {
       const r = await submitStudy(kind, spec ?? specOverride ?? {}, force);
-      toast.success(r.status === "done" ? "Cached result found (identical spec hash)" : "Study queued — progress streams from the backend");
+      toast.success(r.status === "done" ? "Cached result found (identical spec hash)" : "Study queued — this page now follows run " + shortId(r.run_id));
+      if (r.run_id) setActive(kind, r.run_id);
       invalidate(kind);
     } catch (e) {
       toast.error(String((e as Error).message));
@@ -57,6 +70,8 @@ export function StudyGate({ kind, title, description, children, specOverride, ru
         {env?.catalog_hash ? <span className="font-mono">catalog {String(env.catalog_hash).slice(0, 8)}</span> : null}
         {env?.finished_at ? <span>finished {env.finished_at.replace("T", " ").slice(0, 16)} UTC</span> : null}
         {env?.experiments ? <span>{env.experiments}</span> : null}
+        {activeId ? <span className="rounded bg-[var(--viz-s1)]/15 px-1.5 py-0.5 text-foreground" data-testid="following-run">showing your submitted run ({env?.status ?? "loading"})
+          {" "}<button className="underline" onClick={() => setActive(kind, null)}>show latest completed</button></span> : null}
       </div>
       <div className="flex flex-wrap items-center gap-2">
         <button className="rounded border border-border px-2 py-1 hover:bg-muted" onClick={() => {
@@ -109,7 +124,7 @@ export function StudyGate({ kind, title, description, children, specOverride, ru
       <div className="mt-2 text-xs text-muted-foreground">Real backend progress (registry-polled). The page updates when the run finishes.</div></div>
   );
   else body = <ProvenanceProvider value={provenanceFromStudy(env)}>{children(env)}</ProvenanceProvider>;
-  return <div>{header}{editor}{body}</div>;
+  return <div>{header}{editor}{controls ? <div className="mb-4">{controls((spec) => void run(false, spec), env?.spec ?? defaults.data?.spec)}</div> : null}{body}</div>;
 }
 
 export function Warnings({ items }: { items?: string[] }) {
