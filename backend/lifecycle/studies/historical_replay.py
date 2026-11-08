@@ -522,7 +522,7 @@ def regime_moments(m: dict[str, Any], rg: dict[str, Any]) -> tuple[NDArray[np.fl
 
 def lc_risky(m: dict[str, Any], spec: HistoricalReplaySpec):
     """Risky mix and Merton exposure on total wealth (depends on market estimates only; cached per snapshot)."""
-    key = "_lc_risky_%g_%g" % (spec.preferences.gamma, spec.max_sleeve)
+    key = "_lc_risky_%g_%g_%s" % (spec.preferences.gamma, spec.max_sleeve, ",".join(m["eligible"]))
     if key in m:
         return m[key]
     b = blocks(m["eligible"])
@@ -838,7 +838,7 @@ def _replay_policy(pol, spec, h, snaps, fixed_set, cand, to_real_last, detail, a
 
 def restrict(m: dict[str, Any], keep: list[str]) -> dict[str, Any]:
     ii = [m["eligible"].index(c) for c in keep]
-    mm = dict(m)
+    mm = {k: v for k, v in m.items() if not str(k).startswith("_lc")}   # caches belong to the original universe
     mm["eligible"] = list(keep)
     for k in ("mu_ex", "prior_ex", "vol", "trend", "vol_short"):
         mm[k] = m[k][ii]
