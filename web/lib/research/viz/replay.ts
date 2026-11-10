@@ -1,0 +1,122 @@
+import { v, type VizEntry } from "./define";
+
+const RP = "Historical replay study (historical_replay): one dated investor, monthly decisions from point-in-time information, executed by the holdings ledger one month at a time.";
+const PIT = ["Every decision at the start of month t uses asset returns through t−1, yields through t−1 and CPI through t−2 (publication lag); estimates use rolling or expanding windows ending before the decision.",
+  "Strategic target, tactical deviation and executed holdings are recorded separately; trades follow the rebalancing rule (default: 5-percentage-point bands checked monthly, contributions directed toward the target)."];
+const LIM = ["One historical path: a realised outcome, not a probability. Different start dates or assumptions give different results (see HR-14).",
+  "Public tier: Treasuries, TIPS and investment-grade credit are repriced from yields (model-generated); IG credit has no default losses. Gold, commodities and high yield need WRDS and are never proxied.",
+  "Salary, savings and retirement-spending inputs are illustrative assumptions, not a model of a real household."];
+
+export const REPLAY: VizEntry[] = [
+  v("HR-01", "lifecycle", "replay", "Dynamic asset allocation timeline", {
+    q: "How did this one investor's actual portfolio weights change month by month through history?",
+    what: "Actual post-trade weights of every sleeve for the selected policy, month by month, from the start date to the latest observation. The vertical line is the month selected on the timeline.",
+    x: "Historical month", y: "Share of portfolio", c: "Sleeve (asset)", units: "% of portfolio wealth",
+    series: "Stacked areas sum to 100% each month; colours follow the asset.",
+    calc: "Ledger holdings after that month's flows and trades divided by wealth. Between rebalances weights drift with returns.",
+    read: "Steps are trades; slopes between steps are drift. A static policy shows drift around a constant target; adaptive policies change the target itself.",
+    why: "It shows how the allocation actually evolved for one investor, not an average over simulated paths.", method: ["rebalancing", "wealth"], data: RP,
+    related: ["HR-02", "HR-07", "MA-06"], as: PIT, lim: LIM }, ["ledger", "study"]),
+  v("HR-02", "lifecycle", "replay", "Strategic target vs actual allocation", {
+    q: "How far did the executed holdings sit from the policy's desired allocation, and why?",
+    what: "For the selected month: the strategic target, the tactical adjustment, the final target, and the actual weights before and after trading. Below it, the distance between actual and target over time.",
+    x: "Sleeve (top) / month (bottom)", y: "Weight (top) / total absolute deviation (bottom)", units: "% of portfolio",
+    series: "Bars: strategic, final target, pre-trade, post-trade. Line: Σ|actual − target|.",
+    calc: "Strategic and tactical layers come from the policy; pre- and post-trade weights from the ledger trace.",
+    read: "A gap that persists is the rebalancing band at work (trading only when a sleeve breaches it); a gap that closes is a trade.",
+    why: "Separates what the policy wanted from what was executed.", method: ["rebalancing"], data: RP, related: ["HR-01", "HR-08"], as: PIT, lim: LIM }, ["ledger", "study"]),
+  v("HR-03", "lifecycle", "replay", "Portfolio wealth growth", {
+    q: "How did the investor's wealth grow in nominal and real terms?",
+    what: "Portfolio wealth at each month end in nominal dollars and in real dollars of the last historical month, with an optional benchmark policy overlay.",
+    x: "Historical month", y: "Wealth", units: "US$ (nominal) and US$ of the last historical month (real)",
+    series: "Solid: nominal; dashed: real; dotted: benchmark policy.", calc: "Ledger wealth after month-t returns; real = nominal × CPI(last)/CPI(t) using realised CPI.",
+    read: "Wealth includes contributions; compare policies at the same date, and use HR-04 to separate saving from investment returns.",
+    why: "The realised outcome of every decision for this investor.", method: ["wealth"], data: RP, related: ["HR-04", "HR-10"], as: PIT, lim: LIM }, ["ledger", "study"]),
+  v("HR-04", "lifecycle", "replay", "Contributions vs investment returns", {
+    q: "How much of the accumulated wealth came from saving and how much from investment returns?",
+    what: "Cumulative contributions (including the initial deposit) and cumulative investment gain (after costs), stacked to wealth.",
+    x: "Historical month", y: "US$ (nominal)", units: "US$", series: "Two stacked areas: contributions, investment gain.",
+    calc: "gain_t = wealth_t − initial wealth − Σ contributions + Σ withdrawals.",
+    read: "Early in a career contributions dominate; negative gain areas are drawdowns that have not yet been recovered.",
+    why: "It separates the saver's effort from the policy's performance.", method: ["wealth"], data: RP, related: ["HR-03"], as: PIT, lim: LIM }, ["ledger", "study"]),
+  v("HR-05", "lifecycle", "replay", "Rolling portfolio risk", {
+    q: "How risky was the portfolio over time, ex ante and ex post?",
+    what: "Realised 12-month volatility, the policy's ex-ante volatility (point-in-time covariance) and the drawdown of the time-weighted return; risk contributions by sleeve for the selected month.",
+    x: "Historical month (lines) / sleeve (bars)", y: "Annualised volatility, drawdown / share of risk", units: "% per year; %",
+    series: "Lines: realised, ex-ante, drawdown. Bars: risk contribution of each sleeve.", calc: "Time-weighted monthly returns of the post-trade portfolio; RC_i = w_i (Σw)_i / w'Σw.",
+    read: "Ex-ante risk that ignores a crisis until afterwards shows estimation lag; a drawdown that does not recover means lost compounding.",
+    why: "Risk is what the investor experiences, month by month.", method: ["ci"], data: RP, related: ["HR-01", "MA-08"], as: PIT, lim: LIM }, ["ledger", "study"]),
+  v("HR-06", "lifecycle", "replay", "Market-state timeline", {
+    q: "What did the market look like, point in time, when each decision was taken?",
+    what: "10-year Treasury and TIPS yields, trailing inflation, the Baa–Aaa credit spread, the 36-month stock–bond correlation and the filtered probability of the higher-inflation regime, with this policy's trade months marked.",
+    x: "Historical month", y: "Level", units: "% per year; correlation; probability",
+    series: "One line per state variable; ticks: rebalancing trades.", calc: "Values available at each decision date (yields through t−1, CPI through t−2); the regime model is refitted yearly on an expanding window.",
+    read: "Look for trades that follow a change in state; a policy can only react after the information is published.",
+    why: "It connects decisions to the information that drove them.", method: ["posterior", "data"], data: RP, related: ["HR-08", "MS-06"], as: PIT, lim: LIM }, ["regime", "study"]),
+  v("HR-07", "lifecycle", "replay", "Historical rebalancing events", {
+    kind: "chart", q: "When did the policy trade, what did it buy and sell, what did it cost, and why?",
+    what: "Every executed trade as a marker (date × sleeve, size = notional), and the trade list for the selected month with cost and the trigger reason recorded by the ledger.",
+    x: "Historical month", y: "Sleeve", units: "US$ notional; US$ cost",
+    series: "Filled: buys; hollow: sells.", calc: "Ledger trades (flows toward target plus rebalancing) and costs on executed notional (commission + half spread).",
+    read: "Clusters of trades follow target changes or band breaches; contributions alone also buy every month.",
+    why: "Execution is where policies pay for their activity.", method: ["rebalancing"], data: RP, related: ["RB-03", "HR-02"], as: PIT, lim: LIM }, ["ledger", "study"]),
+  v("HR-08", "lifecycle", "replay", "Portfolio decision inspector", {
+    kind: "panel", q: "Why did the portfolio change in the selected month?",
+    what: "The selected month's investor state, point-in-time market state, policy decision (previous weights, strategic target, tactical change, final target, objective and binding constraints) and execution (pre-trade weights, trades, costs, post-trade weights, trigger).",
+    other: "Four panels: investor, market, decision, execution", units: "US$, %, years",
+    series: "All values are the stored inputs and outputs of that month.", calc: "Nothing is recomputed in the browser; the explanation sentence is assembled from the stored values.",
+    read: "If the target changed but nothing traded, the deviation stayed inside the band; if wealth moved but the target did not, the policy is static.",
+    why: "Every allocation change is auditable to its inputs.", method: ["rebalancing", "utility"], data: RP, related: ["HR-02", "HR-06"], as: PIT, lim: LIM }, ["ledger", "study"]),
+  v("HR-09", "lifecycle", "replay", "Funding ratio through time", {
+    q: "Is the investor on track to fund their retirement spending?",
+    what: "Funding ratio = (financial wealth + human capital) / PV of desired portfolio-funded retirement spending, with both components shown.",
+    x: "Historical month", y: "Ratio / US$", units: "ratio; current US$",
+    series: "Ratio line; areas: human capital (PV of future contributions) and PV of liabilities.",
+    calc: "Survival-weighted (SSA period table) PVs discounted at the point-in-time real rate (10Y TIPS yield, or the 10Y yield minus trailing inflation before TIPS exist).",
+    tex: String.raw`FR_t=\frac{W_t+\sum_{x<R}p_{t,x}\,s\,y_x\,(1+r_t)^{-(x-a_t)}}{\sum_{x\ge R}p_{t,x}\,(\rho-\pi)\,y_R\,(1+r_t)^{-(x-a_t)}}`,
+    read: "Falling real rates raise the liability PV, so the ratio can fall even when wealth rises.",
+    why: "It is the investor-state variable that the lifecycle policy uses to size its liability hedge.", method: ["income", "duration"], data: RP, related: ["LC-05", "FI-10"], as: PIT, lim: LIM }, ["study"]),
+  v("HR-10", "lifecycle", "replay", "Policy comparison timeline", {
+    q: "How do the policies compare, for the same investor and the same history?",
+    what: "Wealth of every policy relative to static 60/40, and each policy's growth (equity) weight through time.",
+    x: "Historical month", y: "Wealth / 60/40 wealth; growth weight", units: "ratio; %",
+    series: "One line per policy; colours follow the policy.", calc: "Same contributions, costs, rebalancing rule and information for every policy.",
+    read: "Lines above 1 beat 60/40 to date. One history is a single realisation: rankings can reverse with the start date (HR-14).",
+    why: "The direct test of whether adaptive decisions helped this investor.", method: ["utility"], data: RP, related: ["CO-01", "HR-14"], as: PIT, lim: LIM }, ["ledger", "study"]),
+  v("HR-11", "lifecycle", "replay", "Historical-to-future projection", {
+    q: "Where could the investor go from here, starting from where history left them?",
+    what: "Realised real wealth to the last observation, then the 5–95% and 25–75% bands and median of simulated real wealth by age through 95; the boundary line separates observed from simulated.",
+    x: "Age", y: "Real wealth (dollars of the last historical month)", units: "US$",
+    series: "Solid: realised; bands: simulated percentiles; vertical line: last observation.",
+    calc: "Block bootstrap (12-month blocks) of joint real returns and CPI over the information set at the boundary; the policy recomputes targets on every path every month; contributions to retirement, then spending net of pension.",
+    read: "The fan is conditional on the bootstrap model; it begins at the exact realised holdings.",
+    why: "It continues the same investor through accumulation, retirement and decumulation.", method: ["scenarios", "wealth"], data: RP, related: ["HR-12", "HR-13"], as: PIT,
+    lim: [...LIM, "Forward market estimates are frozen at the boundary (no refitting along paths); trend, volatility and regime signals and the investor state are path-specific."] }, ["mc", "ledger", "study"]),
+  v("HR-12", "lifecycle", "replay", "Future asset allocation distribution", {
+    q: "How might the policy's allocation evolve through retirement across scenarios?",
+    what: "Median weight of each sleeve by age across forward paths, with the 10–90% range of the growth sleeves.",
+    x: "Age", y: "Weight", c: "Sleeve", units: "% of portfolio", series: "Stacked medians (approximate: medians need not sum to 100%); band for equities.",
+    calc: "Start-of-year holdings on every simulated path.", read: "Wide bands mean the allocation is driven by path outcomes (wealth, signals), not by age alone.",
+    why: "State-dependent policies give different allocations to investors of the same age.", method: ["rebalancing"], data: RP, related: ["HR-11", "LC-07"], as: PIT, lim: LIM }, ["mc", "study"]),
+  v("HR-13", "lifecycle", "replay", "Lifetime outcomes by policy", {
+    kind: "table", q: "Which policy delivers the best lifetime outcomes for this investor from today?",
+    what: "For each policy: realised wealth, volatility, drawdown, turnover and costs to date; then forward lifetime CE consumption, probability of funding every desired withdrawal to 95, shortfall severity and wealth at retirement.",
+    other: "Sortable table", units: "US$, %", series: "One row per policy.",
+    calc: "Historical columns from the replay; forward columns from the continuation (same paths for every policy).",
+    read: "A policy can win the realised history and lose the forward assessment, or the reverse; neither is a guarantee.",
+    why: "Puts realised and prospective evidence side by side.", method: ["utility", "shortfall", "ci"], data: RP, related: ["HR-10", "HR-14"], as: PIT, lim: LIM }, ["mc", "ledger", "crra", "study"]),
+  v("HR-14", "lifecycle", "replay", "Cohorts and chronological walk-forward", {
+    kind: "table", q: "Do the conclusions hold for other ages, start years and estimation windows?",
+    what: "Realised outcomes of the core policies for investors aged 20, 40 and 60 in the same year, for start years 1996–2012, and for 60-month, 120-month and expanding estimation windows.",
+    other: "Tables", units: "US$, %", series: "One row per cohort / start year / window.",
+    calc: "Each row is a separate chronological replay with its own point-in-time information.",
+    read: "Agreement across cohorts and start years is evidence; disagreement means the history is too short to rank the policies.",
+    why: "Walk-forward validation instead of one lucky (or unlucky) start date.", method: ["ci"], data: RP, related: ["RS-05", "HR-15"], as: PIT, lim: LIM }, ["hist", "study"]),
+  v("HR-15", "lifecycle", "replay", "Lifecycle policy ablations", {
+    kind: "table", q: "Which ingredient of the lifecycle-adaptive policy matters: age and human capital, the liability hedge, market signals, target changes or trade execution?",
+    what: "The lifecycle-adaptive replay with one ingredient removed at a time, compared with the full policy.",
+    other: "Table", units: "US$, %", series: "Full policy; no human capital; no liability hedge; no market signals; frozen first target; no rebalancing.",
+    calc: "Identical history, investor and costs; only the named ingredient changes.",
+    read: "An ablation identical to the full policy means that ingredient never changed a decision in this history.",
+    why: "Separates the value of state-dependence from the value of signals and of trading.", method: ["utility"], data: RP, related: ["HR-14", "OP-06"], as: PIT, lim: LIM }, ["ledger", "study"]),
+];

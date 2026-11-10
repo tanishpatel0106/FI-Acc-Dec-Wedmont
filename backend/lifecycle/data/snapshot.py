@@ -20,6 +20,7 @@ SOURCES = {
     "fred": "https://fred.stlouisfed.org/ (fredgraph CSV or FRED API)",
     "gsw": "https://www.federalreserve.gov/data/nominal-yield-curve.htm (feds200628, feds200805)",
     "acm": "https://www.newyorkfed.org/research/data_indicators/term-premia-tabs",
+    "fx": "https://fred.stlouisfed.org/ (H.10 daily spot DEX*, OECD call money IRSTCI01*M156N)",
 }
 
 
@@ -29,11 +30,11 @@ def _sha256(path: Path) -> str:
 
 def create_snapshot(dest: Path = SNAPSHOT_DIR) -> dict:
     """Pull every public source now and write the snapshot (used to refresh the committed copy)."""
-    from lifecycle.data import ingest_acm, ingest_fred, ingest_french, ingest_gsw, ingest_ssa
+    from lifecycle.data import ingest_acm, ingest_fred, ingest_french, ingest_fx, ingest_gsw, ingest_ssa
 
     dest.mkdir(parents=True, exist_ok=True)
     pulls = {"french": ingest_french.pull_french, "fred": ingest_fred.pull_fred, "gsw": ingest_gsw.pull_gsw,
-             "acm": ingest_acm.pull_acm}
+             "acm": ingest_acm.pull_acm, "fx": ingest_fx.pull_fx}
     manifest: dict = {"vintage": date.today().isoformat(), "created_at": pd.Timestamp.now().isoformat(),
                       "files": {}, "note": "public sources only; WRDS data is never committed"}
     for name, fn in pulls.items():
@@ -53,6 +54,24 @@ def create_snapshot(dest: Path = SNAPSHOT_DIR) -> dict:
                                        "provenance": str(life["provenance"].iloc[0]), "sha256": _sha256(life_path)}
     (dest / "manifest.json").write_text(json.dumps(manifest, indent=2))
     return manifest
+
+
+def add_source(name: str, dest: Path = SNAPSHOT_DIR) -> dict:
+    """Add (or refresh) one public source in the committed snapshot without touching the other files."""
+    from lifecycle.data import ingest_fx
+
+    fns = {"fx": ingest_fx.pull_fx}
+    manifest = json.loads((dest / "manifest.json").read_text())
+    frame = fns[name]()
+    path = dest / (name + ".parquet")
+    frame.to_parquet(path, index=False)
+    manifest["files"][name] = {
+        "rows": int(len(frame)), "series": sorted(frame["series_id"].unique().tolist()),
+        "first_month": str(pd.to_datetime(frame["month_end"]).min().date()),
+        "last_month": str(pd.to_datetime(frame["month_end"]).max().date()),
+        "source": SOURCES[name], "sha256": _sha256(path), "pulled_at": date.today().isoformat()}
+    (dest / "manifest.json").write_text(json.dumps(manifest, indent=2))
+    return manifest["files"][name]
 
 
 def load_snapshot(src: Path = SNAPSHOT_DIR) -> dict:

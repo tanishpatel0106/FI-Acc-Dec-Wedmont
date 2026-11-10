@@ -8,10 +8,10 @@ from lifecycle.data.normalize import build_panel, write_raw
 
 def run_public() -> None:
     """Pull every public source concurrently; a failing source is reported and the rest continue."""
-    from lifecycle.data import ingest_acm, ingest_fred, ingest_french, ingest_gsw, ingest_ssa
+    from lifecycle.data import ingest_acm, ingest_fred, ingest_french, ingest_fx, ingest_gsw, ingest_ssa
 
     steps = [("french", ingest_french.pull_french), ("fred", ingest_fred.pull_fred),
-             ("gsw", ingest_gsw.pull_gsw), ("acm", ingest_acm.pull_acm)]
+             ("gsw", ingest_gsw.pull_gsw), ("acm", ingest_acm.pull_acm), ("fx", ingest_fx.pull_fx)]
 
     def one(name, fn):
         t0 = time.time()
@@ -74,4 +74,17 @@ def run_all(include_wrds: bool, offline: bool = False) -> dict:
         run_wrds()
     meta = build_panel()
     print("panel built: catalog_hash", meta["catalog_hash"], "series", meta["n_series"])
+    _audit({"at": meta["built_at"], "offline": offline, "wrds": include_wrds, "catalog_hash": meta["catalog_hash"],
+            "n_series": meta["n_series"]})
     return meta
+
+
+def _audit(entry: dict) -> None:
+    import json
+
+    from lifecycle.config import processed_dir
+
+    p = processed_dir() / "ingest_audit.json"
+    rows = json.loads(p.read_text()) if p.exists() else []
+    rows.append(entry)
+    p.write_text(json.dumps(rows[-200:], indent=2))

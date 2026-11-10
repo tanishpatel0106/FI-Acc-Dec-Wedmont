@@ -1,10 +1,10 @@
 import { Suspense } from "react";
-import { Optimizer } from "@/components/pages/Optimizer";
+import { Optimize } from "@/components/pages/Optimize";
 
 export default function Page() {
   return (
     <Suspense>
-      <Optimizer />
+      <Optimize />
     </Suspense>
   );
 }

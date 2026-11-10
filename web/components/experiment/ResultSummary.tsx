@@ -1,16 +1,16 @@
 "use client";
 import type { Data } from "plotly.js";
-import { FanChart } from "@/components/charts/FanChart";
-import { WeightPath } from "@/components/charts/WeightPath";
-import { Plot, useVizTokens } from "@/components/charts/Plot";
-import { Section } from "@/components/common/Section";
+import { FanChart } from "@/components/visualizations/FanChart";
+import { WeightPath } from "@/components/visualizations/WeightPath";
+import { Plot, useVizTokens } from "@/components/visualizations/Plot";
+import { Viz } from "@/components/visualizations/VisualizationFrame";
 import { Stat } from "@/components/common/Stat";
 import { MetricLabel } from "@/components/common/MetricLabel";
 import { Badge } from "@/components/ui/badge";
 import type { ExperimentResults } from "@/lib/api/types";
 import { num, pct, signedPct, usd } from "@/lib/format";
 import { Provenance } from "./Provenance";
-import { SamplePaths } from "@/components/charts/SamplePaths";
+import { SamplePaths } from "@/components/visualizations/SamplePaths";
 
 export function HeadlineStats({ r }: { r: ExperimentResults }) {
   const d = r.ce.delta;
@@ -27,8 +27,8 @@ export function HeadlineStats({ r }: { r: ExperimentResults }) {
   );
 }
 
-export function ResultSummary({ r, runId, retireAge, compact = false }: {
-  r: ExperimentResults; runId?: string | null; retireAge?: number; compact?: boolean;
+export function ResultSummary({ r, runId, retireAge, compact = false, instance }: {
+  r: ExperimentResults; runId?: string | null; retireAge?: number; compact?: boolean; instance?: string;
 }) {
   const t = useVizTokens();
   const isDP = r.kind === "dp";
@@ -38,37 +38,37 @@ export function ResultSummary({ r, runId, retireAge, compact = false }: {
     <div className="space-y-4">
       <HeadlineStats r={r} />
       <div className="grid gap-4 lg:grid-cols-2">
-        <Section title={isDP ? "Cash-on-hand (real $)" : "Real wealth"} description="Fan: 5–95% and 25–75% of paths; dashed = benchmark median.">
+        <Viz id="EX-01" instance={instance} runId={runId} cls="model_generated" title={isDP ? "Cash-on-hand fan (real $)" : undefined}>
           <FanChart ages={r.ages} q={r.fan[wealthKey]} benchmark={r.fan.benchmark_wealth} retireAge={retireAge} height={h} />
-        </Section>
-        <Section title="Real consumption" description="Annual consumption including pension; both phases.">
+        </Viz>
+        <Viz id="EX-02" instance={instance} runId={runId} cls="model_generated">
           <FanChart ages={r.ages} q={r.fan.consumption} benchmark={r.fan.benchmark_consumption} retireAge={retireAge} height={h} />
-        </Section>
+        </Viz>
       </div>
       <div className="grid gap-4 lg:grid-cols-2">
-        <Section title="Mean portfolio weights by age" description={r.policy?.label}>
+        <Viz id="EX-03" instance={instance} runId={runId} cls="model_generated" footnote={r.policy?.label}>
           <WeightPath ages={r.ages} assets={r.weights_path.assets} weights={r.weights_path.mean} height={h - 20} allAssets={r.universe?.assets ?? r.assets} />
-        </Section>
+        </Viz>
         {r.shortfall ? (
-          <Section title="Cumulative depletion probability" description="Share of paths whose planned spending has gone unfunded by each age.">
+          <Viz id="EX-04" instance={instance} runId={runId} cls="model_generated">
             <Plot height={h - 20} data={[
               { x: r.ages, y: r.shortfall.p_depleted_by_age, type: "scatter", mode: "lines", name: "Policy", line: { width: 2, color: t.series[0] }, hovertemplate: "%{y:.1%}" },
               ...(r.benchmark_shortfall ? [{ x: r.ages, y: r.benchmark_shortfall.p_depleted_by_age, type: "scatter", mode: "lines", name: "Benchmark",
                 line: { width: 2, dash: "dash", color: t.series[1] }, hovertemplate: "%{y:.1%}" }] : []),
             ] as Data[]} layout={{ xaxis: { title: { text: "Age" } }, yaxis: { tickformat: ".0%", rangemode: "tozero" } }} />
-          </Section>
+          </Viz>
         ) : r.surfaces ? (
-          <Section title="DP policy: equity weight vs cash-on-hand" description="Regime 0, selected ages (x = cash-on-hand / permanent income).">
+          <Viz id="EX-05" instance={instance} runId={runId} cls="model_generated">
             <Plot height={h - 20} data={r.surfaces.by_regime[0].filter((_, i) => i % 2 === 0).map((row, i) => ({
               x: r.surfaces!.x, y: row.equity, type: "scatter", mode: "lines", name: "age " + row.age, line: { width: 2, color: t.series[i % 8] } })) as Data[]}
               layout={{ xaxis: { title: { text: "x" }, type: "log" }, yaxis: { tickformat: ".0%", range: [0, 1.02] } }} />
-          </Section>
+          </Viz>
         ) : null}
       </div>
       {!compact && runId && !isDP ? (
-        <Section title="Sample wealth paths" description="Individual simulated paths, streamed as Arrow IPC.">
+        <Viz id="EX-06" instance={instance} runId={runId} cls="model_generated">
           <SamplePaths runId={runId} />
-        </Section>
+        </Viz>
       ) : null}
       {r.warnings && r.warnings.length > 0 ? (
         <div className="flex flex-wrap gap-2">

@@ -3,7 +3,8 @@ import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import { PlaceholdersAndVanishInput } from "@/components/ui/placeholders-and-vanish-input";
 import { useCatalog, useRuns } from "@/lib/api/hooks";
-import { NAV } from "./AppShell";
+import { PAGES, pageHref } from "@/lib/research/routes";
+import { VISUALIZATIONS, vizHref } from "@/lib/research/visualization-registry";
 
 /** Quick search over pages, series and runs. Enter jumps to the best match. */
 export function CommandBar() {
@@ -12,12 +13,17 @@ export function CommandBar() {
   const runs = useRuns(undefined, 200);
   const cat = useCatalog();
   const items = useMemo(() => {
-    const out: { label: string; href: string; kind: string }[] = NAV.map((n) => ({ label: n.label, href: n.href, kind: "page" }));
+    const out: { label: string; href: string; kind: string }[] = [];
+    for (const p of PAGES) {
+      out.push({ label: p.name + " — " + p.question, href: p.path, kind: "page" });
+      for (const s of p.sections) out.push({ label: p.name + " › " + s.title, href: pageHref(p.key, s.id), kind: "section" });
+    }
+    for (const v of VISUALIZATIONS) out.push({ label: v.id + " " + v.title, href: vizHref(v.id), kind: "chart" });
     for (const r of runs.data?.runs ?? []) {
-      out.push({ label: (r.label ?? r.kind) + " " + r.run_id, href: "/runs?id=" + r.run_id, kind: r.kind });
+      out.push({ label: (r.label ?? r.kind) + " " + r.run_id, href: "/runs?section=registry&id=" + r.run_id, kind: r.kind });
     }
     for (const s of cat.data?.series ?? []) {
-      out.push({ label: s.series_id + " " + s.label, href: "/lab?series=" + s.series_id, kind: "series" });
+      out.push({ label: s.series_id + " " + s.label, href: "/scenarios?section=historical-analytics&series=" + s.series_id, kind: "series" });
     }
     return out;
   }, [runs.data, cat.data]);
@@ -25,7 +31,7 @@ export function CommandBar() {
   return (
     <div className="relative w-full max-w-md">
       <PlaceholdersAndVanishInput
-        placeholders={["Search runs, series and pages…", "heatmap", "Treasury 10Y", "Policy optimizer", "run id…"]}
+        placeholders={["Search pages, charts, runs and series…", "WL-02 survival heatmap", "Treasury 10Y", "Permanent Portfolio", "run id…"]}
         onChange={(e) => setQ(e.target.value)}
         onSubmit={(e) => {
           e.preventDefault();
