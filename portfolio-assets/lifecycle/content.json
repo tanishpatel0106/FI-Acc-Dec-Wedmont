@@ -1,0 +1,134 @@
+{
+  "project": {
+    "slug": "lifecycle",
+    "title": "LIFECYCLE: Lifetime-Utility Research Platform for Multi-Asset Retirement Portfolios",
+    "description": "A research platform that measures, in certainty-equivalent consumption, how much a cash-flow-aware multi-asset allocation is worth over 60/40 or a target-date glidepath across savings rates, withdrawal rates and economic regimes.",
+    "year": 2026,
+    "repoUrl": "https://github.com/tanishpatel0106/FI-Acc-Dec-Wedmont",
+    "liveUrl": null,
+    "stack": [
+      "Python",
+      "NumPy",
+      "Numba",
+      "SciPy",
+      "pandas",
+      "FastAPI",
+      "Pydantic",
+      "Apache Arrow",
+      "SQLite",
+      "Next.js",
+      "React",
+      "TypeScript",
+      "Tailwind CSS",
+      "Plotly",
+      "Docker",
+      "Monte Carlo simulation",
+      "Dynamic programming",
+      "Stationary block bootstrap",
+      "Markov-switching models",
+      "DCC-GARCH"
+    ],
+    "metrics": [
+      {
+        "value": "91",
+        "label": "heatmap cells per decumulation sweep, each a cached, addressable run"
+      },
+      {
+        "value": "5",
+        "label": "scenario generators"
+      },
+      {
+        "value": "14",
+        "label": "allocation policy types"
+      },
+      {
+        "value": "27",
+        "label": "backend tests"
+      }
+    ],
+    "sections": [
+      {
+        "label": "Problem",
+        "text": "Most retirement tools ask whether a portfolio survives. I wanted to measure how much better off an investor is when the allocation responds to their own cash flows, horizon and the economic regime. LIFECYCLE answers that in certainty-equivalent consumption: the constant real spending level that gives the same lifetime utility as the simulated outcome. The headline exhibit is a heatmap of the percentage gain of an optimised policy over a 60/40 portfolio, across withdrawal rates from 2% to 8% and years relative to retirement."
+      },
+      {
+        "label": "Data",
+        "text": "I wrote ingestion for five public sources: the Kenneth French library, FRED, the Federal Reserve's Gürkaynak–Sack–Wright yield curves, the New York Fed ACM term premium and the SSA life table. A committed snapshot of 52,884 rows lets the panel build with no network access, and a manifest records the SHA-256 of every file. I also wrote WRDS ingestion for CRSP, bond and ETF series, which take priority when present. Treasury, TIPS and credit returns built from public yields are repriced month to month and tagged as model-generated."
+      },
+      {
+        "label": "Market Models",
+        "text": "The research layer studies how assets move together before anything is simulated. I implemented rolling 12, 36 and 60-month correlations, Ledoit–Wolf shrinkage, DCC-GARCH(1,1), Student-t copula tail dependence and PELT change points, with covariance forecasts scored out of sample by QLIKE. A fixed-income module prices bonds on the fitted curve and reports duration, DV01, convexity, rate-shock tables and a PCA of yield changes. Five scenario generators feed the simulator: historical cohorts, a stationary block bootstrap, a multivariate Student-t, a Markov-switching model and a yield-curve factor model."
+      },
+      {
+        "label": "Lifecycle Kernel",
+        "text": "The simulator is a Numba kernel that moves wealth forward monthly in real terms. It covers accumulation and decumulation in one model: labour income following the Cocco–Gomes–Maenhout profile, a pension, rebalancing costs, SSA mortality and a bequest motive. Spending can follow fixed real, fixed percentage, guardrails, bucket or amortised rules. Utility is CRRA with a consumption floor, and paths that cannot fund planned spending are flagged as shortfalls instead of being dropped. Every policy is compared with its benchmark on the same random paths, so differences are paired."
+      },
+      {
+        "label": "Optimisation",
+        "text": "I implemented 14 allocation policy types. The static ones include mean–variance, risk parity, mean–CVaR solved as a linear program and a CRRA-optimal constant mix fitted on simulated paths. The dynamic ones include regime-dependent mixes and a parametric policy that is fitted on one set of seeds and reported on another. As a reference point I solved a reduced three-asset problem by grid dynamic programming, with a 200-point cash-on-hand grid, a 21-point weight simplex and Markov-switching regimes."
+      },
+      {
+        "label": "Runs and API",
+        "text": "Every computation is a frozen specification whose SHA-256, combined with the data catalog hash, becomes its run ID, so an identical request returns from the cache. Runs are stored in a SQLite registry with the engine version, lockfile hash, seeds and timings. A sweep is a grid of such runs: the default decumulation surface has 91 cells, 13 withdrawal rates by 7 horizons, at 2,000 paths per cell. A FastAPI service exposes 25 operations under /v1, streams progress over server-sent events and returns path arrays as Arrow IPC."
+      },
+      {
+        "label": "Research Terminal",
+        "text": "The front end is a Next.js application with nine screens: an overview, a research lab, a fixed-income panel, a simulator, a policy optimizer, a withdrawal-rate lab, comparison and validation, a run history and a methodology page. It never computes analytics; each chart is drawn with Plotly from a backend run and carries that run's ID, spec hash and catalog hash. Clicking a heatmap cell opens the policy behind it, its wealth and consumption fans and its depletion probability, and any run can be exported as PDF, CSV, BibTeX or JSON."
+      },
+      {
+        "label": "Validation",
+        "text": "I wrote 27 backend tests on synthetic fixtures, covering accounting identities, recovery of the Merton solution, estimator recovery and the API. One test replays historical 60/40 cohorts against an independent spreadsheet-style loop and requires agreement to 1e-8. For results, the platform reports Monte Carlo, parameter and model uncertainty separately: convergence across 1,000 to 10,000 paths, a parameter bootstrap, and the same policy under three scenario generators. A result is called robust only if its sign survives all three, and a reproduce command re-executes any run and asserts identical summary statistics."
+      },
+      {
+        "label": "Findings",
+        "text": "On the public-data snapshot, with WRDS data still pending, the headline run compared a parametric dynamic policy with 60/40 for a risk aversion of 4 under the block bootstrap. Across the 91 cells the mean gain in certainty-equivalent consumption was 7.55%, the largest was 17.6%, and 80 cells were more than two standard errors from zero. Gains were close to zero for retirees withdrawing 3% or less and generally grew with the withdrawal rate. These numbers are model-dependent research output from one data vintage, not investment advice."
+      }
+    ],
+    "images": [
+      {
+        "file": "lifecycle-1.png",
+        "alt": "Withdrawal-Rate Sensitivity Lab showing the headline heatmap of certainty-equivalent consumption gain over 60/40 by withdrawal rate and years relative to retirement, with summary statistics and the public-data flag."
+      },
+      {
+        "file": "lifecycle-2.png",
+        "alt": "Detail card for the 5.0% withdrawal, at-retirement heatmap cell: policy weights, real wealth and consumption fan charts, portfolio weights by age and cumulative depletion probability against the 60/40 benchmark."
+      },
+      {
+        "file": "lifecycle-3.png",
+        "alt": "Research Lab dependence view: rolling and DCC correlation of US equity and 10-year Treasuries with change points, joint-loss frequency by decade, an inflation-regime table and Student-t copula tail statistics."
+      },
+      {
+        "file": "lifecycle-4.png",
+        "alt": "Fixed Income panel: par-bond table of duration, convexity and DV01 by maturity beside a parallel rate-shock chart comparing full repricing with the duration and convexity approximation."
+      },
+      {
+        "file": "lifecycle-5.png",
+        "alt": "Lifecycle Simulator with the investor form and results for a parametric dynamic policy against 60/40: certainty-equivalent consumption, depletion probability and wealth and consumption fan charts."
+      },
+      {
+        "file": "lifecycle-6.png",
+        "alt": "Policy Optimizer bar chart of certainty-equivalent gain over 60/40 with two-standard-error whiskers for ten policies, with each policy's certainty-equivalent consumption listed below."
+      },
+      {
+        "file": "lifecycle-7.png",
+        "alt": "Withdrawal Lab accumulation surface: heatmap of certainty-equivalent gain over a target-date glidepath by savings rate and starting age."
+      },
+      {
+        "file": "lifecycle-8.png",
+        "alt": "Strategy comparison of the parametric policy and 60/40 on common paths: paired certainty-equivalent table, per-path scatter plot and a divergent-path wealth chart."
+      }
+    ]
+  },
+  "experience": {
+    "company": "Columbia University × Wedmont Private Capital",
+    "title": "Quantitative Researcher",
+    "date": "September 2026 - Present",
+    "description": "Lifetime-utility research platform for retirement portfolios",
+    "responsibilities": [
+      "Built a Numba lifecycle simulator and a FastAPI service with 25 /v1 operations, addressing every result by a SHA-256 run ID.",
+      "Implemented 5 scenario generators and 14 allocation policy types, up to a grid dynamic program on a 200-point cash-on-hand grid.",
+      "Designed 91-cell sweeps (13 withdrawal rates by 7 horizons) at 2,000 simulated paths per cell to measure certainty-equivalent gains over 60/40.",
+      "Wrote 27 backend tests, including a 60/40 cohort replay that matches an independent loop to 1e-8."
+    ]
+  }
+}
