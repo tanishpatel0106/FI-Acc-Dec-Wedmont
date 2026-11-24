@@ -1,0 +1,15 @@
+Exploratory design amendments - November 20, 2026
+
+The initial design.json was written before the new budget-market template evaluation. It is not a
+preregistration. The following checks were added after inspecting descriptive results and accounting:
+- All-recurring-income interruption and earned-income-share adjustment, to investigate the apparent
+  older-household advantage under the primary wage-only interruption.
+- Retrospective chronological age-prediction tests across earlier/later SCF waves. Later-wave
+  descriptive outcomes were already known from earlier project analyses; no untouched prospective
+  lockbox is claimed. Model fitting itself uses only earlier-wave observations.
+- Adjusted willingness/budget-threshold associations, including the all-income-interruption variant.
+- Paired policy-difference Monte Carlo intervals and a nonlinear cell-mean aggregation audit.
+- Rerunning the existing SHED prospective/within-person results and integrating them into the report.
+All results and sensitivity alternatives are retained. The six primary incremental-age comparisons
+within the added transport exercise receive Holm adjustment; other intervals remain exploratory and
+pointwise. These amendments must not be described as pre-data confirmatory hypotheses.

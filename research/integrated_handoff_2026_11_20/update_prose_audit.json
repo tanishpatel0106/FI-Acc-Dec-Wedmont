@@ -1,0 +1,34 @@
+{
+  "length": 732,
+  "suspicious_total": 0,
+  "hits": [],
+  "notes": [
+    "Layer A only: invisible/format Unicode and space homoglyphs (edit-based carriers).",
+    "Statistical (token-sampling) watermarks are not detectable here; use Layer B rewrite.",
+    "Inspect kinds: strip, bidi, tag_chars, variation_selector, zwj_family, private_use, space, confusable, other_cf.",
+    "Load-bearing invisibles are preserved by default during cleaning: emoji glue, CJK/Mongolian variation selectors, script joiners, complete flag tag sequences, same-script fillers/selectors (Mongolian FVS, Khmer inherent vowels, Hangul jamo fillers), RTL directional marks/paired embeddings, orthographic Arabic/Syriac Cf marks, and visible-layout format controls next to their own script (Egyptian hieroglyph quadrat, Duployan shorthand, musical beaming). Inspection still reports bidi controls. Use explicit strip flags only after review.",
+    "No deterministic Layer A (invisible Unicode/format) carriers detected; statistical and pixel-domain marks are out of scope here."
+  ],
+  "stylometry": {
+    "path": "lifecycle/research/integrated_handoff_2026_11_20/EMPLOYER_UPDATE.txt",
+    "word_count": 95,
+    "sentence_count": 6,
+    "burstiness_cv": 0.3027,
+    "lexical_diversity": 0.8922,
+    "ai_ngram_density": 0.0,
+    "matched_markers": [],
+    "score": 0.3541,
+    "confidence_level": "LOW",
+    "density_tier": "low",
+    "status": "ok",
+    "findings": [
+      "Unnaturally uniform sentence cadence (CV=0.30 < 0.35)"
+    ],
+    "findings_confidence": [
+      "informational"
+    ],
+    "notes": [
+      "Sample word count (95) is in calibration range (30-100); score dampened by factor 0.96"
+    ]
+  }
+}

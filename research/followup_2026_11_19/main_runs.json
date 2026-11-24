@@ -1,0 +1,846 @@
+{
+  "frontier": {
+    "run_id": "15396257c3d3bfcb163e",
+    "kind": "frontier",
+    "label": "corrected default frontier",
+    "spec": {
+      "alt_generators": [
+        "student_t",
+        "markov_switching"
+      ],
+      "alt_n_paths": 1000,
+      "alt_windows": [
+        [
+          "1953-01-01",
+          "1989-12-31"
+        ],
+        [
+          "1990-01-01",
+          "2026-12-31"
+        ]
+      ],
+      "b_step": 0.05,
+      "bond": "ust_10y",
+      "bond_assets": [
+        "tbill",
+        "ust_5y",
+        "ust_10y"
+      ],
+      "costs": {
+        "commission_bps": 0.0,
+        "half_spread_bps": 0.0,
+        "slippage_bps": 0.0
+      },
+      "data": {
+        "calibration_end": null,
+        "calibration_start": null,
+        "catalog_hash": "3bbcce4a7278f089",
+        "universe": "core_long_history"
+      },
+      "equity": "us_eq",
+      "gammas": [
+        2.0,
+        4.0,
+        6.0,
+        8.0
+      ],
+      "horizons_years": [
+        10,
+        20,
+        30,
+        40
+      ],
+      "investor": {
+        "age": 65.0,
+        "horizon_years": 40,
+        "income": 0.0,
+        "initial_wealth": 1000000.0,
+        "mortality": true,
+        "pension": 0.0,
+        "retirement_age": 65.0,
+        "savings_rate": 0.1,
+        "sex": "unisex"
+      },
+      "label": null,
+      "main_horizon": 30,
+      "main_target": 0.9,
+      "n_boot": 200,
+      "preferences": {
+        "beta_annual": 0.97,
+        "gamma": 4.0,
+        "util_floor_annual": 3000.0
+      },
+      "r_start": 0.0,
+      "r_step": 0.0025,
+      "r_stop": 0.1,
+      "rebalancer": "calendar_12m",
+      "scenario": {
+        "block_length": null,
+        "generator": "bootstrap",
+        "k_regimes": 2,
+        "n_paths": 2000,
+        "n_train_paths": 1000,
+        "seed": 20261107
+      },
+      "targets": [
+        0.8,
+        0.85,
+        0.9,
+        0.95
+      ]
+    },
+    "catalog_hash": "3bbcce4a7278f089",
+    "engine_version": "0.2.3+d711933ba962"
+  },
+  "signed_flow": {
+    "run_id": "3c15e68b970135cb144d",
+    "kind": "signed_flow",
+    "label": "corrected default signed_flow",
+    "spec": {
+      "ages": [
+        25.0,
+        35.0,
+        45.0,
+        55.0,
+        65.0,
+        75.0,
+        85.0
+      ],
+      "b_step": 0.1,
+      "bond": "ust_10y",
+      "costs": {
+        "commission_bps": 0.0,
+        "half_spread_bps": 0.0,
+        "slippage_bps": 0.0
+      },
+      "data": {
+        "calibration_end": null,
+        "calibration_start": null,
+        "catalog_hash": "3bbcce4a7278f089",
+        "universe": "core_long_history"
+      },
+      "equity": "us_eq",
+      "horizon_years": 20,
+      "label": null,
+      "n_boot": 100,
+      "persona_income": 100000.0,
+      "persona_savings": [
+        0.05,
+        0.1,
+        0.15,
+        0.2,
+        0.25
+      ],
+      "persona_start_ages": [
+        25.0,
+        30.0,
+        35.0,
+        40.0,
+        45.0,
+        50.0
+      ],
+      "persona_target_multiple": 12.0,
+      "preferences": {
+        "beta_annual": 0.97,
+        "gamma": 4.0,
+        "util_floor_annual": 3000.0
+      },
+      "q_grid": [
+        -0.15,
+        -0.1,
+        -0.075,
+        -0.05,
+        -0.03,
+        -0.02,
+        -0.01,
+        -0.005,
+        0.0,
+        0.005,
+        0.01,
+        0.02,
+        0.03,
+        0.04,
+        0.05,
+        0.06,
+        0.07,
+        0.08,
+        0.1
+      ],
+      "real_discount_rate": null,
+      "rebalancer": "calendar_12m",
+      "scenario": {
+        "block_length": null,
+        "generator": "bootstrap",
+        "k_regimes": 2,
+        "n_paths": 1500,
+        "n_train_paths": 1000,
+        "seed": 20261107
+      },
+      "w_ref": 1000000.0
+    },
+    "catalog_hash": "3bbcce4a7278f089",
+    "engine_version": "0.2.3+d711933ba962"
+  },
+  "rebalance": {
+    "run_id": "b42f4a607fb70c037045",
+    "kind": "rebalance",
+    "label": "corrected default rebalance",
+    "spec": {
+      "allocation": {
+        "tbill": 0.1,
+        "us_eq": 0.55,
+        "ust_10y": 0.35
+      },
+      "allocation_label": "55/35/10 equity / 10Y Treasury / T-bills",
+      "bands_pp": [
+        0.025,
+        0.05,
+        0.1
+      ],
+      "baseline": "calendar_12m",
+      "cadences": [
+        1,
+        3,
+        6,
+        12
+      ],
+      "contribution_q": -0.05,
+      "cost_grid_bps": [
+        0.0,
+        2.0,
+        5.0,
+        10.0,
+        20.0
+      ],
+      "data": {
+        "calibration_end": null,
+        "calibration_start": null,
+        "catalog_hash": "3bbcce4a7278f089",
+        "universe": "core_duration"
+      },
+      "investor": {
+        "age": 65.0,
+        "horizon_years": 30,
+        "income": 0.0,
+        "initial_wealth": 1000000.0,
+        "mortality": true,
+        "pension": 0.0,
+        "retirement_age": 65.0,
+        "savings_rate": 0.1,
+        "sex": "unisex"
+      },
+      "label": null,
+      "main_cost_bps": 5.0,
+      "preferences": {
+        "beta_annual": 0.97,
+        "gamma": 4.0,
+        "util_floor_annual": 3000.0
+      },
+      "reserve_grid": [
+        0.0,
+        1.0,
+        2.0,
+        3.0
+      ],
+      "scenario": {
+        "block_length": null,
+        "generator": "bootstrap",
+        "k_regimes": 2,
+        "n_paths": 2000,
+        "n_train_paths": 1000,
+        "seed": 20261107
+      },
+      "slippage_bps": 1.0,
+      "strategies": [
+        "none_buyhold",
+        "calendar_1m",
+        "calendar_3m",
+        "calendar_6m",
+        "calendar_12m",
+        "absolute_band_5pp",
+        "absolute_band_5pp_edge",
+        "relative_band_20pct",
+        "browne_15_35",
+        "browne_15_35_monthly",
+        "cash_flow_targeting",
+        "withdraw_overweight_first",
+        "cash_first_floor",
+        "bond_ladder_first",
+        "volatility_band",
+        "utility_net_of_cost"
+      ],
+      "withdrawal": 0.04,
+      "withdrawal_grid": [
+        0.0,
+        0.03,
+        0.05,
+        0.07
+      ]
+    },
+    "catalog_hash": "3bbcce4a7278f089",
+    "engine_version": "0.2.3+d711933ba962"
+  },
+  "scenario_lab": {
+    "run_id": "29194f5a9e962706c75f",
+    "kind": "scenario_lab",
+    "label": "corrected default scenario_lab",
+    "spec": {
+      "cohort_years": 30,
+      "data": {
+        "calibration_end": null,
+        "calibration_start": null,
+        "catalog_hash": "3bbcce4a7278f089",
+        "universe": "core_duration"
+      },
+      "generators": [
+        "historical",
+        "bootstrap",
+        "student_t",
+        "markov_switching",
+        "curve_factor"
+      ],
+      "investor": {
+        "age": 65.0,
+        "horizon_years": 30,
+        "income": 0.0,
+        "initial_wealth": 1000000.0,
+        "mortality": true,
+        "pension": 0.0,
+        "retirement_age": 65.0,
+        "savings_rate": 0.1,
+        "sex": "unisex"
+      },
+      "label": null,
+      "n_paths_per_generator": 1000,
+      "portfolios": {
+        "100/0": {
+          "us_eq": 1.0
+        },
+        "40/60": {
+          "us_eq": 0.4,
+          "ust_10y": 0.6
+        },
+        "60/30/10 cash": {
+          "tbill": 0.1,
+          "us_eq": 0.6,
+          "ust_10y": 0.3
+        },
+        "60/40": {
+          "us_eq": 0.6,
+          "ust_10y": 0.4
+        },
+        "PP ex-gold": {
+          "tbill": 0.5,
+          "us_eq": 0.25,
+          "ust_30y": 0.25
+        }
+      },
+      "preferences": {
+        "beta_annual": 0.97,
+        "gamma": 4.0,
+        "util_floor_annual": 3000.0
+      },
+      "scenario": {
+        "block_length": null,
+        "generator": "bootstrap",
+        "k_regimes": 2,
+        "n_paths": 2000,
+        "n_train_paths": 1000,
+        "seed": 20261107
+      },
+      "shock_timing_years": [
+        0,
+        5,
+        10,
+        20
+      ],
+      "stresses": [
+        "rate_shock_+200bp",
+        "inflation_shock",
+        "equity_drawdown_-35",
+        "2022_like",
+        "stagflation",
+        "recession_rally"
+      ],
+      "withdrawal": 0.04
+    },
+    "catalog_hash": "3bbcce4a7278f089",
+    "engine_version": "0.2.3+d711933ba962"
+  },
+  "optimize": {
+    "run_id": "ea3c0f79c972a42d7904",
+    "kind": "optimize",
+    "label": "corrected default optimize",
+    "spec": {
+      "costs": {
+        "commission_bps": 0.0,
+        "half_spread_bps": 0.0,
+        "slippage_bps": 0.0
+      },
+      "data": {
+        "calibration_end": null,
+        "calibration_start": null,
+        "catalog_hash": "3bbcce4a7278f089",
+        "universe": "core_duration"
+      },
+      "funded_ratios": [
+        0.6,
+        0.8,
+        1.0,
+        1.2,
+        1.5,
+        2.0
+      ],
+      "generators": [
+        "bootstrap",
+        "student_t",
+        "markov_switching"
+      ],
+      "horizons_years": [
+        10,
+        20,
+        30,
+        40
+      ],
+      "investor": {
+        "age": 65.0,
+        "horizon_years": 30,
+        "income": 0.0,
+        "initial_wealth": 1000000.0,
+        "mortality": true,
+        "pension": 0.0,
+        "retirement_age": 65.0,
+        "savings_rate": 0.1,
+        "sex": "unisex"
+      },
+      "label": null,
+      "n_param_boot": 8,
+      "preferences": {
+        "beta_annual": 0.97,
+        "gamma": 4.0,
+        "util_floor_annual": 3000.0
+      },
+      "r_grid": [
+        0.02,
+        0.03,
+        0.04,
+        0.05,
+        0.06,
+        0.07,
+        0.08
+      ],
+      "scenario": {
+        "block_length": null,
+        "generator": "bootstrap",
+        "k_regimes": 2,
+        "n_paths": 2000,
+        "n_train_paths": 1000,
+        "seed": 20261107
+      },
+      "simplex_divisions": 10,
+      "sleeves": [
+        "us_eq",
+        "ust_10y",
+        "tbill",
+        "ust_30y",
+        "ust_2y"
+      ],
+      "spending": 40000.0,
+      "target": 0.9,
+      "withdrawal": 0.045
+    },
+    "catalog_hash": "3bbcce4a7278f089",
+    "engine_version": "0.2.3+d711933ba962"
+  },
+  "compare_v2": {
+    "run_id": "0f2900dc65ded619c306",
+    "kind": "compare_v2",
+    "label": "corrected default compare_v2",
+    "spec": {
+      "benchmark": "sixty_forty",
+      "cohort_years": 25,
+      "costs": {
+        "commission_bps": 1.0,
+        "half_spread_bps": 2.0,
+        "slippage_bps": 0.0
+      },
+      "data": {
+        "calibration_end": null,
+        "calibration_start": null,
+        "catalog_hash": "3bbcce4a7278f089",
+        "universe": "core_duration"
+      },
+      "focus": "target_date",
+      "generators": [
+        "bootstrap",
+        "student_t",
+        "markov_switching",
+        "historical"
+      ],
+      "investor": {
+        "age": 65.0,
+        "horizon_years": 30,
+        "income": 0.0,
+        "initial_wealth": 1000000.0,
+        "mortality": true,
+        "pension": 0.0,
+        "retirement_age": 65.0,
+        "savings_rate": 0.1,
+        "sex": "unisex"
+      },
+      "label": null,
+      "policies": [
+        "sixty_forty",
+        "all_equity",
+        "forty_sixty",
+        "pp_ex_gold",
+        "equity_cash_buffer",
+        "target_date"
+      ],
+      "preferences": {
+        "beta_annual": 0.97,
+        "gamma": 4.0,
+        "util_floor_annual": 3000.0
+      },
+      "scenario": {
+        "block_length": null,
+        "generator": "bootstrap",
+        "k_regimes": 2,
+        "n_paths": 2000,
+        "n_train_paths": 1000,
+        "seed": 20261107
+      },
+      "windows": [
+        [
+          "1977-01-01",
+          "2001-12-31"
+        ],
+        [
+          "2002-01-01",
+          "2026-12-31"
+        ]
+      ],
+      "withdrawal": 0.045
+    },
+    "catalog_hash": "3bbcce4a7278f089",
+    "engine_version": "0.2.3+d711933ba962"
+  },
+  "asof": {
+    "run_id": "32ed9ceea7d75f71c9c3",
+    "kind": "asof",
+    "label": "corrected default asof",
+    "spec": {
+      "as_of": null,
+      "b_grid": [
+        0.0,
+        0.2,
+        0.4,
+        0.6,
+        0.8,
+        1.0
+      ],
+      "data": {
+        "calibration_end": null,
+        "calibration_start": null,
+        "catalog_hash": "3bbcce4a7278f089",
+        "universe": "core_long_history"
+      },
+      "investor": {
+        "age": 65.0,
+        "horizon_years": 30,
+        "income": 0.0,
+        "initial_wealth": 1000000.0,
+        "mortality": true,
+        "pension": 0.0,
+        "retirement_age": 65.0,
+        "savings_rate": 0.1,
+        "sex": "unisex"
+      },
+      "label": null,
+      "preferences": {
+        "beta_annual": 0.97,
+        "gamma": 4.0,
+        "util_floor_annual": 3000.0
+      },
+      "r_grid": [
+        0.03,
+        0.035,
+        0.04,
+        0.045,
+        0.05,
+        0.055,
+        0.06
+      ],
+      "scenario": {
+        "block_length": null,
+        "generator": "markov_switching",
+        "k_regimes": 2,
+        "n_paths": 2000,
+        "n_train_paths": 1000,
+        "seed": 20261107
+      },
+      "target": 0.9
+    },
+    "catalog_hash": "3bbcce4a7278f089",
+    "engine_version": "0.2.3+d711933ba962"
+  },
+  "evidence": {
+    "run_id": "5e4fd33677a8a24b59e1",
+    "kind": "evidence",
+    "label": "corrected baseline evidence",
+    "spec": {
+      "convergence_paths": [
+        250,
+        500,
+        1000,
+        2000,
+        4000,
+        8000
+      ],
+      "data": {
+        "calibration_end": null,
+        "calibration_start": null,
+        "catalog_hash": "3bbcce4a7278f089",
+        "universe": "core_long_history"
+      },
+      "label": null,
+      "permutations": 200,
+      "precision_target_pp": 1.0,
+      "scenario": {
+        "block_length": null,
+        "generator": "bootstrap",
+        "k_regimes": 2,
+        "n_paths": 2000,
+        "n_train_paths": 1000,
+        "seed": 20261107
+      },
+      "study_ids": {
+        "asof": "32ed9ceea7d75f71c9c3",
+        "compare_v2": "0f2900dc65ded619c306",
+        "frontier": "15396257c3d3bfcb163e",
+        "optimize": "ea3c0f79c972a42d7904",
+        "rebalance": "b42f4a607fb70c037045",
+        "scenario_lab": "29194f5a9e962706c75f",
+        "signed_flow": "3c15e68b970135cb144d"
+      },
+      "walk_forward_splits": [
+        1975,
+        1990,
+        2005
+      ],
+      "walk_forward_test_years": 15
+    },
+    "catalog_hash": "3bbcce4a7278f089",
+    "engine_version": "0.2.3+d711933ba962"
+  },
+  "historical_replay": {
+    "run_id": "31c4d46f75f7e5ceb2fd",
+    "kind": "historical_replay",
+    "label": "employer demo: age 30 in January 2006",
+    "spec": {
+      "candidates": [
+        "us_eq",
+        "intl_eq",
+        "em_eq",
+        "ust_10y",
+        "ust_30y",
+        "tips",
+        "ig_credit",
+        "hy_credit",
+        "gold",
+        "commodities",
+        "fx_basket",
+        "tbill"
+      ],
+      "costs": {
+        "commission_bps": 1.0,
+        "half_spread_bps": 2.0,
+        "slippage_bps": 0.0
+      },
+      "end": null,
+      "estimation_window_months": 120,
+      "experiments": true,
+      "forward_block_months": 12,
+      "forward_min_sample_months": 180,
+      "forward_paths": 500,
+      "investor": {
+        "final_age": 95.0,
+        "initial_wealth": 10000.0,
+        "pension_ratio": 0.3,
+        "real_wage_growth_young": 0.04,
+        "retirement_age": 65.0,
+        "salary": 45000.0,
+        "savings_rate": 0.15,
+        "sex": "unisex",
+        "spending_ratio": 0.7,
+        "start_age": 30.0
+      },
+      "label": null,
+      "max_sleeve": 0.6,
+      "mean_shrinkage": 0.9,
+      "min_history_months": 36,
+      "policies": [
+        "sixty_forty",
+        "target_date",
+        "lifecycle_adaptive"
+      ],
+      "preferences": {
+        "beta_annual": 0.97,
+        "gamma": 4.0,
+        "util_floor_annual": 3000.0
+      },
+      "prior_sharpe": 0.25,
+      "rebalance": {
+        "band": 0.05,
+        "cadence_months": 12,
+        "funding": "cash_flow_targeting",
+        "mode": "absolute_band"
+      },
+      "refit_months": 12,
+      "seed": 20261107,
+      "start": "2006-01",
+      "tactical_limit": 0.1,
+      "target_vol": 0.1,
+      "trend_months": 12,
+      "universe_mode": "fixed",
+      "vol_months": 12
+    },
+    "catalog_hash": "3bbcce4a7278f089",
+    "engine_version": "0.2.3+d711933ba962"
+  },
+  "lifecycle_sim": {
+    "run_id": "f6600f0e20c4594918a3",
+    "kind": "lifecycle_sim",
+    "label": "dated lifecycle simulation: January 2006 information",
+    "spec": {
+      "block_months": 12,
+      "candidates": [
+        "us_eq",
+        "intl_eq",
+        "em_eq",
+        "ust_10y",
+        "ust_30y",
+        "tips",
+        "ig_credit",
+        "hy_credit",
+        "gold",
+        "commodities",
+        "fx_basket",
+        "tbill"
+      ],
+      "costs": {
+        "commission_bps": 1.0,
+        "half_spread_bps": 2.0,
+        "slippage_bps": 0.0
+      },
+      "estimation_window_months": 120,
+      "investor": {
+        "final_age": 95.0,
+        "initial_wealth": 10000.0,
+        "pension_ratio": 0.3,
+        "real_wage_growth_young": 0.04,
+        "retirement_age": 65.0,
+        "salary": 45000.0,
+        "savings_rate": 0.15,
+        "sex": "unisex",
+        "spending_ratio": 0.7,
+        "start_age": 30.0
+      },
+      "label": null,
+      "min_history_months": 36,
+      "n_paths": 1000,
+      "policies": [
+        "pp_lifecycle",
+        "lifecycle_adaptive",
+        "target_date",
+        "sixty_forty"
+      ],
+      "preferences": {
+        "beta_annual": 0.97,
+        "gamma": 4.0,
+        "util_floor_annual": 3000.0
+      },
+      "rebalance": {
+        "band": 0.05,
+        "cadence_months": 12,
+        "funding": "cash_flow_targeting",
+        "mode": "absolute_band"
+      },
+      "scenario_source": "simulated_from_start",
+      "seed": 20261108,
+      "start": "2006-01",
+      "universe_mode": "fixed"
+    },
+    "catalog_hash": "3bbcce4a7278f089",
+    "engine_version": "0.2.3+d711933ba962"
+  },
+  "multi_asset": {
+    "run_id": "3581d6ae1dd9438fb600",
+    "kind": "multi_asset",
+    "label": "default public multi-asset study",
+    "spec": {
+      "benchmark": "sixty_forty",
+      "block_step": 0.25,
+      "costs": {
+        "commission_bps": 1.0,
+        "half_spread_bps": 2.0,
+        "slippage_bps": 0.0
+      },
+      "data": {
+        "calibration_end": null,
+        "calibration_start": null,
+        "catalog_hash": "3bbcce4a7278f089",
+        "universe": "multi_asset_public"
+      },
+      "investor": {
+        "age": 65.0,
+        "horizon_years": 30,
+        "income": 0.0,
+        "initial_wealth": 1000000.0,
+        "mortality": true,
+        "pension": 0.0,
+        "retirement_age": 65.0,
+        "savings_rate": 0.1,
+        "sex": "unisex"
+      },
+      "label": null,
+      "policies": [
+        "sixty_forty",
+        "equal_weight",
+        "pp_multi_asset",
+        "risk_parity",
+        "regime_blocks",
+        "trend_tsmom",
+        "inverse_vol",
+        "vol_target",
+        "crra_static",
+        "crra_parametric"
+      ],
+      "preferences": {
+        "beta_annual": 0.97,
+        "gamma": 4.0,
+        "util_floor_annual": 3000.0
+      },
+      "robustness_generators": [
+        "bootstrap"
+      ],
+      "saver_income": 100000.0,
+      "saver_savings_rate": 0.15,
+      "saver_start_age": 35.0,
+      "scenario": {
+        "block_length": null,
+        "generator": "markov_switching",
+        "k_regimes": 2,
+        "n_paths": 2000,
+        "n_train_paths": 1000,
+        "seed": 20261107
+      },
+      "target_vol": 0.08,
+      "trend_months": 12,
+      "vol_months": 12,
+      "withdrawal": 0.04
+    },
+    "catalog_hash": "3bbcce4a7278f089",
+    "engine_version": "0.2.3+d711933ba962"
+  }
+}

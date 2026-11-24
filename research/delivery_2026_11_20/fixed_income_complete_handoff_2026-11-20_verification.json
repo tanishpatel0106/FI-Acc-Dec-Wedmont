@@ -1,0 +1,11 @@
+{
+  "package": "fixed_income_complete_handoff_2026-11-20.zip",
+  "source_commit": "64b6d845d4e8ee72e7f3915641db215c4f3f614c",
+  "sha256": "dd73c3166563f334826ee67c4030594a2ca3573704fc6b5b9b3ba7dcedb41d93",
+  "bytes": 9626708,
+  "archive_entries": 618,
+  "crc": "passed",
+  "all_entry_hashes": "passed",
+  "raw_wrds_included": false,
+  "standalone_execution": "Passed: final delivered notebook executed without error from the extracted archive in the isolated report environment"
+}

@@ -1,0 +1,127 @@
+{
+  "version": "2.0",
+  "registered": "2026-11-07",
+  "family": "confirmatory H1-H12; Holm (FWER) and Benjamini-Hochberg (FDR) reported",
+  "alpha": 0.05,
+  "materiality": {
+    "dCE": 0.001,
+    "success_pp": 0.01
+  },
+  "rules": [
+    "paired common-random-number differences",
+    "no iid binomial CI on overlapping cohorts",
+    "non-significance is not equivalence",
+    "exploratory policy search evaluated on held-out paths"
+  ],
+  "legacy": "H1-H4 (v1) remain available under /v1/research/hypotheses with their original definitions",
+  "hypotheses": [
+    {
+      "id": "H1-v2",
+      "claim": "Optimal fixed-income allocation responds to signed net flow after conditioning on age",
+      "null": "d b*/d q = 0 at every key age",
+      "estimand": "Partial effect d bond_weight*/d q at fixed age, path-bootstrap CI",
+      "benchmark": "Age-only glidepath",
+      "falsification": "CI includes zero at more than half of the pre-specified ages",
+      "source_study": "signed_flow"
+    },
+    {
+      "id": "H2-v2",
+      "claim": "Cash-flow-aware allocation improves lifetime CE",
+      "null": "OOS dCE(age+q policy vs age-only) <= 0",
+      "estimand": "Paired holdout dCE",
+      "benchmark": "Age-only / target-date",
+      "falsification": "CI lower bound <= 0.1% or economically immaterial",
+      "source_study": "signed_flow"
+    },
+    {
+      "id": "H3-v2",
+      "claim": "Bond utility varies with inflation / stock-bond dependence regime",
+      "null": "bond-sleeve dCE equal across starting regimes",
+      "estimand": "Difference in paired dCE(60/40 vs 100/0) between regimes",
+      "benchmark": "Two-sleeve equity + Treasury",
+      "falsification": "Difference CI includes zero",
+      "source_study": "optimize"
+    },
+    {
+      "id": "H4-v2",
+      "claim": "Additional sleeves improve sustainability in some states",
+      "null": "Shapley CE of every extra sleeve <= 0",
+      "estimand": "Shapley CE with path-bootstrap CI",
+      "benchmark": "Equity + 10Y Treasury",
+      "falsification": "No sleeve with CI lower bound > 0",
+      "source_study": "optimize"
+    },
+    {
+      "id": "H5",
+      "claim": "Classic Permanent Portfolio beats 60/40 in a specified subset of withdrawal and regime states",
+      "null": "dCE(PP vs 60/40) <= 0 in every cell",
+      "estimand": "Paired dCE, same spending, cells r x start regime",
+      "benchmark": "Rebalanced 60/40",
+      "falsification": "No cell with CI > 0 after multiple-test control",
+      "source_study": "permanent"
+    },
+    {
+      "id": "H6",
+      "claim": "Cash-flow-aware rebalancing improves net CE vs calendar",
+      "null": "dCE(cash-flow targeting vs annual calendar) <= 0",
+      "estimand": "Paired dCE after costs",
+      "benchmark": "Annual calendar, same target",
+      "falsification": "CI includes zero or negative",
+      "source_study": "rebalance"
+    },
+    {
+      "id": "H7",
+      "claim": "Bond duration affects outcomes beyond total bond share",
+      "null": "Equal outcomes across duration at equal bond weight",
+      "estimand": "CE difference long vs short duration",
+      "benchmark": "Same-weight portfolio",
+      "falsification": "Indistinguishable or model-dependent",
+      "source_study": "permanent"
+    },
+    {
+      "id": "H8",
+      "claim": "Point-in-time macro conditioning improves OOS utility",
+      "null": "Holdout CE(regime-conditional) <= static",
+      "estimand": "Holdout dCE on disjoint test paths; chronological walk-forward",
+      "benchmark": "Static rule, same universe",
+      "falsification": "No stable positive held-out CE",
+      "source_study": "optimize"
+    },
+    {
+      "id": "H9",
+      "claim": "Survival-optimal and CE-optimal allocations diverge in some region",
+      "null": "|b_CE - b_surv| < 0.2 everywhere on the grid",
+      "estimand": "Max allocation distance over r in [3%,7%]",
+      "benchmark": "Single-objective policy",
+      "falsification": "No substantial disagreement",
+      "source_study": "frontier"
+    },
+    {
+      "id": "H10",
+      "claim": "Equity-bond co-loss probability explains nonlinear bond value",
+      "null": "bond value independent of co-loss regime",
+      "estimand": "Regime-conditional bond dCE (MS states)",
+      "benchmark": "Unconditional model",
+      "falsification": "Effect not stable after conditioning",
+      "source_study": "optimize"
+    },
+    {
+      "id": "H11",
+      "claim": "A cash/TIPS buffer reduces early-retirement shortfall",
+      "null": "P(shortfall in first 10y) not reduced",
+      "estimand": "Paired difference in early shortfall and CE after cash drag",
+      "benchmark": "Same allocation without buffer",
+      "falsification": "No improvement in early shortfall or net welfare loss",
+      "source_study": "permanent"
+    },
+    {
+      "id": "H12",
+      "claim": "Thresholds are stable enough to communicate",
+      "null": "Bootstrap width of b_min > 10pp or model agreement < 80%",
+      "estimand": "Confidence-set width of b_min and generator sign agreement",
+      "benchmark": "Baseline bootstrap",
+      "falsification": "Wide/unstable thresholds -> publish identified ranges only",
+      "source_study": "frontier"
+    }
+  ]
+}

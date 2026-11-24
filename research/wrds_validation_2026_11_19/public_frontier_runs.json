@@ -1,0 +1,318 @@
+{
+  "long": {
+    "run_id": "d8c0ccdb5bc87defc7b6",
+    "kind": "frontier",
+    "label": "public matched long",
+    "spec": {
+      "alt_generators": [
+        "student_t"
+      ],
+      "alt_n_paths": 1000,
+      "alt_windows": [],
+      "b_step": 0.05,
+      "bond": "ust_10y",
+      "bond_assets": [
+        "tbill",
+        "ust_10y"
+      ],
+      "costs": {
+        "commission_bps": 0.0,
+        "half_spread_bps": 0.0,
+        "slippage_bps": 0.0
+      },
+      "data": {
+        "calibration_end": "2024-12-31",
+        "calibration_start": "1953-05-01",
+        "catalog_hash": "3bbcce4a7278f089",
+        "universe": "core_long_history"
+      },
+      "equity": "us_eq",
+      "gammas": [
+        4.0
+      ],
+      "horizons_years": [
+        10,
+        20,
+        30,
+        40
+      ],
+      "investor": {
+        "age": 65.0,
+        "horizon_years": 30,
+        "income": 0.0,
+        "initial_wealth": 1000000.0,
+        "mortality": true,
+        "pension": 0.0,
+        "retirement_age": 65.0,
+        "savings_rate": 0.1,
+        "sex": "unisex"
+      },
+      "label": null,
+      "main_horizon": 30,
+      "main_target": 0.9,
+      "n_boot": 300,
+      "preferences": {
+        "beta_annual": 0.97,
+        "gamma": 4.0,
+        "util_floor_annual": 3000.0
+      },
+      "r_start": 0.03,
+      "r_step": 0.0025,
+      "r_stop": 0.06,
+      "rebalancer": "calendar_12m",
+      "scenario": {
+        "block_length": null,
+        "generator": "bootstrap",
+        "k_regimes": 1,
+        "n_paths": 10000,
+        "n_train_paths": 5000,
+        "seed": 20261119
+      },
+      "targets": [
+        0.8,
+        0.85,
+        0.9,
+        0.95
+      ]
+    },
+    "catalog_hash": "3bbcce4a7278f089",
+    "engine_version": "0.2.3+f2df1bd6ee98"
+  },
+  "modern": {
+    "run_id": "6ff862dde136e0dcc811",
+    "kind": "frontier",
+    "label": "public matched modern",
+    "spec": {
+      "alt_generators": [
+        "student_t"
+      ],
+      "alt_n_paths": 1000,
+      "alt_windows": [],
+      "b_step": 0.05,
+      "bond": "ust_10y",
+      "bond_assets": [
+        "tbill",
+        "ust_10y"
+      ],
+      "costs": {
+        "commission_bps": 0.0,
+        "half_spread_bps": 0.0,
+        "slippage_bps": 0.0
+      },
+      "data": {
+        "calibration_end": "2024-12-31",
+        "calibration_start": "2002-09-01",
+        "catalog_hash": "3bbcce4a7278f089",
+        "universe": "core_long_history"
+      },
+      "equity": "us_eq",
+      "gammas": [
+        4.0
+      ],
+      "horizons_years": [
+        10,
+        20,
+        30,
+        40
+      ],
+      "investor": {
+        "age": 65.0,
+        "horizon_years": 30,
+        "income": 0.0,
+        "initial_wealth": 1000000.0,
+        "mortality": true,
+        "pension": 0.0,
+        "retirement_age": 65.0,
+        "savings_rate": 0.1,
+        "sex": "unisex"
+      },
+      "label": null,
+      "main_horizon": 30,
+      "main_target": 0.9,
+      "n_boot": 300,
+      "preferences": {
+        "beta_annual": 0.97,
+        "gamma": 4.0,
+        "util_floor_annual": 3000.0
+      },
+      "r_start": 0.03,
+      "r_step": 0.0025,
+      "r_stop": 0.06,
+      "rebalancer": "calendar_12m",
+      "scenario": {
+        "block_length": null,
+        "generator": "bootstrap",
+        "k_regimes": 1,
+        "n_paths": 10000,
+        "n_train_paths": 5000,
+        "seed": 20261119
+      },
+      "targets": [
+        0.8,
+        0.85,
+        0.9,
+        0.95
+      ]
+    },
+    "catalog_hash": "3bbcce4a7278f089",
+    "engine_version": "0.2.3+f2df1bd6ee98"
+  },
+  "early": {
+    "run_id": "0022526d6e21f6d3bede",
+    "kind": "frontier",
+    "label": "public matched early",
+    "spec": {
+      "alt_generators": [
+        "student_t"
+      ],
+      "alt_n_paths": 1000,
+      "alt_windows": [],
+      "b_step": 0.05,
+      "bond": "ust_10y",
+      "bond_assets": [
+        "tbill",
+        "ust_10y"
+      ],
+      "costs": {
+        "commission_bps": 0.0,
+        "half_spread_bps": 0.0,
+        "slippage_bps": 0.0
+      },
+      "data": {
+        "calibration_end": "2013-12-31",
+        "calibration_start": "2002-09-01",
+        "catalog_hash": "3bbcce4a7278f089",
+        "universe": "core_long_history"
+      },
+      "equity": "us_eq",
+      "gammas": [
+        4.0
+      ],
+      "horizons_years": [
+        10,
+        20,
+        30,
+        40
+      ],
+      "investor": {
+        "age": 65.0,
+        "horizon_years": 30,
+        "income": 0.0,
+        "initial_wealth": 1000000.0,
+        "mortality": true,
+        "pension": 0.0,
+        "retirement_age": 65.0,
+        "savings_rate": 0.1,
+        "sex": "unisex"
+      },
+      "label": null,
+      "main_horizon": 30,
+      "main_target": 0.9,
+      "n_boot": 300,
+      "preferences": {
+        "beta_annual": 0.97,
+        "gamma": 4.0,
+        "util_floor_annual": 3000.0
+      },
+      "r_start": 0.03,
+      "r_step": 0.0025,
+      "r_stop": 0.06,
+      "rebalancer": "calendar_12m",
+      "scenario": {
+        "block_length": null,
+        "generator": "bootstrap",
+        "k_regimes": 1,
+        "n_paths": 10000,
+        "n_train_paths": 5000,
+        "seed": 20261119
+      },
+      "targets": [
+        0.8,
+        0.85,
+        0.9,
+        0.95
+      ]
+    },
+    "catalog_hash": "3bbcce4a7278f089",
+    "engine_version": "0.2.3+f2df1bd6ee98"
+  },
+  "recent": {
+    "run_id": "7611a3ec4f17da7523d5",
+    "kind": "frontier",
+    "label": "public matched recent",
+    "spec": {
+      "alt_generators": [
+        "student_t"
+      ],
+      "alt_n_paths": 1000,
+      "alt_windows": [],
+      "b_step": 0.05,
+      "bond": "ust_10y",
+      "bond_assets": [
+        "tbill",
+        "ust_10y"
+      ],
+      "costs": {
+        "commission_bps": 0.0,
+        "half_spread_bps": 0.0,
+        "slippage_bps": 0.0
+      },
+      "data": {
+        "calibration_end": "2024-12-31",
+        "calibration_start": "2014-01-01",
+        "catalog_hash": "3bbcce4a7278f089",
+        "universe": "core_long_history"
+      },
+      "equity": "us_eq",
+      "gammas": [
+        4.0
+      ],
+      "horizons_years": [
+        10,
+        20,
+        30,
+        40
+      ],
+      "investor": {
+        "age": 65.0,
+        "horizon_years": 30,
+        "income": 0.0,
+        "initial_wealth": 1000000.0,
+        "mortality": true,
+        "pension": 0.0,
+        "retirement_age": 65.0,
+        "savings_rate": 0.1,
+        "sex": "unisex"
+      },
+      "label": null,
+      "main_horizon": 30,
+      "main_target": 0.9,
+      "n_boot": 300,
+      "preferences": {
+        "beta_annual": 0.97,
+        "gamma": 4.0,
+        "util_floor_annual": 3000.0
+      },
+      "r_start": 0.03,
+      "r_step": 0.0025,
+      "r_stop": 0.06,
+      "rebalancer": "calendar_12m",
+      "scenario": {
+        "block_length": null,
+        "generator": "bootstrap",
+        "k_regimes": 1,
+        "n_paths": 10000,
+        "n_train_paths": 5000,
+        "seed": 20261119
+      },
+      "targets": [
+        0.8,
+        0.85,
+        0.9,
+        0.95
+      ]
+    },
+    "catalog_hash": "3bbcce4a7278f089",
+    "engine_version": "0.2.3+f2df1bd6ee98"
+  }
+}

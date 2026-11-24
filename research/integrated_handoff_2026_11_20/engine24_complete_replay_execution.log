@@ -1,0 +1,23 @@
+0.0s | loading_history | 1.0%
+0.4s | market_state 2006-01-31 | 5.0%
+0.7s | market_state 2008-01-31 | 7.4%
+1.1s | market_state 2010-01-31 | 9.8%
+1.4s | market_state 2012-01-31 | 12.2%
+1.8s | market_state 2014-01-31 | 14.6%
+2.2s | market_state 2016-01-31 | 17.0%
+2.5s | market_state 2018-01-31 | 19.5%
+2.9s | market_state 2020-01-31 | 21.9%
+3.4s | market_state 2022-01-31 | 24.3%
+3.8s | market_state 2024-01-31 | 26.7%
+4.3s | market_state 2026-01-31 | 29.1%
+4.6s | replayed sixty_forty | 41.7%
+4.7s | replayed target_date | 53.3%
+7.6s | replayed lifecycle_adaptive | 65.0%
+7.6s | forward | 66.0%
+8.1s | forward sixty_forty | 72.7%
+8.4s | forward target_date | 79.3%
+8.8s | forward lifecycle_adaptive | 86.0%
+18.9s | experiments: cohorts | 90.0%
+99.1s | experiments: windows | 94.0%
+114.0s | summarising | 97.0%
+Complete historical replay re-evaluated; changed fields: 9

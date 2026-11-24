@@ -3,33 +3,25 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "motion/react";
 import { useState } from "react";
-import {
-  IconBook2, IconChartAreaLine, IconChartDots3, IconFlask2, IconGitCompare, IconHistory, IconLayoutDashboard,
-  IconMoon, IconSun, IconTable, IconTimeline, IconWaveSine,
-} from "@tabler/icons-react";
+import { IconMoon, IconSun, IconTimeline } from "@tabler/icons-react";
 import { useTheme } from "next-themes";
 import { Sidebar, SidebarBody, useSidebar } from "@/components/ui/sidebar";
+import { NAV_GROUPS, PAGES } from "@/lib/research/routes";
 import { CommandBar } from "./CommandBar";
 import { DataBadge } from "./DataBadge";
+import { pageIcon } from "./icons";
 import { cn } from "@/lib/utils";
 
-export const NAV = [
-  { href: "/", label: "Overview", icon: IconLayoutDashboard },
-  { href: "/lab", label: "01 Research Lab", icon: IconChartDots3 },
-  { href: "/lab/fixed-income", label: "Fixed Income", icon: IconWaveSine },
-  { href: "/simulate", label: "02 Lifecycle Simulator", icon: IconChartAreaLine },
-  { href: "/optimize", label: "03 Policy Optimizer", icon: IconFlask2 },
-  { href: "/withdrawal-lab", label: "04 Withdrawal Lab", icon: IconTable },
-  { href: "/compare", label: "05 Compare & Validate", icon: IconGitCompare },
-  { href: "/runs", label: "Runs & Reports", icon: IconHistory },
-  { href: "/methodology", label: "Methodology", icon: IconBook2 },
-];
+/** Sidebar navigation, generated from the central route registry (lib/research/routes.ts). */
+export const NAV = PAGES.map((p) => ({ href: p.path, label: p.name, icon: pageIcon(p.icon), group: p.group, key: p.key }));
 
-function NavLink({ href, label, Icon, active }: { href: string; label: string; Icon: typeof IconBook2; active: boolean }) {
+function NavLink({ href, label, Icon, active }: { href: string; label: string; Icon: ReturnType<typeof pageIcon>; active: boolean }) {
   const { open, animate } = useSidebar();
   return (
     <Link
       href={href}
+      aria-current={active ? "page" : undefined}
+      data-nav={href}
       className={cn(
         "group/sidebar flex items-center gap-2 rounded-md px-2 py-2 text-sm transition-colors",
         active ? "bg-foreground/10 text-foreground" : "text-muted-foreground hover:bg-foreground/5 hover:text-foreground",
@@ -43,6 +35,16 @@ function NavLink({ href, label, Icon, active }: { href: string; label: string; I
         {label}
       </motion.span>
     </Link>
+  );
+}
+
+function GroupLabel({ children }: { children: React.ReactNode }) {
+  const { open, animate } = useSidebar();
+  return (
+    <motion.div animate={{ opacity: animate ? (open ? 1 : 0) : 1 }}
+      className="whitespace-nowrap px-2 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/80">
+      {children}
+    </motion.div>
   );
 }
 
@@ -84,10 +86,15 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         <SidebarBody className="justify-between gap-6 border-r border-border bg-sidebar md:sticky md:top-0 md:h-screen">
           <div className="flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
             <Logo />
-            <nav className="mt-6 flex flex-col gap-1">
-              {NAV.map((n) => (
-                <NavLink key={n.href} href={n.href} label={n.label} Icon={n.icon}
-                  active={n.href === "/" ? pathname === "/" : pathname === n.href || (n.href !== "/lab" && pathname.startsWith(n.href))} />
+            <nav aria-label="Main" className="mt-6 flex flex-col gap-4">
+              {NAV_GROUPS.map((g) => (
+                <div key={g} className="flex flex-col gap-1" role="group" aria-label={g}>
+                  <GroupLabel>{g}</GroupLabel>
+                  {NAV.filter((n) => n.group === g).map((n) => (
+                    <NavLink key={n.href} href={n.href} label={n.label} Icon={n.icon}
+                      active={n.href === "/" ? pathname === "/" : pathname === n.href || pathname.startsWith(n.href + "/")} />
+                  ))}
+                </div>
               ))}
             </nav>
           </div>

@@ -1,0 +1,25 @@
+{
+  "frozen_at_utc": "2026-11-20T11:39:43.573958+00:00",
+  "status": "Exploratory integration, not preregistration",
+  "primary_household_wave": 2025,
+  "age_evidence_waves": [
+    2016,
+    2019,
+    2022,
+    2025
+  ],
+  "willingness": "Observed financial-risk response; never map directly into CRRA",
+  "household_wealth": "LIQ plus directly held STOCKS+BOND+NMMF; excludes housing, retirement balances, savings bonds and CDs",
+  "income": "Wages plus nonnegative business income plus SSRETINC minus PENACCTWD plus nonnegative transfers; excludes capital gains and interest/dividends",
+  "expense_primary": "2025 reported nonhousing spending plus rent and debt service; compare published reconstruction and no-age medical imputation",
+  "gross_to_net_assumptions": [
+    0.7,
+    0.85,
+    1.0
+  ],
+  "stress": "40% equity/10% bond loss and six months without earned income; no new borrowing; three-month terminal outlay reserve",
+  "templates": "16 survey-weighted joint age/liquidity/willingness cell means, with MI/replicate uncertainty; no population prediction from template simulation",
+  "market_tests": "Three assets only; WRDS and public source sensitivity; 2000 fitting and 5000 disjoint evaluation paths; 1/5/10-year frozen-state budget scenarios; 5bp executed-trade half-spread",
+  "primary_outputs": "Outlay funding probability, unmet outlays, terminal liquid resources and reserve compliance; no interpretation as utility of debt principal or identified lifetime capacity",
+  "international": "Maintain evidence levels; no common-country risk ranking from noncomparable measurements"
+}

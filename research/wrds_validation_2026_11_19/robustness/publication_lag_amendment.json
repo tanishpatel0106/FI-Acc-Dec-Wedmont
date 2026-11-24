@@ -1,0 +1,7 @@
+{
+  "recorded_at_utc": "2026-11-20T04:10:10.871315+00:00",
+  "reason": "December CPI is not available for a January-start allocation under the recorded 15-day publication lag",
+  "change": "Use only joint training months with recorded available_from preceding the portfolio decision; rerun historical studies",
+  "scope": "Historical timing correction; no tuning using evaluation performance; seed, grid, costs, gamma and alpha grid unchanged",
+  "qualification": "Availability dates are modeled lags in a revised extract, not archival real-time vintages"
+}

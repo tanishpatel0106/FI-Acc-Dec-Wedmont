@@ -1,0 +1,10 @@
+sample,cohort,source_rounded_low_risk_share,recreated,rounds_to_source,n
+Random interviews,All,0.8,0.7969770560529985,True,91950
+Random interviews,Gen Z,0.79,0.7938272788069685,True,41579
+Random interviews,Baby Boomers,0.85,0.8460121724237899,True,2212
+All supplied records,All,0.8,0.7821898958610364,False,109430
+All supplied records,Gen Z,0.79,0.7821018540914039,False,49035
+All supplied records,Baby Boomers,0.85,0.8385829509832933,False,2354
+Main survey,All,0.8,0.7841023435990091,False,53357
+Main survey,Gen Z,0.79,0.7832272335519166,False,24576
+Main survey,Baby Boomers,0.85,0.8170431059239953,False,773

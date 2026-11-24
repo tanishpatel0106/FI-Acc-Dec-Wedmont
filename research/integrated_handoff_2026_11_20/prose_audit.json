@@ -1,0 +1,28 @@
+{
+  "length": 2756,
+  "suspicious_total": 0,
+  "hits": [],
+  "notes": [
+    "Layer A only: invisible/format Unicode and space homoglyphs (edit-based carriers).",
+    "Statistical (token-sampling) watermarks are not detectable here; use Layer B rewrite.",
+    "Inspect kinds: strip, bidi, tag_chars, variation_selector, zwj_family, private_use, space, confusable, other_cf.",
+    "Load-bearing invisibles are preserved by default during cleaning: emoji glue, CJK/Mongolian variation selectors, script joiners, complete flag tag sequences, same-script fillers/selectors (Mongolian FVS, Khmer inherent vowels, Hangul jamo fillers), RTL directional marks/paired embeddings, orthographic Arabic/Syriac Cf marks, and visible-layout format controls next to their own script (Egyptian hieroglyph quadrat, Duployan shorthand, musical beaming). Inspection still reports bidi controls. Use explicit strip flags only after review.",
+    "No deterministic Layer A (invisible Unicode/format) carriers detected; statistical and pixel-domain marks are out of scope here."
+  ],
+  "stylometry": {
+    "path": "lifecycle/research/integrated_handoff_2026_11_20/EXECUTIVE_SUMMARY.txt",
+    "word_count": 400,
+    "sentence_count": 30,
+    "burstiness_cv": 0.5675,
+    "lexical_diversity": 0.8676,
+    "ai_ngram_density": 0.0,
+    "matched_markers": [],
+    "score": 0.0325,
+    "confidence_level": "CLEAN",
+    "density_tier": "low",
+    "status": "ok",
+    "findings": [],
+    "findings_confidence": [],
+    "notes": []
+  }
+}

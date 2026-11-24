@@ -1,7 +1,7 @@
 """Frozen, hashable experiment specification (brief 7.3). Its canonical-JSON SHA-256 is the run ID."""
 from typing import Any, Literal
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 Generator = Literal["historical", "bootstrap", "student_t", "markov_switching", "curve_factor"]
 PolicyType = Literal["constant_mix", "sixty_forty", "target_date", "glidepath", "risk_parity", "min_variance",
@@ -15,8 +15,12 @@ class Frozen(BaseModel):
     model_config = ConfigDict(frozen=True, extra="forbid")
 
 
+UniverseName = Literal["core", "modern", "core_long_history", "core_duration", "pp_modern_etf", "multi_asset_public", "multi_asset_full",
+                       "pp_research_historical", "liability_match", "observed_treasury_etf"]
+
+
 class DataSpec(Frozen):
-    universe: Literal["core", "modern"] = "core"
+    universe: UniverseName = "core"
     calibration_start: str | None = None
     calibration_end: str | None = None
     catalog_hash: str | None = None
@@ -37,7 +41,7 @@ class ScenarioSpec(Frozen):
 class InvestorSpec(Frozen):
     start_age: float = Field(65.0, ge=20, le=95)
     retirement_age: float = Field(65.0, ge=40, le=80)
-    max_age: float = Field(100.0, ge=70, le=110)
+    max_age: float = Field(100.0, ge=20, le=110)
     initial_wealth: float = Field(1_000_000.0, ge=0)
     income: float = Field(100_000.0, ge=0)
     income_profile: Literal["flat", "cgm_college", "cgm_highschool"] = "cgm_college"
@@ -49,6 +53,12 @@ class InvestorSpec(Frozen):
     savings_rate: float = Field(0.10, ge=0, le=0.8)
     sex: Literal["male", "female", "unisex"] = "unisex"
     mortality: bool = True
+
+    @model_validator(mode="after")
+    def positive_horizon(self):
+        if self.max_age <= self.start_age:
+            raise ValueError("max_age must exceed start_age")
+        return self
 
 
 class PreferencesSpec(Frozen):
@@ -112,7 +122,7 @@ class ValidationSpec(Frozen):
 
 class AttributionSpec(Frozen):
     sweep_id: str
-    universe: Literal["core", "modern"] = "modern"
+    universe: UniverseName = "modern"
     base: tuple[str, ...] = ("us_eq", "ust_10y")
     sleeves: tuple[str, ...] | None = None
     by_regime: bool = True

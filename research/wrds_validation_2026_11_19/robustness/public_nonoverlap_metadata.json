@@ -1,0 +1,84 @@
+{
+  "periods": {
+    "5": [
+      [
+        1980,
+        1984
+      ],
+      [
+        1985,
+        1989
+      ],
+      [
+        1990,
+        1994
+      ],
+      [
+        1995,
+        1999
+      ],
+      [
+        2000,
+        2004
+      ],
+      [
+        2005,
+        2009
+      ],
+      [
+        2010,
+        2014
+      ],
+      [
+        2015,
+        2019
+      ],
+      [
+        2020,
+        2024
+      ]
+    ],
+    "10": [
+      [
+        1980,
+        1989
+      ],
+      [
+        1990,
+        1999
+      ],
+      [
+        2000,
+        2009
+      ],
+      [
+        2010,
+        2019
+      ]
+    ],
+    "20": [
+      [
+        1980,
+        1999
+      ],
+      [
+        2000,
+        2019
+      ]
+    ]
+  },
+  "training_paths": 4000,
+  "alpha_grid": [
+    0.0,
+    0.25,
+    0.5,
+    0.75,
+    1.0
+  ],
+  "half_spread_bps": 5,
+  "gamma": 4,
+  "floor": 1000,
+  "training_horizon_weighting": "equal over 5/10/20 years, unique horizon cells",
+  "catalog_hash": "3bbcce4a7278f089",
+  "inference": "no overlapping return months within each horizon; serial dependence can remain; no pooled IID inference"
+}

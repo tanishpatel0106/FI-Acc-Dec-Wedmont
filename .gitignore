@@ -9,6 +9,10 @@ data/raw/
 data/processed/
 data/cache/
 data/runs/
+data/validation_etfs/
+data/wrds_validation/
+data/wrds_treasury_bridge/
+data/snapshot_restore_check/
 *.parquet
 !snapshots/public/*.parquet
 *.duckdb
@@ -46,3 +50,10 @@ paper/*.pdf
 paper/figures/*
 !paper/figures/.gitkeep
 research/experiments/run_ids.json
+
+# Local diagnostic attempts; final independent receipts are versioned separately.
+research/frontend_unit_2026_11_20.json
+research/integrated_handoff_2026_11_20/browser_tests.log
+research/integrated_handoff_2026_11_20/browser_tests_fresh.log
+research/integrated_handoff_2026_11_20/browser_tests_fresh.json
+research/integrated_handoff_2026_11_20/engine24_historical_replay_reproduction.log

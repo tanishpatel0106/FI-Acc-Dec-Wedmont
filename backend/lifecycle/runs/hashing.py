@@ -21,5 +21,7 @@ def spec_hash(obj: Any) -> str:
 
 
 def run_id_for(kind: str, obj: Any) -> str:
-    """Run ID = SHA-256 of kind + canonical spec (first 20 hex chars keep URLs short)."""
-    return sha256_hex(kind + ":" + canonical_json(obj))[:20]
+    """Include the scientific engine version so corrected calculations get distinct runs."""
+    from lifecycle import ENGINE_SEMANTIC_VERSION
+
+    return sha256_hex(ENGINE_SEMANTIC_VERSION + ":" + kind + ":" + canonical_json(obj))[:20]

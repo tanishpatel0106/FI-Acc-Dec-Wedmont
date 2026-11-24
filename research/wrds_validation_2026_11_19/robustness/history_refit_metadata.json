@@ -1,0 +1,10 @@
+{
+  "repetitions": 100,
+  "outer_block_months": 12,
+  "inner_block_months": 12,
+  "training_paths_per_refit": 2000,
+  "reference_future_paths": 10000,
+  "common_inner_seed": 813773,
+  "catalog_hash": "c1f8e3775eab9dd7",
+  "interpretation": "refit dispersion conditional on one fixed reference future model and finite inner simulation; not a general confidence interval or independent external validation"
+}

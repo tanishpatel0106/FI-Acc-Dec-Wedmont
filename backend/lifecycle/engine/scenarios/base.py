@@ -16,6 +16,8 @@ class ScenarioTensor:
     regime: NDArray[np.int64]           # (N, T) regime label, 0 when the generator has none
     n_regimes: int
     meta: dict[str, Any] = field(default_factory=dict)
+    # decision-time regime signal (point-in-time; see pit_signals). None -> no regime information.
+    decision: NDArray[np.int64] | None = None
 
     @property
     def n_paths(self) -> int:
@@ -29,16 +31,28 @@ class ScenarioTensor:
         if months > self.n_months:
             raise ValueError("requested %d months from a %d-month tensor" % (months, self.n_months))
         return ScenarioTensor(self.assets, self.real_returns[:, :months], self.inflation[:, :months],
-                              self.regime[:, :months], self.n_regimes, dict(self.meta))
+                              self.regime[:, :months], self.n_regimes, dict(self.meta),
+                              None if self.decision is None else self.decision[:, :months])
 
     def subset_paths(self, idx: NDArray[np.int64]) -> "ScenarioTensor":
         return ScenarioTensor(self.assets, self.real_returns[idx], self.inflation[idx], self.regime[idx],
-                              self.n_regimes, dict(self.meta))
+                              self.n_regimes, dict(self.meta), None if self.decision is None else self.decision[idx])
 
     def select_assets(self, assets: list[str]) -> "ScenarioTensor":
         cols = [self.assets.index(a) for a in assets]
         return ScenarioTensor(tuple(assets), self.real_returns[:, :, cols], self.inflation, self.regime,
-                              self.n_regimes, dict(self.meta))
+                              self.n_regimes, dict(self.meta), self.decision)
+
+    def decision_regime(self) -> NDArray[np.int64]:
+        """Point-in-time regime usable at decision time; falls back to a one-month lag of the label."""
+        if self.decision is not None:
+            return self.decision
+        if self.n_regimes <= 1:
+            return np.zeros_like(self.regime)
+        dec = np.empty_like(self.regime)
+        dec[:, 0] = self.regime[:, 0] * 0
+        dec[:, 1:] = self.regime[:, :-1]
+        return dec
 
     def nominal_returns(self) -> NDArray[np.float64]:
         return (1.0 + self.real_returns) * (1.0 + self.inflation[:, :, None]) - 1.0

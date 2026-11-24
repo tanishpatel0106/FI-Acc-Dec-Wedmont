@@ -1,0 +1,20 @@
+Age, willingness and liquid-budget resilience
+November 20, 2026
+
+Question and data
+We tested how age relates to reported financial-risk willingness and liquid resources available to fund household outlays. The US study uses the 2016, 2019, 2022 and 2025 Survey of Consumer Finances, five imputations and 999 official replicate weights. Independent evidence includes Italian SHIW and Indian SEBI microdata, with a 13-country inventory distinguishing microdata, aggregates and literature.
+
+Age is predictive
+Age improves held-out predictions of both willingness and accessible-resource coverage in 2019, 2022 and 2025. Adding age to income/wealth improves 2025 Brier loss by 0.01076 for willingness and 0.00445 for coverage. All six incremental-age tests survive Holm adjustment. Intervals condition on the fitted training models.
+
+The capacity result depends on the shock
+Older US households report lower willingness; the 2025 demographic-adjusted age-75-minus-30 contrast is -20.59 percentage points. Raw liquidity coverage rises with age, but the cash-coverage contrast becomes -3.22 points (-7.35 to +0.90) after income/wealth adjustment. Under a market loss plus six months without earned income, the adjusted resilience contrast is +16.51 points. Adding earned-income share reduces it to +0.37 points (-6.43 to +7.17). Continuing pensions, rather than a general age advantage, is central to that scenario.
+
+Resources and willingness
+In 2025, meeting the three-month cash threshold is associated with +7.35 points of willingness after age, demographic and financial adjustment. The earned-income-interruption threshold gives +1.66 points, with an interval crossing zero. In independent SHED panel evidence, a baseline emergency fund predicts 6.72 points fewer unpaid bills next year after baseline hardship/stability controls. This supports a hardship-related proxy, not the new stress formula or a causal willingness effect.
+
+Allocation validation
+The matched three-asset WRDS age-plus-flow rule gains 0.1041% resources CE versus age-only, with a 95% paired interval of -0.0783% to +0.3289%. A stable improvement is not established. New 16-cell budget scenarios show where reserve constraints matter, but outcomes at mean inputs are not population success estimates or individual investment recommendations.
+
+International and practical conclusion
+Italy and India support lower willingness at older ages/cohorts under their stated adjustments. Comparable capacity is not identified for India, China or Japan, and European aggregate tables cannot produce a harmonized country ranking. Use observed cash, outlays and income composition for a stated stress question; do not treat age alone as a sufficient capacity or allocation rule.

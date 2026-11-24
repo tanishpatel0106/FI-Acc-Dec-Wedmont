@@ -46,11 +46,11 @@ def paired_delta_ce(u_a: NDArray[np.float64], u_b: NDArray[np.float64], gamma: f
         return float("nan"), float("nan")
     delta = ce_a / ce_b - 1.0
     ga = dce_du(ce_a, ma, gamma, sum_disc) / ce_b
-    gb = -ce_a / ce_b ** 2 * dce_du(ce_b, mb, gamma, sum_disc)
+    gb = -(ce_a / ce_b) * (dce_du(ce_b, mb, gamma, sum_disc) / ce_b)
     if n < 2:
         return float(delta), 0.0
-    cov = np.cov(np.vstack([u_a, u_b]))
-    var = ga * ga * cov[0, 0] + gb * gb * cov[1, 1] + 2 * ga * gb * cov[0, 1]
+    influence = ga * (u_a - ma) + gb * (u_b - mb)
+    var = np.var(influence, ddof=1)
     return float(delta), float(np.sqrt(max(var, 0.0) / n))
 
 

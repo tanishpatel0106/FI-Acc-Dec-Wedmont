@@ -1,0 +1,124 @@
+Integrated Fixed Income handoff - November 20, 2026
+
+Read without executing
+1. output/pdf/fixed_income_executive_brief_2026-11-20.pdf (one page).
+2. output/pdf/fixed_income_integrated_report_2026-11-20.pdf (11 pages).
+3. lifecycle/research/integrated_handoff_2026_11_20/integrated_research.html.
+   The executed .ipynb beside it contains tables, eight figures, methods and citations.
+4. The prior public and WRDS reports remain in lifecycle/research/ with their original dates.
+   This November 20 report supersedes claims where it explicitly records a correction.
+
+Package layout
+lifecycle/ contains the complete versioned repository, public snapshots, aggregate evidence and source.
+household/scripts/ contains the seven SCF/SHED and international analysis modules used by the new analyses.
+household/data/age_expense_extension/ contains the published-method medical-imputation transcription.
+output/pdf/ contains the final employer documents.
+Public raw household archives and licensed vendor observations are excluded. Official public download
+URLs and frozen SHA-256 hashes are supplied in the two input manifests. No credentials are required
+for the public analyses or for running the aggregate-only notebook.
+
+Fresh setup (PowerShell, from the unzipped package root; Python 3.12, Node 22 or newer, npm and uv required)
+  uv sync --project lifecycle/backend --frozen --extra dev
+  uv venv .report-env --python 3.12
+  uv pip install --python .report-env/Scripts/python.exe -r lifecycle/research/requirements-report-lock.txt
+  Set-Location lifecycle/web
+  npm ci
+  npm run lint
+  npm run typecheck
+  npm test
+  npm run build
+  Set-Location ../..
+On OneDrive, set UV_LINK_MODE=copy if the filesystem does not support cache hard links.
+POSIX users should replace Scripts/python.exe by bin/python and set environment variables using
+export rather than PowerShell syntax. The bundled source is not tied to the original absolute path.
+
+Aggregate notebook only
+  .report-env/Scripts/python.exe lifecycle/research/render_followup.py --notebook lifecycle/research/integrated_handoff_2026_11_20/integrated_research.ipynb
+The notebook uses relative aggregate paths. It does not need household downloads or WRDS.
+Re-execution regenerates its eight figures and HTML. PDF regeneration:
+  .report-env/Scripts/python.exe lifecycle/research/build_handoff_pdf.py
+
+Recompute public household evidence
+  .report-env/Scripts/python.exe lifecycle/research/fetch_scf_bridge_inputs.py --target household --include-shed
+  $env:FIXED_INCOME_SURVEY_ROOT=(Resolve-Path household).Path
+  .report-env/Scripts/python.exe lifecycle/research/prepare_household_bridge.py
+  .report-env/Scripts/python.exe lifecycle/research/evaluate_age_transport.py
+  .report-env/Scripts/python.exe lifecycle/research/reproduce_shed_bridge.py
+  .report-env/Scripts/python.exe -m pytest -p no:cacheprovider lifecycle/research/test_household_stress.py lifecycle/research/test_age_transport.py
+The public downloader refuses a hash mismatch rather than silently mixing revised vintages. In that
+case acquire the archived vintage or explicitly revise and revalidate the input manifest. SCF helper
+files retain original raw variable names and the BLS transcription; source data are not translated.
+The locked report environment includes analysis dependencies, openpyxl and pytest.
+
+Recompute public market scenarios
+  Set-Location lifecycle
+  backend/.venv/Scripts/python.exe -m lifecycle.cli ingest --offline
+  backend/.venv/Scripts/python.exe -m lifecycle.cli build-panel
+  backend/.venv/Scripts/python.exe research/evaluate_household_bridge.py --dataset public
+  backend/.venv/Scripts/python.exe -m pytest -p no:cacheprovider backend/tests research/test_household_bridge.py research/test_robustness_followup.py
+  Set-Location ..
+Public sources and reconstructed Treasury returns remain explicitly distinguished from observed CRSP
+returns. Recomputing WRDS scenarios requires your own entitled inputs and the documented extraction
+and normalization process in the prior WRDS report. No local authentication state is included.
+
+Frontend browser verification
+The original 26-test browser suite requires a running API on localhost:8000 and a fresh production
+frontend on localhost:3000 with persisted study fixtures. Follow the repository setup and seed-v2
+instructions before npm run e2e. A different frontend origin must be permitted by API_CORS_ORIGINS;
+a changed API base must be present at build time. The final clean frontend check used the correct
+configured origin and existing public aggregate study fixtures. Backend tests separately used a fresh
+independent installation. Never rebuild underneath an old running production server.
+
+Recorded checks
+verification.json records 124 independent backend/accounting checks, six household/rank-statistic
+checks, 230 frontend unit tests, 26 browser tests, production build and zero npm audit advisories at
+the recorded date. clean_reproduction_comparison.json records agreement of 16 key CSV artifacts in
+fresh environments, with rtol 1e-10 and atol 1e-9. Reproduction used verified frozen public archives,
+not a claim that every raw file was redownloaded from the publisher on November 20.
+Exact matched frontier and signed-flow reproduction logs audit the engine-2.4 correction. PDF pages
+were rendered and visually inspected. Local harmless warnings are documented in verification.json.
+
+Scientific limits
+This is an exploratory observational and conditional scenario study. The SCF stress formula is
+investigator-defined. SHED supplies independent prospective evidence for an emergency-fund proxy,
+not direct validation of that formula. Cross-wave predictive intervals condition on fitted models.
+Budget templates are cell means; nonlinear outcomes are not population estimates. Initial allocations
+are endowed, income paths are frozen and the model omits career/retirement transitions. No stable CE
+superiority, causal aging effect, personal investment mandate or harmonized country ranking is claimed.
+
+External dependencies
+Employer response, their installation environment and any actual deployment remain external.
+Comparable foreign capacity estimates require additional research-access microdata and resolved
+measurement documentation. No recording/transcript was located in the sources previously searched.
+No external message or deployment was performed as part of this handoff.
+
+Recompute Italian, Indian and European evidence
+  .report-env/Scripts/python.exe lifecycle/research/fetch_scf_bridge_inputs.py --target household --include-international
+  $env:FIXED_INCOME_SURVEY_ROOT=(Resolve-Path household).Path
+  .report-env/Scripts/python.exe lifecycle/research/reproduce_international_bridge.py
+This obtains two Italian archives, two HFCS table archives and the SEBI source archive using the
+supplied frozen manifest. SEBI workbook extraction can use substantial disk/RAM/time. The recorded
+independent check reused its verified analytic extract rather than parsing the workbook again; the
+public raw archive and analytic-extract hashes are supplied. No raw respondent rows are delivered.
+The three country output files reproduce the prior estimates within the recorded tolerance.
+
+Complete legacy-demo accounting audit
+From lifecycle/: backend/.venv/Scripts/python.exe research/audit_historical_replay_engine24.py
+This reruns the original complete archived demonstration and its experiments under 2.4 and records
+the comparison. It bounds BLAS threads to 1 and Numba to 4 at process startup. Nine forward CE/unmet
+summaries change after fixing zero-balance continuation. The realized replay, experiment results
+and remaining numerical fields agree within rtol 1e-10 / atol 1e-9. Read ENGINE24_IMPACT_AUDIT.txt.
+The projection/optimization helpers now compile without changing their algorithms. Independent
+analytical/SLSQP tests pass. research/benchmark_replay_helpers.py records a warm helper benchmark,
+which must not be described as a whole-application performance improvement of the same magnitude.
+
+One-command Windows application installation
+From lifecycle/, run .\setup_windows.ps1 after installing uv and Node.js 22 or newer. This exact
+workflow was tested in another fresh clone with freshly installed environments, restored public
+snapshot, regenerated studies and production frontend. An optional -UvPython points to a Python
+interpreter that provides uv as a module. This does not reuse the backend environment. The receipt
+is one_command_install_verification.json and the generated IDs are one_command_public_run_ids.json.
+The default classic Permanent Portfolio cannot run without gold in the public snapshot: the tested
+installer explicitly computes and labels the ex-gold core-duration variant instead. This capability
+boundary is not equivalent to validating a gold-inclusive portfolio with public data. The archive
+contains the source and aggregate WRDS gold results, not the licensed raw gold-proxy observations.

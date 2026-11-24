@@ -1,0 +1,39 @@
+{
+  "backend_tests": "111 passed",
+  "frontend_unit_tests": "230 passed",
+  "typecheck": "passed",
+  "production_build": "passed, Next.js 16.4.6",
+  "lint": "0 errors, 1 existing React Hook Form warning",
+  "browser_tests": "26 passed",
+  "exact_reproduction": {
+    "reproduce_frontier.log": "reproduced 15396257c3d3bfcb163e",
+    "reproduce_signed_flow.log": "reproduced 3c15e68b970135cb144d",
+    "reproduce_observed_frontier.log": "reproduced b5665a4b7957f73b0836"
+  },
+  "historical_replay_checks": {
+    "return_information_precedes_decision": true,
+    "cpi_information_precedes_decision": true,
+    "policies": {
+      "sixty_forty": {
+        "months": 249,
+        "nonnegative_wealth": true,
+        "holdings_reconcile": true
+      },
+      "target_date": {
+        "months": 249,
+        "nonnegative_wealth": true,
+        "holdings_reconcile": true
+      },
+      "lifecycle_adaptive": {
+        "months": 249,
+        "nonnegative_wealth": true,
+        "holdings_reconcile": true
+      }
+    }
+  },
+  "dependency_audit": "6 advisories remain (1 high, 4 moderate, 1 low), see npm_audit_after.json",
+  "WRDS": "Completed Duo, explicit Terms of Use acceptance and authenticated Cloud extraction; see WRDS extension for source audits and tests",
+  "employer_setup": "awaiting employer reply and GitHub username",
+  "recording": "no recording or transcript located in the searched email, Drive and project files",
+  "frozen_etf_snapshot": "550 monthly observations restored to identical catalog hash 9c9ac4174cebffdd"
+}

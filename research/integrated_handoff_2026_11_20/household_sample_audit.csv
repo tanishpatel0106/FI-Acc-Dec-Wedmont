@@ -1,0 +1,5 @@
+year,households,implicates,replicates,missing_primary_expense,portfolio_zero_share,income_excludes,expense_definition
+2016,6194,5,999,0,0.8002917411986268,"interest/dividends, capital gains and PENACCTWD",approximate reconstruction
+2019,5719,5,999,0,0.7941905800412149,"interest/dividends, capital gains and PENACCTWD",approximate reconstruction
+2022,4557,5,999,1,0.7297376489271713,"interest/dividends, capital gains and PENACCTWD",approximate reconstruction
+2025,4325,5,999,0,0.7573711425711731,"interest/dividends, capital gains and PENACCTWD",reported

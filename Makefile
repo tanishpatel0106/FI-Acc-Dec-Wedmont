@@ -3,10 +3,11 @@ SHELL := /bin/bash
 PY := backend/.venv/bin/python
 UV ?= uv
 
-.PHONY: help setup setup-backend setup-web data data-offline snapshot ingest-wrds build-panel seed seed-full api web dev test test-backend test-web lint typecheck openapi reproduce paper docker-up clean-runs
+PHONY_V2 := seed-v2 selftest market-refresh entitlements
+.PHONY: $(PHONY_V2) help setup setup-backend setup-web data data-offline snapshot ingest-wrds build-panel seed seed-full api web dev test test-backend test-web lint typecheck openapi reproduce paper docker-up clean-runs
 
 help:
-	@grep -E '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-14s\033[0m %s\n", $$1, $$2}'
+	@grep -E '^[a-zA-Z0-9_-]+:.*?## ' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-14s\033[0m %s\n", $$1, $$2}'
 
 setup: setup-backend setup-web ## Install backend (uv) and web (npm) dependencies
 
@@ -33,6 +34,18 @@ build-panel: ## Rebuild the canonical panel + catalog from the raw vintages on d
 
 seed: ## Run the core exhibit specs in research/experiments (headline heatmaps, baselines, DP)
 	$(PY) -m lifecycle.cli seed
+
+seed-v2: ## Run the nine v2 research studies (F1-F6; about 70 s)
+	$(PY) -m lifecycle.cli seed-v2
+
+selftest: ## Run pytest and record the result for the Overview pipeline timeline
+	$(PY) -m lifecycle.cli selftest
+
+market-refresh: ## Download US Treasury daily par curves (needs network access to home.treasury.gov)
+	$(PY) -m lifecycle.cli market-refresh
+
+entitlements: ## Read-only WRDS entitlement / schema scan (authorised host; one Duo push)
+	$(PY) -m lifecycle.cli entitlements
 
 seed-full: ## Run every exhibit spec, plus attribution and the H1-H4 tests
 	$(PY) -m lifecycle.cli seed --full

@@ -1,0 +1,524 @@
+{
+  "frontier:default": {
+    "data": {
+      "universe": "core"
+    },
+    "scenario": {
+      "generator": "bootstrap",
+      "n_paths": 2000,
+      "seed": 20261030
+    },
+    "preferences": {
+      "gamma": 4,
+      "beta_annual": 0.97
+    },
+    "costs": {
+      "commission_bps": 0,
+      "half_spread_bps": 0
+    },
+    "investor": {
+      "age": 65,
+      "retirement_age": 65,
+      "horizon_years": 40,
+      "initial_wealth": 1000000,
+      "mortality": true,
+      "sex": "unisex"
+    }
+  },
+  "frontier:stress": {
+    "data": {
+      "universe": "core_long_history"
+    },
+    "scenario": {
+      "generator": "student_t",
+      "n_paths": 500,
+      "seed": 20261030
+    },
+    "preferences": {
+      "gamma": 8,
+      "beta_annual": 0.97
+    },
+    "costs": {
+      "commission_bps": 4,
+      "half_spread_bps": 6
+    },
+    "investor": {
+      "age": 60,
+      "retirement_age": 60,
+      "horizon_years": 40,
+      "initial_wealth": 1000000,
+      "mortality": true,
+      "sex": "unisex"
+    }
+  },
+  "signed_flow:default": {
+    "data": {
+      "universe": "core"
+    },
+    "scenario": {
+      "generator": "bootstrap",
+      "n_paths": 2000,
+      "seed": 20261030
+    },
+    "preferences": {
+      "gamma": 4,
+      "beta_annual": 0.97
+    }
+  },
+  "signed_flow:stress": {
+    "data": {
+      "universe": "core_long_history"
+    },
+    "scenario": {
+      "generator": "student_t",
+      "n_paths": 500,
+      "seed": 20261030
+    },
+    "preferences": {
+      "gamma": 8,
+      "beta_annual": 0.97
+    }
+  },
+  "permanent:default": {
+    "data": {
+      "universe": "pp_modern_etf"
+    },
+    "scenario": {
+      "generator": "bootstrap",
+      "n_paths": 2000,
+      "seed": 20261030
+    },
+    "investor": {
+      "age": 65,
+      "retirement_age": 65,
+      "horizon_years": 30,
+      "initial_wealth": 1000000,
+      "mortality": true,
+      "sex": "unisex"
+    },
+    "preferences": {
+      "gamma": 4,
+      "beta_annual": 0.97
+    },
+    "costs": {
+      "commission_bps": 0,
+      "half_spread_bps": 0
+    },
+    "withdrawal": 0.04
+  },
+  "permanent:stress": {
+    "data": {
+      "universe": "pp_modern_etf"
+    },
+    "scenario": {
+      "generator": "student_t",
+      "n_paths": 500,
+      "seed": 20261030
+    },
+    "investor": {
+      "age": 60,
+      "retirement_age": 60,
+      "horizon_years": 35,
+      "initial_wealth": 1000000,
+      "mortality": true,
+      "sex": "unisex"
+    },
+    "preferences": {
+      "gamma": 8,
+      "beta_annual": 0.97
+    },
+    "costs": {
+      "commission_bps": 4,
+      "half_spread_bps": 6
+    },
+    "withdrawal": 0.06
+  },
+  "rebalance:default": {
+    "data": {
+      "universe": "core"
+    },
+    "scenario": {
+      "generator": "bootstrap",
+      "n_paths": 2000,
+      "seed": 20261030
+    },
+    "investor": {
+      "age": 65,
+      "retirement_age": 65,
+      "horizon_years": 30,
+      "initial_wealth": 1000000,
+      "mortality": true,
+      "sex": "unisex"
+    },
+    "preferences": {
+      "gamma": 4,
+      "beta_annual": 0.97
+    },
+    "withdrawal": 0.04,
+    "main_cost_bps": 0
+  },
+  "rebalance:stress": {
+    "data": {
+      "universe": "core_duration"
+    },
+    "scenario": {
+      "generator": "student_t",
+      "n_paths": 500,
+      "seed": 20261030
+    },
+    "investor": {
+      "age": 60,
+      "retirement_age": 60,
+      "horizon_years": 35,
+      "initial_wealth": 1000000,
+      "mortality": true,
+      "sex": "unisex"
+    },
+    "preferences": {
+      "gamma": 8,
+      "beta_annual": 0.97
+    },
+    "withdrawal": 0.06,
+    "main_cost_bps": 10
+  },
+  "scenario_lab:default": {
+    "data": {
+      "universe": "core_duration"
+    },
+    "scenario": {
+      "generator": "bootstrap",
+      "n_paths": 2000,
+      "seed": 20261030
+    },
+    "investor": {
+      "age": 65,
+      "retirement_age": 65,
+      "horizon_years": 30,
+      "initial_wealth": 1000000,
+      "mortality": true,
+      "sex": "unisex"
+    },
+    "withdrawal": 0.04
+  },
+  "scenario_lab:stress": {
+    "data": {
+      "universe": "core_duration"
+    },
+    "scenario": {
+      "generator": "student_t",
+      "n_paths": 500,
+      "seed": 20261030
+    },
+    "investor": {
+      "age": 60,
+      "retirement_age": 60,
+      "horizon_years": 35,
+      "initial_wealth": 1000000,
+      "mortality": true,
+      "sex": "unisex"
+    },
+    "withdrawal": 0.06
+  },
+  "asof:default": {
+    "data": {
+      "universe": "core"
+    },
+    "scenario": {
+      "generator": "markov_switching",
+      "n_paths": 2000,
+      "seed": 20261030
+    },
+    "investor": {
+      "age": 65,
+      "retirement_age": 65,
+      "horizon_years": 30,
+      "initial_wealth": 1000000,
+      "mortality": true,
+      "sex": "unisex"
+    },
+    "as_of": null
+  },
+  "asof:stress": {
+    "data": {
+      "universe": "core_long_history"
+    },
+    "scenario": {
+      "generator": "markov_switching",
+      "n_paths": 500,
+      "seed": 20261030
+    },
+    "investor": {
+      "age": 60,
+      "retirement_age": 60,
+      "horizon_years": 35,
+      "initial_wealth": 1000000,
+      "mortality": true,
+      "sex": "unisex"
+    },
+    "as_of": "2008-09-30"
+  },
+  "optimize:default": {
+    "data": {
+      "universe": "core_duration"
+    },
+    "scenario": {
+      "generator": "bootstrap",
+      "n_paths": 2000,
+      "seed": 20261030
+    },
+    "investor": {
+      "age": 65,
+      "retirement_age": 65,
+      "horizon_years": 30,
+      "initial_wealth": 1000000,
+      "mortality": true,
+      "sex": "unisex"
+    },
+    "preferences": {
+      "gamma": 4,
+      "beta_annual": 0.97
+    },
+    "costs": {
+      "commission_bps": 0,
+      "half_spread_bps": 0
+    },
+    "withdrawal": 0.04
+  },
+  "optimize:stress": {
+    "data": {
+      "universe": "core_duration"
+    },
+    "scenario": {
+      "generator": "student_t",
+      "n_paths": 500,
+      "seed": 20261030
+    },
+    "investor": {
+      "age": 60,
+      "retirement_age": 60,
+      "horizon_years": 35,
+      "initial_wealth": 1000000,
+      "mortality": true,
+      "sex": "unisex"
+    },
+    "preferences": {
+      "gamma": 8,
+      "beta_annual": 0.97
+    },
+    "costs": {
+      "commission_bps": 4,
+      "half_spread_bps": 6
+    },
+    "withdrawal": 0.06
+  },
+  "compare_v2:default": {
+    "data": {
+      "universe": "core_duration"
+    },
+    "scenario": {
+      "generator": "bootstrap",
+      "n_paths": 2000,
+      "seed": 20261030
+    },
+    "investor": {
+      "age": 65,
+      "retirement_age": 65,
+      "horizon_years": 30,
+      "initial_wealth": 1000000,
+      "mortality": true,
+      "sex": "unisex"
+    },
+    "preferences": {
+      "gamma": 4,
+      "beta_annual": 0.97
+    },
+    "costs": {
+      "commission_bps": 0,
+      "half_spread_bps": 0
+    },
+    "withdrawal": 0.04,
+    "policies": [
+      "sixty_forty",
+      "all_equity",
+      "forty_sixty",
+      "pp_ex_gold",
+      "equity_cash_buffer",
+      "target_date"
+    ],
+    "focus": "target_date"
+  },
+  "compare_v2:stress": {
+    "data": {
+      "universe": "core_duration"
+    },
+    "scenario": {
+      "generator": "student_t",
+      "n_paths": 500,
+      "seed": 20261030
+    },
+    "investor": {
+      "age": 60,
+      "retirement_age": 60,
+      "horizon_years": 35,
+      "initial_wealth": 1000000,
+      "mortality": true,
+      "sex": "unisex"
+    },
+    "preferences": {
+      "gamma": 8,
+      "beta_annual": 0.97
+    },
+    "costs": {
+      "commission_bps": 4,
+      "half_spread_bps": 6
+    },
+    "withdrawal": 0.06,
+    "policies": [
+      "sixty_forty",
+      "pp_ex_gold"
+    ],
+    "focus": "pp_ex_gold"
+  },
+  "evidence:default": {
+    "scenario": {
+      "generator": "bootstrap",
+      "n_paths": 2000,
+      "seed": 20261030
+    }
+  },
+  "evidence:stress": {
+    "scenario": {
+      "generator": "bootstrap",
+      "n_paths": 500,
+      "seed": 20261030
+    }
+  },
+  "multi_asset:default": {
+    "data": {
+      "universe": "multi_asset_public"
+    },
+    "scenario": {
+      "generator": "bootstrap",
+      "n_paths": 2000,
+      "seed": 20261030
+    },
+    "investor": {
+      "age": 65,
+      "retirement_age": 65,
+      "horizon_years": 30,
+      "initial_wealth": 1000000,
+      "mortality": true,
+      "sex": "unisex"
+    },
+    "preferences": {
+      "gamma": 4,
+      "beta_annual": 0.97
+    },
+    "costs": {
+      "commission_bps": 0,
+      "half_spread_bps": 0
+    },
+    "withdrawal": 0.04
+  },
+  "multi_asset:stress": {
+    "data": {
+      "universe": "multi_asset_public"
+    },
+    "scenario": {
+      "generator": "student_t",
+      "n_paths": 500,
+      "seed": 20261030
+    },
+    "investor": {
+      "age": 60,
+      "retirement_age": 60,
+      "horizon_years": 35,
+      "initial_wealth": 1000000,
+      "mortality": true,
+      "sex": "unisex"
+    },
+    "preferences": {
+      "gamma": 8,
+      "beta_annual": 0.97
+    },
+    "costs": {
+      "commission_bps": 4,
+      "half_spread_bps": 6
+    },
+    "withdrawal": 0.06
+  },
+  "historical_replay:default": {
+    "start": "2007-01",
+    "investor": {
+      "start_age": 65,
+      "initial_wealth": 1000000,
+      "salary": 100000,
+      "savings_rate": 0.1,
+      "retirement_age": 65
+    },
+    "preferences": {
+      "gamma": 4,
+      "beta_annual": 0.97
+    },
+    "costs": {
+      "commission_bps": 0,
+      "half_spread_bps": 0
+    }
+  },
+  "historical_replay:stress": {
+    "start": "2007-01",
+    "investor": {
+      "start_age": 65,
+      "initial_wealth": 1000000,
+      "salary": 100000,
+      "savings_rate": 0.1,
+      "retirement_age": 60
+    },
+    "preferences": {
+      "gamma": 8,
+      "beta_annual": 0.97
+    },
+    "costs": {
+      "commission_bps": 4,
+      "half_spread_bps": 6
+    }
+  },
+  "lifecycle_sim:default": {
+    "start": "2007-01",
+    "investor": {
+      "start_age": 65,
+      "initial_wealth": 1000000,
+      "salary": 100000,
+      "savings_rate": 0.1,
+      "retirement_age": 65
+    },
+    "preferences": {
+      "gamma": 4,
+      "beta_annual": 0.97
+    },
+    "costs": {
+      "commission_bps": 0,
+      "half_spread_bps": 0
+    },
+    "n_paths": 2000
+  },
+  "lifecycle_sim:stress": {
+    "start": "2007-01",
+    "investor": {
+      "start_age": 65,
+      "initial_wealth": 1000000,
+      "salary": 100000,
+      "savings_rate": 0.1,
+      "retirement_age": 60
+    },
+    "preferences": {
+      "gamma": 8,
+      "beta_annual": 0.97
+    },
+    "costs": {
+      "commission_bps": 4,
+      "half_spread_bps": 6
+    },
+    "n_paths": 500
+  }
+}

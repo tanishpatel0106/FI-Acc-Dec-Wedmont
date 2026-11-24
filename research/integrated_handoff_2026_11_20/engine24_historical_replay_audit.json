@@ -1,0 +1,167 @@
+{
+  "original_run_id": "31c4d46f75f7e5ceb2fd",
+  "engine_semantic_version": "2.4",
+  "seconds": 114.40074348449707,
+  "spec": {
+    "candidates": [
+      "us_eq",
+      "intl_eq",
+      "em_eq",
+      "ust_10y",
+      "ust_30y",
+      "tips",
+      "ig_credit",
+      "hy_credit",
+      "gold",
+      "commodities",
+      "fx_basket",
+      "tbill"
+    ],
+    "costs": {
+      "commission_bps": 1.0,
+      "half_spread_bps": 2.0,
+      "slippage_bps": 0.0
+    },
+    "end": null,
+    "estimation_window_months": 120,
+    "experiments": true,
+    "forward_block_months": 12,
+    "forward_min_sample_months": 180,
+    "forward_paths": 500,
+    "investor": {
+      "final_age": 95.0,
+      "initial_wealth": 10000.0,
+      "pension_ratio": 0.3,
+      "real_wage_growth_young": 0.04,
+      "retirement_age": 65.0,
+      "salary": 45000.0,
+      "savings_rate": 0.15,
+      "sex": "unisex",
+      "spending_ratio": 0.7,
+      "start_age": 30.0
+    },
+    "label": null,
+    "max_sleeve": 0.6,
+    "mean_shrinkage": 0.9,
+    "min_history_months": 36,
+    "policies": [
+      "sixty_forty",
+      "target_date",
+      "lifecycle_adaptive"
+    ],
+    "preferences": {
+      "beta_annual": 0.97,
+      "gamma": 4.0,
+      "util_floor_annual": 3000.0
+    },
+    "prior_sharpe": 0.25,
+    "rebalance": {
+      "band": 0.05,
+      "cadence_months": 12,
+      "funding": "cash_flow_targeting",
+      "mode": "absolute_band"
+    },
+    "refit_months": 12,
+    "seed": 20261107,
+    "start": "2006-01",
+    "tactical_limit": 0.1,
+    "target_vol": 0.1,
+    "trend_months": 12,
+    "universe_mode": "fixed",
+    "vol_months": 12
+  },
+  "comparison_tolerance": "rtol 1e-10, atol 1e-9; excludes version metadata",
+  "numerical_library_threads": "BLAS capped at 1 and Numba at 4; no research parameter changed",
+  "differences": [
+    {
+      "path": "/forward/sixty_forty/ce_consumption",
+      "before": 82023.28254522657,
+      "after": 82023.26830194451,
+      "absolute_change": -0.014243282057577744
+    },
+    {
+      "path": "/forward/sixty_forty/unmet_mean",
+      "before": 462.77638798599145,
+      "after": 462.9023879859914,
+      "absolute_change": 0.12599999999997635
+    },
+    {
+      "path": "/forward/sixty_forty/unmet_cvar95",
+      "before": 9255.52775971982,
+      "after": 9258.04775971982,
+      "absolute_change": 2.5200000000004366
+    },
+    {
+      "path": "/forward/lifecycle_adaptive/ce_consumption",
+      "before": 80249.76479830255,
+      "after": 80247.6862657668,
+      "absolute_change": -2.078532535757404
+    },
+    {
+      "path": "/forward/lifecycle_adaptive/unmet_mean",
+      "before": 36831.844184539754,
+      "after": 36842.150184539736,
+      "absolute_change": 10.305999999982305
+    },
+    {
+      "path": "/forward/lifecycle_adaptive/unmet_cvar95",
+      "before": 501433.5083868641,
+      "after": 501574.268386864,
+      "absolute_change": 140.7599999998929
+    },
+    {
+      "path": "/forward/target_date/ce_consumption",
+      "before": 81945.76544722848,
+      "after": 81945.65757839908,
+      "absolute_change": -0.10786882939282805
+    },
+    {
+      "path": "/forward/target_date/unmet_mean",
+      "before": 2926.5933830194685,
+      "after": 2927.405383019469,
+      "absolute_change": 0.8120000000003529
+    },
+    {
+      "path": "/forward/target_date/unmet_cvar95",
+      "before": 58531.867660389325,
+      "after": 58548.10766038932,
+      "absolute_change": 16.239999999997963
+    }
+  ],
+  "changed_count": 9,
+  "forward_summary": {
+    "sixty_forty": {
+      "available": true,
+      "ce_consumption": 82023.26830194451,
+      "p_no_shortfall": 0.994,
+      "unmet_mean": 462.9023879859914,
+      "terminal": [
+        1192549.0,
+        8250227.0,
+        25984400.0
+      ]
+    },
+    "target_date": {
+      "available": true,
+      "ce_consumption": 81945.65757839908,
+      "p_no_shortfall": 0.98,
+      "unmet_mean": 2927.405383019469,
+      "terminal": [
+        359745.0,
+        3004367.0,
+        8664038.0
+      ]
+    },
+    "lifecycle_adaptive": {
+      "available": true,
+      "ce_consumption": 80247.6862657668,
+      "p_no_shortfall": 0.884,
+      "unmet_mean": 36842.150184539736,
+      "terminal": [
+        0.0,
+        1251144.0,
+        4996238.0
+      ]
+    }
+  }
+}

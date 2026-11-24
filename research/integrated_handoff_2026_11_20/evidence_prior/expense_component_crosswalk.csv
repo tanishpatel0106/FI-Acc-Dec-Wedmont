@@ -1,0 +1,9 @@
+component,fields,rule,boundary
+Observed recurring commitments,"TPAY, RENT, FOODHOME/FOODAWAY/FOODDELV, X703/X704, X721/X722","Monthly loan payments, rent, annual food /12, association fees and extra property taxes",Avoid property-tax double counting using first-mortgage escrow X810; unrecognized positive-amount frequencies missing
+Utilities,HOUSES; RENT; X710,0.5% home value annually for owners; 0/5/10% rent for tenants by utilities inclusion,Published footnote-8 rules
+Home insurance and maintenance,HOUSES; X810,0.5% annual home value for insurance unless escrowed; 1% maintenance,Published footnote-8 rules; public-field mapping documented
+Communications,Household size minus KIDS,100 USD monthly internet/cable +50 USD monthly per estimated adult,"2016 real USD constants; adult approximation excludes under-18s, whereas source says over-16s"
+Transport,Owned + leased vehicle counts; estimated adults,500 USD maintenance /vehicle/year; 1000 gas/adult/year; 800 insurance first vehicle +600 each additional,"2016 real USD constants, scaled with official macro deflator; household counts from raw files"
+"Medical insurance, drugs, supplies",BLS CE 2015-2016 tables 3600/3620/3630/3640/3650; X6351,Age/size cell means; insurance assigned to household payers with cell-mean-preserving adjustment,Approximate published-method reconstruction; exact author input vintage unavailable; calibration treated as fixed
+Age-independent medical sensitivity,Same BLS tables: all-age means within family size,Replace age-specific medical cell means by all-age family-size means,Tests direct age dependence introduced by medical imputation
+Price normalization,"Federal Reserve bulletin macro: 2016=3548, 2019=3775, 2022=4376, 2025=4789",Convert raw survey-year amounts and fixed 2016 constants to summary-extract 2025 USD,Ratios constructed only after harmonizing currency vintages

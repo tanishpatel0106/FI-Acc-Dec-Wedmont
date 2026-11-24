@@ -1,0 +1,24 @@
+[
+  {
+    "ticker": "IEF",
+    "series_id": "ust_7_10_etf",
+    "url": "https://query1.finance.yahoo.com/v8/finance/chart/IEF?range=max&interval=1d&events=div%2Csplits",
+    "retrieved_at": "2026-11-20T01:41:21.392063+00:00",
+    "sha256": "aaff89913b2f0fb4c70aa044c2160904a686a1ee6388f9102b52274b7bab31ba",
+    "first_month": "2002-09-30",
+    "last_month": "2026-09-30",
+    "months": 289,
+    "definition": "monthly change in month-end daily adjusted close"
+  },
+  {
+    "ticker": "GLD",
+    "series_id": "gold",
+    "url": "https://query1.finance.yahoo.com/v8/finance/chart/GLD?range=max&interval=1d&events=div%2Csplits",
+    "retrieved_at": "2026-11-20T01:41:21.505475+00:00",
+    "sha256": "32817e5b7ce1d36b229a5cb004c49eefa1d7c3ae05a045e978ae014e8d12089a",
+    "first_month": "2005-01-31",
+    "last_month": "2026-09-30",
+    "months": 261,
+    "definition": "monthly change in month-end daily adjusted close"
+  }
+]

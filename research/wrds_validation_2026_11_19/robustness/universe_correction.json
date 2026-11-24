@@ -1,0 +1,36 @@
+{
+  "superseded_run": "53b2e84a4b9895ad067a",
+  "replacement_run": "57e534824da155afbd59",
+  "previous_universe": "core",
+  "replacement_universe": "core_long_history",
+  "previous_assets": [
+    "us_eq",
+    "tbill",
+    "ust_10y",
+    "ust_2y",
+    "ust_5y",
+    "ust_20y"
+  ],
+  "replacement_assets": [
+    "us_eq",
+    "tbill",
+    "ust_10y"
+  ],
+  "previous_automatic_block_months": 18.728263406826386,
+  "replacement_automatic_block_months": 23.639156379715388,
+  "previous_result": {
+    "delta": 0.006127759190322105,
+    "lo": 0.0028567482050473425,
+    "hi": 0.010050993636816268,
+    "n_boot": 300,
+    "method": "paired test-path percentile bootstrap across all cells; fitted policies fixed"
+  },
+  "replacement_result": {
+    "delta": 0.0010408479520440527,
+    "lo": -0.0007830121668864037,
+    "hi": 0.0032891876260559647,
+    "n_boot": 300,
+    "method": "paired test-path percentile bootstrap across all cells; fitted policies fixed"
+  },
+  "reason": "Explicitly match the three-asset public universe; unused Treasury maturities affected automatic joint block-length selection"
+}

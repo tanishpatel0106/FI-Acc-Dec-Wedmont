@@ -1,0 +1,14 @@
+{
+  "source_identity_and_design_hashes": "4 stages verified",
+  "scenario_configurations": 26,
+  "sensitivity_score_rows": 305,
+  "nonoverlap_periods_per_dataset": "9 five-year, 4 ten-year, 2 twenty-year",
+  "historical_policy_flow_outcomes": 900,
+  "training_ends_before_test": true,
+  "history_refits": 100,
+  "refitted_allocation_records": 11400,
+  "analytical_tests": "4 passed: deterministic CRRA, validation rejects noise, ledger conservation, unpublished CPI excluded",
+  "matched_signed_flow_universe": "three assets verified",
+  "raw_vendor_observations_exported": false,
+  "interpretation": "retrospective sensitivity analysis; no claim of independent country or household evidence"
+}

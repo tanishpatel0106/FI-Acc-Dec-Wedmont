@@ -1,0 +1,12 @@
+dataset,construct,source_fields,construction,interpretation
+US SCF,Willingness,X7557; X3014,Observed 0-10 score (-1 is substantive zero); ordinal willingness,"Reported preference, not loss capacity"
+US SCF,Original liquidity ratio,LIQ; NORMINC,12 * LIQ / NORMINC,Investigator-defined income normalization; not expense coverage
+US SCF,Expense-based accessible-assets ratio,LIQ + STOCKS + BOND + NMMF; reconstructed monthly expenses,Accessible assets / monthly recurring expenses,Approximate Bhutta-Dettling reconstruction; marketable securities can lose value
+US SCF 2025,Direct spending alternative,TOTSPENDNH; RENT; TPAY,Assets / (TOTSPENDNH / 12 + RENT + TPAY),New spending question; different scope from recurring-expense reconstruction
+US SHED,Direct emergency fund,EF1,Self-reported savings cover three months of expenses,Expense-linked self-report; not a full loss-capacity scale
+Italy SHIW,Willingness,RISFIN,Categories 1-3 versus capital-protection category 4,Four-category financial willingness; wording differs from SCF
+Italy SHIW,Expense-based buffer,AF1; CN; YL2; YCA2,12 * AF1 / (CN - YL2 - YCA2),Deposits include certificates; cash expenditure removes noncash benefits and imputed rent
+India SEBI,Willingness,QRT,Moderate/high-risk responses versus preservation/stable-return responses,Observed categories; no assumption of equal category spacing
+India SEBI,Age,Life_Stage,Gen Z / Millennials / Generation X / Baby Boomers,No artificial exact ages assigned; age is MEP age cohort
+India SEBI,Saving allocation,Q1M grids,Monthly allocation flow,Not used as a stock of assets or capacity measure
+ECB HFCS public tables,Resource context,C4; A3; F5; G3,Published age-group medians/proportions and their standard errors,No division of separate medians; no joint willingness/resilience inference

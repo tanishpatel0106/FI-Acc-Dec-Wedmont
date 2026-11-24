@@ -1,0 +1,1 @@
+Implemented cross-wave SCF prediction and household income-shock tests, reproduced international results, standardized public/WRDS comparisons, corrected portfolio-accounting errors, and accelerated optimization. Independently reproduced 16 numerical outputs.

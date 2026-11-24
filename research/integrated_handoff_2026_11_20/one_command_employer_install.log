@@ -1,0 +1,300 @@
+warning: `VIRTUAL_ENV=C:\Users\13156\OneDrive\文档\ChatGPT\4511-Fixed Income\.venv` does not match the project environment path `backend\.venv` and will be ignored; use `--active` to target the active environment instead
+Using CPython 3.12.16
+Creating virtual environment at: backend\.venv
+   Building lifecycle @ file:///C:/Users/13156/OneDrive/%E6%96%87%E6%A1%A3/ChatGPT/4511-Fixed%20Income/.validation_cleanroom_2026_11_20/employer_install/backend
+      Built lifecycle @ file:///C:/Users/13156/OneDrive/%E6%96%87%E6%A1%A3/ChatGPT/4511-Fixed%20Income/.validation_cleanroom_2026_11_20/employer_install/backend
+Prepared 1 package in 1.24s
+Installed 73 packages in 6.27s
+ + annotated-doc==0.0.5
+ + annotated-types==0.8.0
+ + anyio==4.15.1
+ + arch==8.0.0
+ + ast-serialize==0.13.1
+ + certifi==2026.10.23
+ + click==8.5.0
+ + cloudpickle==3.1.2
+ + colorama==0.4.6
+ + contourpy==1.4.0
+ + cycler==0.12.1
+ + duckdb==2.0.0
+ + et-xmlfile==2.0.0
+ + fastapi==0.162.0
+ + fonttools==4.68.0
+ + formulaic==1.2.2
+ + h11==0.16.0
+ + httpcore==1.0.9
+ + httptools==0.9.0
+ + httpx==0.28.1
+ + hypothesis==6.170.14
+ + idna==3.20
+ + iniconfig==2.3.1
+ + interface-meta==2.0.1
+ + joblib==1.6.0
+ + kiwisolver==1.5.1
+ + librt==0.16.0
+ + lifecycle==0.2.4 (from file:///C:/Users/13156/OneDrive/%E6%96%87%E6%A1%A3/ChatGPT/4511-Fixed%20Income/.validation_cleanroom_2026_11_20/employer_install/backend)
+ + llvmlite==0.50.0
+ + matplotlib==3.11.2
+ + mypy==2.4.1
+ + mypy-extensions==1.1.0
+ + narwhals==2.28.0
+ + numba==0.68.1
+ + numpy==2.2.6
+ + openpyxl==3.1.5
+ + opentelemetry-api==1.45.2
+ + packaging==26.3
+ + pandas==2.2.3
+ + pandas-stubs==3.1.0.261029
+ + pathspec==1.1.1
+ + patsy==1.0.3
+ + pillow==13.0.0
+ + pluggy==1.7.0
+ + pyarrow==26.0.0
+ + pydantic==2.14.2
+ + pydantic-core==2.50.2
+ + pygments==2.21.0
+ + pyparsing==3.3.3
+ + pytest==9.2.0
+ + python-dateutil==3.0.0
+ + python-dotenv==1.2.4
+ + pytz==2026.6
+ + pyyaml==6.0.3
+ + ruff==0.17.3
+ + scikit-learn==1.9.1
+ + scipy==1.18.1
+ + six==1.17.0
+ + sortedcontainers==2.4.0
+ + sse-starlette==3.6.0
+ + starlette==1.10.0
+ + statsmodels==0.15.0
+ + threadpoolctl==3.7.0
+ + types-requests==2.33.0.20261030
+ + typing-extensions==4.16.0
+ + typing-inspection==0.4.4
+ + tzdata==2026.6
+ + urllib3==2.8.0
+ + uvicorn==0.54.0
+ + watchfiles==1.3.0
+ + websockets==17.4
+ + wrapt==2.5.2
+ + xlrd==2.0.2
+loading the committed public-data snapshot (no network)...
+ok   french    10815 rows  (snapshot 2026-10-30, 1926-07-31 -> 2026-09-30)
+ok   fred      15660 rows  (snapshot 2026-10-30, 1854-12-31 -> 2026-09-30)
+ok   gsw       24721 rows  (snapshot 2026-10-30, 1961-06-30 -> 2026-09-30)
+ok   acm        1568 rows  (snapshot 2026-10-30, 1961-06-30 -> 2026-09-30)
+ok   fx         7384 rows  (snapshot 2026-10-30, 1971-01-31 -> 2026-10-31)
+panel built: catalog_hash 3bbcce4a7278f089 series 100
+{
+  "catalog_hash": "3bbcce4a7278f089",
+  "built_at": "2026-11-20T07:20:56.352109",
+  "choices": {
+    "cpi_nsa": {
+      "chosen": "fred:CPIAUCNS",
+      "alternatives": []
+    },
+    "cpi_sa": {
+      "chosen": "fred:CPIAUCSL",
+      "alternatives": []
+    },
+    "em_eq": {
+      "chosen": "french:Emerging_5_Factors_CSV.zip.Mkt-RF+RF",
+      "alternatives": []
+    },
+    "ff_cma": {
+      "chosen": "french:F-F_Research_Data_5_Factors_2x3_CSV.zip.CMA",
+      "alternatives": []
+    },
+    "ff_hml": {
+      "chosen": "french:F-F_Research_Data_Factors.HML",
+      "alternatives": []
+    },
+    "ff_mktrf": {
+      "chosen": "french:F-F_Research_Data_Factors.Mkt-RF",
+      "alternatives": []
+    },
+    "ff_rf": {
+      "chosen": "french:F-F_Research_Data_Factors.RF",
+      "alternatives": []
+    },
+    "ff_rmw": {
+      "chosen": "french:F-F_Research_Data_5_Factors_2x3_CSV.zip.RMW",
+      "alternatives": []
+    },
+    "ff_smb": {
+      "chosen": "french:F-F_Research_Data_Factors.SMB",
+      "alternatives": []
+    },
+    "ff_umd": {
+      "chosen": "french:F-F_Momentum_Factor_CSV.zip.Mom",
+      "alternatives": []
+    },
+    "fx_aud": {
+      "chosen": "derived:fx_deposit(DEXUSAL,IRSTCI01AUM156N)",
+      "alternatives": []
+    },
+    "fx_basket": {
+      "chosen": "derived:fx_basket(equal-weight GBP,JPY,CAD,AUD; H.10 month-end spot; OECD call money)",
+      "alternatives": []
+    },
+    "fx_cad": {
+      "chosen": "derived:fx_deposit(DEXCAUS,IRSTCI01CAM156N)",
+      "alternatives": []
+    },
+    "fx_gbp": {
+      "chosen": "derived:fx_deposit(DEXUSUK,IRSTCI01GBM156N)",
+      "alternatives": []
+    },
+    "fx_jpy": {
+      "chosen": "derived:fx_deposit(DEXJPUS,IRSTCI01JPM156N)",
+      "alternatives": []
+    },
+    "fxs_aud": {
+      "chosen": "fred:DEXUSAL",
+      "alternatives": []
+    },
+    "fxs_cad": {
+      "chosen": "fred:DEXCAUS:inverted",
+      "alternatives": []
+    },
+    "fxs_gbp": {
+      "chosen": "fred:DEXUSUK",
+      "alternatives": []
+    },
+    "fxs_jpy": 
+running frontier ...
+   frontier f76f0571e170cf55adf0 done 
+running signed_flow ...
+   signed_flow 16d0ad677cb80ec88ab6 done 
+running rebalance ...
+   rebalance 0a26cc68f211bc5263dd done 
+running scenario_lab ...
+   scenario_lab 6f03d9db0c175130dae0 done 
+running optimize ...
+   optimize 13e1ea191194a258df6b done 
+running compare_v2 ...
+   compare_v2 2e5a2b5b23dc8ee0db70 done 
+running asof ...
+   asof e7aa390bfde116695e0b done 
+running permanent ...
+   permanent abaaace74895c7f57cbf failed IncompatibleUniverse: universe pp_modern_etf is missing required series: gold
+Traceback (most recent call last):
+  File "C:\Users\13156\OneDrive\文档\ChatGPT\4511-Fixed Income\.validation_cleanroom_2026
+   permanent portfolio with gold unavailable; running the ex-gold variants on core_duration
+   permanent 532dcf179bf8c4ca858d done
+running evidence ...
+   evidence dfc1e2f2b7c34e1424fd done 
+{
+  "frontier": {
+    "run_id": "f76f0571e170cf55adf0",
+    "status": "done",
+    "error": null,
+    "seconds": 41.38353371620178
+  },
+  "signed_flow": {
+    "run_id": "16d0ad677cb80ec88ab6",
+    "status": "done",
+    "error": null,
+    "seconds": 16.41896891593933
+  },
+  "rebalance": {
+    "run_id": "0a26cc68f211bc5263dd",
+    "status": "done",
+    "error": null,
+    "seconds": 1.9196951389312744
+  },
+  "scenario_lab": {
+    "run_id": "6f03d9db0c175130dae0",
+    "status": "done",
+    "error": null,
+    "seconds": 6.252260208129883
+  },
+  "optimize": {
+    "run_id": "13e1ea191194a258df6b",
+    "status": "done",
+    "error": null,
+    "seconds": 10.466154336929321
+  },
+  "compare_v2": {
+    "run_id": "2e5a2b5b23dc8ee0db70",
+    "status": "done",
+    "error": null,
+    "seconds": 1.5169060230255127
+  },
+  "asof": {
+    "run_id": "e7aa390bfde116695e0b",
+    "status": "done",
+    "error": null,
+    "seconds": 1.4762301445007324
+  },
+  "permanent": {
+    "run_id": "abaaace74895c7f57cbf",
+    "status": "failed",
+    "error": "IncompatibleUniverse: universe pp_modern_etf is missing required series: gold",
+    "seconds": null
+  },
+  "permanent_core_duration": {
+    "run_id": "532dcf179bf8c4ca858d",
+    "status": "done",
+    "error": null
+  },
+  "evidence": {
+    "run_id": "dfc1e2f2b7c34e1424fd",
+    "status": "done",
+    "error": null,
+    "seconds": 2.0037131309509277
+  }
+}
+Gold data are unavailable in this public snapshot; the explicit ex-gold Permanent Portfolio variant was computed.
+npm warn deprecated eslint@9.39.5: This version is no longer supported. Please see https://eslint.org/version-support for other options.
+
+added 549 packages, and audited 550 packages in 27s
+
+183 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+
+> web@0.1.0 build
+> next build
+
+▲ Next.js 16.4.6 (Turbopack)
+✓ Running next.config.ts took 102ms
+- Cache Components enabled
+- Partial Prefetching enabled
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 7.2s
+  Running TypeScript ...
+  Finished TypeScript in 4.8s ...
+  Collecting page data using 17 workers ...
+  Generating static pages using 17 workers (0/16) ...
+  Generating static pages using 17 workers (4/16) 
+  Generating static pages using 17 workers (8/16) 
+  Generating static pages using 17 workers (12/16) 
+✓ Generating static pages using 17 workers (16/16) in 1457ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ○ /compare
+├ ○ /fixed-income
+├ ○ /lifecycle-flows
+├ ○ /market-state
+├ ○ /methodology
+├ ○ /optimize
+├ ○ /permanent-portfolio
+├ ○ /rebalance
+├ ○ /research
+├ ○ /runs
+├ ○ /scenarios
+└ ○ /withdrawal-lab
+
+
+○  (Static)  prerendered as static content
+
+Public-data installation completed. No WRDS account or credentials were used.
+Start the API: backend/.venv/Scripts/python.exe -m uvicorn lifecycle.api.main:app --host 127.0.0.1 --port 8000
+Start the frontend in another terminal: npm.cmd run start --prefix web
+Open http://localhost:3000. See the integrated research handoff for current findings and source boundaries.

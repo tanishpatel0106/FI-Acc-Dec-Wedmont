@@ -1,0 +1,33 @@
+sample,cohort,response,n,weighted_share,weight_sum
+Listing/random,Baby Boomers,I need to have good but stable and reliable returns with minimal losses,2212,0.2950480253069596,2164.261648196701
+Listing/random,Baby Boomers,Preservation of capital (amount invested) is more important to me than returns.,2212,0.5509641471168302,2164.261648196701
+Listing/random,Baby Boomers,"I aim for better, higher returns and realize that there will be some ups and downs in my investment, but I wouldn't be able to accept significant losses",2212,0.11771976941131977,2164.261648196701
+Listing/random,Baby Boomers,I would like high returns and am not too concerned with risk. I am prepared for significant short-term losses to achieve better long-term returns,2212,0.036268058164890295,2164.261648196701
+Listing/random,Gen Z,I need to have good but stable and reliable returns with minimal losses,41579,0.31803797257222444,43781.05156601072
+Listing/random,Gen Z,Preservation of capital (amount invested) is more important to me than returns.,41579,0.4757893062347439,43781.05156601072
+Listing/random,Gen Z,"I aim for better, higher returns and realize that there will be some ups and downs in my investment, but I wouldn't be able to accept significant losses",41579,0.14894306284290182,43781.05156601072
+Listing/random,Gen Z,I would like high returns and am not too concerned with risk. I am prepared for significant short-term losses to achieve better long-term returns,41579,0.05722965835012977,43781.05156601072
+Listing/random,Generation X,I need to have good but stable and reliable returns with minimal losses,11049,0.29993032501528366,10606.63452063682
+Listing/random,Generation X,Preservation of capital (amount invested) is more important to me than returns.,11049,0.49797009066062436,10606.63452063682
+Listing/random,Generation X,"I aim for better, higher returns and realize that there will be some ups and downs in my investment, but I wouldn't be able to accept significant losses",11049,0.14892692033310712,10606.63452063682
+Listing/random,Generation X,I would like high returns and am not too concerned with risk. I am prepared for significant short-term losses to achieve better long-term returns,11049,0.053172663990984796,10606.63452063682
+Listing/random,Millennials,I need to have good but stable and reliable returns with minimal losses,37110,0.304301298254618,35398.05226515575
+Listing/random,Millennials,Preservation of capital (amount invested) is more important to me than returns.,37110,0.49329675242367077,35398.05226515575
+Listing/random,Millennials,"I aim for better, higher returns and realize that there will be some ups and downs in my investment, but I wouldn't be able to accept significant losses",37110,0.14513906901046844,35398.05226515575
+Listing/random,Millennials,I would like high returns and am not too concerned with risk. I am prepared for significant short-term losses to achieve better long-term returns,37110,0.05726288031124273,35398.05226515575
+Main weighted,Baby Boomers,I need to have good but stable and reliable returns with minimal losses,773,0.2807429954403462,892.6171922534114
+Main weighted,Baby Boomers,Preservation of capital (amount invested) is more important to me than returns.,773,0.5363001104836491,892.6171922534114
+Main weighted,Baby Boomers,"I aim for better, higher returns and realize that there will be some ups and downs in my investment, but I wouldn't be able to accept significant losses",773,0.13547877005915235,892.6171922534114
+Main weighted,Baby Boomers,I would like high returns and am not too concerned with risk. I am prepared for significant short-term losses to achieve better long-term returns,773,0.047478124016852384,892.6171922534114
+Main weighted,Gen Z,I need to have good but stable and reliable returns with minimal losses,24576,0.32305074436877335,26656.70198907029
+Main weighted,Gen Z,Preservation of capital (amount invested) is more important to me than returns.,24576,0.4601764891831433,26656.70198907029
+Main weighted,Gen Z,"I aim for better, higher returns and realize that there will be some ups and downs in my investment, but I wouldn't be able to accept significant losses",24576,0.15438421872406327,26656.70198907029
+Main weighted,Gen Z,I would like high returns and am not too concerned with risk. I am prepared for significant short-term losses to achieve better long-term returns,24576,0.062388547724020166,26656.70198907029
+Main weighted,Generation X,I need to have good but stable and reliable returns with minimal losses,5638,0.30263688571807196,5488.361285619378
+Main weighted,Generation X,Preservation of capital (amount invested) is more important to me than returns.,5638,0.4777544537947834,5488.361285619378
+Main weighted,Generation X,"I aim for better, higher returns and realize that there will be some ups and downs in my investment, but I wouldn't be able to accept significant losses",5638,0.15732056689601825,5488.361285619378
+Main weighted,Generation X,I would like high returns and am not too concerned with risk. I am prepared for significant short-term losses to achieve better long-term returns,5638,0.06228809359112643,5488.361285619378
+Main weighted,Millennials,I need to have good but stable and reliable returns with minimal losses,22370,0.3023818605576495,20319.319533057118
+Main weighted,Millennials,Preservation of capital (amount invested) is more important to me than returns.,22370,0.4824238229386303,20319.319533057118
+Main weighted,Millennials,"I aim for better, higher returns and realize that there will be some ups and downs in my investment, but I wouldn't be able to accept significant losses",22370,0.1544080853961731,20319.319533057118
+Main weighted,Millennials,I would like high returns and am not too concerned with risk. I am prepared for significant short-term losses to achieve better long-term returns,22370,0.060786231107547176,20319.319533057118

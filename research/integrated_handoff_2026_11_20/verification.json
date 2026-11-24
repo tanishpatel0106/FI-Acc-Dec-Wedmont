@@ -1,0 +1,206 @@
+{
+  "date": "2026-11-20",
+  "engine_semantic_version": "2.4",
+  "backend_and_accounting_tests": {
+    "tests": 124,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "household_and_auc_tests": {
+    "tests": 6,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "frontend_unit_tests": {
+    "passed": 230,
+    "failed": 0
+  },
+  "browser_tests": {
+    "startTime": "2026-11-20T12:18:10.749Z",
+    "duration": 226774.654,
+    "expected": 26,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "independent_install": "Fresh local clone, uv frozen backend plus dev extra, npm ci, isolated report environment; no copied environments or node_modules",
+  "clean_public_data": "Restored committed public snapshot and rebuilt panel independently",
+  "clean_household_data": "Replayed 12 hash-verified SCF and 4 SHED archives, two Italian archives, two HFCS archives and the verified Indian analytic extract in an independent helper tree; live re-download was not required",
+  "clean_numeric_artifacts": [
+    {
+      "file": "budget_age_contrasts.csv",
+      "rows": 84,
+      "numerical_agreement": "rtol 1e-10 / atol 1e-9",
+      "independent_environment": true
+    },
+    {
+      "file": "budget_age_profiles.csv",
+      "rows": 224,
+      "numerical_agreement": "rtol 1e-10 / atol 1e-9",
+      "independent_environment": true
+    },
+    {
+      "file": "household_templates.csv",
+      "rows": 16,
+      "numerical_agreement": "rtol 1e-10 / atol 1e-9",
+      "independent_environment": true
+    },
+    {
+      "file": "actual_household_cell_stress.csv",
+      "rows": 48,
+      "numerical_agreement": "rtol 1e-10 / atol 1e-9",
+      "independent_environment": true
+    },
+    {
+      "file": "willingness_budget_adjusted.csv",
+      "rows": 12,
+      "numerical_agreement": "rtol 1e-10 / atol 1e-9",
+      "independent_environment": true
+    },
+    {
+      "file": "public_household_policy_scores.csv",
+      "rows": 480,
+      "numerical_agreement": "rtol 1e-10 / atol 1e-9",
+      "independent_environment": true
+    },
+    {
+      "file": "public_household_rule_selection.csv",
+      "rows": 96,
+      "numerical_agreement": "rtol 1e-10 / atol 1e-9",
+      "independent_environment": true
+    },
+    {
+      "file": "public_household_paired_differences.csv",
+      "rows": 960,
+      "numerical_agreement": "rtol 1e-10 / atol 1e-9",
+      "independent_environment": true
+    },
+    {
+      "file": "age_out_of_wave_scores.csv",
+      "rows": 84,
+      "numerical_agreement": "rtol 1e-10 / atol 1e-9",
+      "independent_environment": true
+    },
+    {
+      "file": "age_out_of_wave_coefficients.csv",
+      "rows": 420,
+      "numerical_agreement": "rtol 1e-10 / atol 1e-9",
+      "independent_environment": true
+    },
+    {
+      "file": "evidence_shed/shed_prospective.csv",
+      "rows": 3,
+      "numerical_agreement": "rtol 1e-10 / atol 1e-9",
+      "independent_environment": true
+    },
+    {
+      "file": "evidence_shed/shed_prospective_cv.csv",
+      "rows": 2,
+      "numerical_agreement": "rtol 1e-10 / atol 1e-9",
+      "independent_environment": true
+    },
+    {
+      "file": "evidence_shed/shed_effects.csv",
+      "rows": 21,
+      "numerical_agreement": "rtol 1e-10 / atol 1e-9",
+      "independent_environment": true
+    },
+    {
+      "file": "evidence_prior/italy_age_contrasts.csv",
+      "rows": 18,
+      "numerical_agreement": "rtol 1e-10 / atol 1e-9",
+      "independent_environment": true,
+      "input_note": "Verified frozen sources; India reused its hash-verified public analytic extract rather than re-parsing the large workbook"
+    },
+    {
+      "file": "evidence_prior/india_age_effects.csv",
+      "rows": 24,
+      "numerical_agreement": "rtol 1e-10 / atol 1e-9",
+      "independent_environment": true,
+      "input_note": "Verified frozen sources; India reused its hash-verified public analytic extract rather than re-parsing the large workbook"
+    },
+    {
+      "file": "evidence_prior/europe_published_age_profiles.csv",
+      "rows": 384,
+      "numerical_agreement": "rtol 1e-10 / atol 1e-9",
+      "independent_environment": true,
+      "input_note": "Verified frozen sources; India reused its hash-verified public analytic extract rather than re-parsing the large workbook"
+    }
+  ],
+  "exact_prior_study_reproduction": {
+    "frontier": "reproduced 5ed2a2bb125f27cca2cb",
+    "signed_flow": "reproduced 57e534824da155afbd59"
+  },
+  "complete_legacy_demo_re_evaluation": {
+    "status": "Completed including forward simulation and all experiments",
+    "changed_fields": 9,
+    "scope": "Only forward CE and unmet-outlay summaries change; remaining numerical fields agree within recorded tolerance",
+    "audit": "engine24_historical_replay_audit.json"
+  },
+  "production_build": "Passed in independently installed frontend",
+  "lint": "Passed without lint warnings",
+  "typecheck": "Passed",
+  "one_command_windows_install": {
+    "status": "passed",
+    "fresh_source_clone": true,
+    "fresh_backend_environment": true,
+    "fresh_node_modules": true,
+    "command": "setup_windows.ps1 -UvPython <existing Python with uv>",
+    "node_version": "v25.2.1",
+    "public_data": "Restored committed snapshot; no external data or credentials copied",
+    "studies": {
+      "frontier": "done",
+      "signed_flow": "done",
+      "rebalance": "done",
+      "scenario_lab": "done",
+      "optimize": "done",
+      "compare_v2": "done",
+      "asof": "done",
+      "permanent": "failed",
+      "permanent_core_duration": "done",
+      "evidence": "done"
+    },
+    "production_build": "passed",
+    "npm_audit_in_install": "0 vulnerabilities",
+    "frontend_tests": "Separate final current-source API/frontend browser acceptance: 26 passed",
+    "note": "UvPython chooses a uv launcher; the backend environment is independently created from the frozen lock"
+  },
+  "npm_audit": "0 known advisories at the November 20 registry check; not a guarantee against future advisories",
+  "executed_notebook": {
+    "code_cells": 12,
+    "error_outputs": 0,
+    "standalone_figures": 8,
+    "language": "English"
+  },
+  "pdf_pages": {
+    "fixed_income_executive_brief_2026-11-20.pdf": 1,
+    "fixed_income_integrated_report_2026-11-20.pdf": 11
+  },
+  "pdf_review": "Rendered pages visually checked; no clipping or missing report text",
+  "country_inventory": "13 country records; 8 European aggregate profiles; evidence levels kept separate",
+  "warnings": [
+    "Existing Starlette/httpx TestClient deprecation",
+    "Report kernel warns that local TCP transport is unencrypted; no credentials or restricted rows in notebook",
+    "One initial household test run could not write the optional pytest cache; six tests passed",
+    "Early browser attempts used a stale server / a test origin outside CORS; final fresh frontend on the configured origin passed all 26 tests"
+  ],
+  "scientific_boundaries": [
+    "Repeated cross-sections do not identify causal aging",
+    "Held-out survey intervals condition on fitted training models",
+    "Retrospective chronological tests are not an untouched prospective lockbox",
+    "SHED validates a related hardship predictor, not the SCF stress formula",
+    "Mean-template nonlinear outcomes are not population outcomes",
+    "Monte Carlo intervals exclude return-model and household-estimation uncertainty",
+    "Initial portfolio allocation is endowed; no initial implementation turnover charge",
+    "No stable general CE advantage or harmonized country capacity ranking is established",
+    "Legacy historical-replay forward summaries are superseded by the completed 2.4 re-evaluation; see ENGINE24_IMPACT_AUDIT.txt"
+  ],
+  "external_dependencies": [
+    "Employer response and installation environment",
+    "Research-access international microdata and resolved response documentation",
+    "No recording/transcript located in the sources previously searched"
+  ],
+  "licensed_data": "No raw CRSP/TRACE rows, credentials or private microdata included in the delivery package"
+}

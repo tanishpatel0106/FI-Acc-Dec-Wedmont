@@ -1,0 +1,84 @@
+loading the committed public-data snapshot (no network)...
+ok   french    10815 rows  (snapshot 2026-10-30, 1926-07-31 -> 2026-09-30)
+ok   fred      15660 rows  (snapshot 2026-10-30, 1854-12-31 -> 2026-09-30)
+ok   gsw       24721 rows  (snapshot 2026-10-30, 1961-06-30 -> 2026-09-30)
+ok   acm        1568 rows  (snapshot 2026-10-30, 1961-06-30 -> 2026-09-30)
+ok   fx         7384 rows  (snapshot 2026-10-30, 1971-01-31 -> 2026-10-31)
+panel built: catalog_hash 3bbcce4a7278f089 series 100
+{
+  "catalog_hash": "3bbcce4a7278f089",
+  "built_at": "2026-11-20T07:00:16.899649",
+  "choices": {
+    "cpi_nsa": {
+      "chosen": "fred:CPIAUCNS",
+      "alternatives": []
+    },
+    "cpi_sa": {
+      "chosen": "fred:CPIAUCSL",
+      "alternatives": []
+    },
+    "em_eq": {
+      "chosen": "french:Emerging_5_Factors_CSV.zip.Mkt-RF+RF",
+      "alternatives": []
+    },
+    "ff_cma": {
+      "chosen": "french:F-F_Research_Data_5_Factors_2x3_CSV.zip.CMA",
+      "alternatives": []
+    },
+    "ff_hml": {
+      "chosen": "french:F-F_Research_Data_Factors.HML",
+      "alternatives": []
+    },
+    "ff_mktrf": {
+      "chosen": "french:F-F_Research_Data_Factors.Mkt-RF",
+      "alternatives": []
+    },
+    "ff_rf": {
+      "chosen": "french:F-F_Research_Data_Factors.RF",
+      "alternatives": []
+    },
+    "ff_rmw": {
+      "chosen": "french:F-F_Research_Data_5_Factors_2x3_CSV.zip.RMW",
+      "alternatives": []
+    },
+    "ff_smb": {
+      "chosen": "french:F-F_Research_Data_Factors.SMB",
+      "alternatives": []
+    },
+    "ff_umd": {
+      "chosen": "french:F-F_Momentum_Factor_CSV.zip.Mom",
+      "alternatives": []
+    },
+    "fx_aud": {
+      "chosen": "derived:fx_deposit(DEXUSAL,IRSTCI01AUM156N)",
+      "alternatives": []
+    },
+    "fx_basket": {
+      "chosen": "derived:fx_basket(equal-weight GBP,JPY,CAD,AUD; H.10 month-end spot; OECD call money)",
+      "alternatives": []
+    },
+    "fx_cad": {
+      "chosen": "derived:fx_deposit(DEXCAUS,IRSTCI01CAM156N)",
+      "alternatives": []
+    },
+    "fx_gbp": {
+      "chosen": "derived:fx_deposit(DEXUSUK,IRSTCI01GBM156N)",
+      "alternatives": []
+    },
+    "fx_jpy": {
+      "chosen": "derived:fx_deposit(DEXJPUS,IRSTCI01JPM156N)",
+      "alternatives": []
+    },
+    "fxs_aud": {
+      "chosen": "fred:DEXUSAL",
+      "alternatives": []
+    },
+    "fxs_cad": {
+      "chosen": "fred:DEXCAUS:inverted",
+      "alternatives": []
+    },
+    "fxs_gbp": {
+      "chosen": "fred:DEXUSUK",
+      "alternatives": []
+    },
+    "fxs_jpy": 

@@ -1,0 +1,32 @@
+{
+  "script_sha256": "fccd9b4c50896b22664d1220fc9ad8ab55e6b2fd279258897887cc714678b20c",
+  "models": {
+    "Intercept": [],
+    "Age": [
+      "age10",
+      "age45plus",
+      "age65plus"
+    ],
+    "Financial": [
+      "income_log",
+      "wealth_asinh"
+    ],
+    "Financial + age": [
+      "income_log",
+      "wealth_asinh",
+      "age10",
+      "age45plus",
+      "age65plus"
+    ]
+  },
+  "targets": [
+    "any_risk",
+    "accessible_noage_ge3"
+  ],
+  "train_test": "Expanding earlier waves to the next held-out wave; independent household cross-sections",
+  "weights": "Equal total training weight per wave; five separately fitted MI models; official held-out survey weights and 999 replicates",
+  "feature_caveat": "Financial predictors share ingredients with the liquidity outcome; predictive association is not independent construct validation",
+  "measurement": "Common accessible-asset/no-age expense reconstruction across all waves; any_risk is directly reported",
+  "decision_rule": "Positive paired Brier improvement means predictive age information in the held-out wave; no universal threshold or lifetime claim",
+  "uncertainty": "Intervals condition on fitted models; they do not include full training-sample or model-selection uncertainty"
+}

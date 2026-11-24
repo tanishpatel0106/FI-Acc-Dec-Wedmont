@@ -34,6 +34,14 @@ create table if not exists runs (
 );
 create index if not exists runs_kind on runs(kind, created_at);
 create index if not exists runs_parent on runs(parent_id);
+create table if not exists audit (
+    id integer primary key autoincrement,
+    ts text not null,
+    actor text not null,
+    action text not null,
+    run_id text,
+    detail text
+);
 """
 
 
@@ -155,3 +163,25 @@ def _json_default(o: Any) -> Any:
     if isinstance(o, (np.bool_,)):
         return bool(o)
     return str(o)
+
+
+def audit(actor: str, action: str, run_id: str | None, detail: str = "") -> None:
+    """Append-only audit trail of user/worker actions (never records credentials or raw data)."""
+    try:
+        with _LOCK, _conn() as con:
+            con.execute("insert into audit (ts, actor, action, run_id, detail) values (?, ?, ?, ?, ?)",
+                        (now(), actor, action, run_id, detail[:500]))
+    except sqlite3.Error:
+        pass
+
+
+def audit_log(limit: int = 200, run_id: str | None = None) -> list[dict[str, Any]]:
+    q = "select * from audit"
+    args: list[Any] = []
+    if run_id:
+        q += " where run_id = ?"
+        args.append(run_id)
+    q += " order by id desc limit ?"
+    args.append(limit)
+    with _conn() as con:
+        return [dict(r) for r in con.execute(q, args).fetchall()]
