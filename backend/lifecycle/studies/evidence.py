@@ -94,9 +94,13 @@ def hypothesis_table(explicit: dict[str, str]) -> list[dict[str, Any]]:
         rows.append(_row("H1-v2"))
     # H2: q-aware (full) vs age-only OOS CE
     if sf:
-        m = -sf["policies"]["oos_mean_delta"]["age_only"]
-        lo, hi = sf["policies"]["oos_delta_ci"]["age_only"]
-        lo, hi = -hi, -lo
+        comparison = sf["policies"].get("oos_full_vs_age")
+        if comparison is not None:
+            m, lo, hi = comparison["delta"], comparison["lo"], comparison["hi"]
+        else:
+            m = -sf["policies"]["oos_mean_delta"]["age_only"]
+            lo, hi = sf["policies"]["oos_delta_ci"]["age_only"]
+            lo, hi = -hi, -lo
         v = "supported" if lo > 0.001 else ("contradicted" if hi < 0 else "fragile")
         rows.append(_row("H2-v2", m, lo, hi, v, sid, q(sf), "OOS dCE of the cell-optimal (age+q) policy over the age-only policy",
                          _dims(monte_carlo="pass", oos="pass", source_quality=src(sf))))

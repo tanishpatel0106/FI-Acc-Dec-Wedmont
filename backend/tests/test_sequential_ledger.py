@@ -69,3 +69,23 @@ def test_defaults_unchanged_for_whole_horizon_runs():
     cfg.trace_path = -1
     a = L.simulate(R, np.zeros((50, T), dtype=np.int64), np.full((50, T), 4000.0), np.zeros((50, T)), cfg)
     assert a.holdings_end.shape == (50, 3) and np.allclose(a.holdings_end.sum(axis=1), a.terminal)
+
+
+def test_explicit_zero_holdings_do_not_reinitialize_initial_wealth():
+    months=12
+    cfg=_cfg(L.constant_schedule(np.array([.6,.3,.1]),months),months,
+             h0=np.zeros((2,3)),t0=6)
+    cfg.trace_path=-1
+    out=L.simulate(np.zeros((2,months,3)),np.zeros((2,months),dtype=np.int64),
+                   np.zeros((2,months)),np.zeros((2,months)),cfg)
+    assert np.allclose(out.terminal,0)
+    assert np.allclose(out.holdings_end,0)
+
+
+def test_empty_and_nonempty_paths_keep_their_supplied_holdings():
+    cfg=_cfg(L.constant_schedule(np.array([.6,.3,.1]),1),1,
+             h0=np.array([[0.,0.,0.],[2000.,3000.,5000.]]),t0=7)
+    cfg.trace_path=-1
+    out=L.simulate(np.zeros((2,1,3)),np.zeros((2,1),dtype=np.int64),
+                   np.zeros((2,1)),np.zeros((2,1)),cfg)
+    assert np.allclose(out.terminal,[0,10000])

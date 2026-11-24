@@ -69,7 +69,7 @@ def solve_bmin(p: np.ndarray, bs: list[float], target: float) -> dict[str, Any]:
 
 
 def _surface(ctx, assets, eq, bd, rs, bs, tr, horizons, keep_first: bool, util_floor: float,
-             cov=None, gamma=None, progress=None, lo=0.0, hi=1.0):
+             cov=None, gamma=None, progress=None, lo=0.0, hi=1.0, ce_horizon=None):
     nb, nr = len(bs), len(rs)
     P = np.zeros((len(horizons), nb, nr))
     CE = np.zeros((nb, nr))
@@ -89,14 +89,18 @@ def _surface(ctx, assets, eq, bd, rs, bs, tr, horizons, keep_first: bool, util_f
             out = S.run(ctx, w, tr, rate=r, util_floor=util_floor, gamma=g, cov=cov)
             for hi_, h in enumerate(horizons):
                 P[hi_, bi, ri] = S.success(out.first_shortfall, h * 12).mean()
-            ceb = S.ce_block(out, g)
+            welfare = out
+            if ce_horizon is not None and ce_horizon * 12 < ctx.tensor.n_months:
+                welfare = S.run(ctx, w, tr, rate=r, util_floor=util_floor, gamma=g, cov=cov,
+                                tensor=ctx.tensor.head(ce_horizon * 12))
+            ceb = S.ce_block(welfare, g)
             CE[bi, ri], CE_SE[bi, ri] = ceb["ce"], ceb["se"]
-            UNMET[bi, ri] = out.unmet.mean()
-            CVAR[bi, ri] = S.cvar(out.unmet, 0.95)
+            UNMET[bi, ri] = welfare.unmet.mean()
+            CVAR[bi, ri] = S.cvar(welfare.unmet, 0.95)
             UD[bi, ri] = S.until_death_success(out.first_shortfall, ctx.survival)
             if keep_first:
                 firsts[(bi, ri)] = out.first_shortfall.astype(np.int32)
-                utils[(bi, ri)] = out.utility
+                utils[(bi, ri)] = welfare.utility
             k += 1
             if progress is not None and k % 25 == 0:
                 progress("simulating", lo + (hi - lo) * k / (nb * nr))
@@ -120,7 +124,8 @@ def run_frontier(spec: FrontierSpec, progress: S.Progress) -> dict[str, Any]:
     tr = S.strategy(spec.rebalancer, spec.costs)
     uf = spec.preferences.util_floor_annual
     P, CE, CE_SE, UNMET, CVAR, UD, firsts, utils = _surface(ctx, assets, spec.equity, spec.bond, rs, bs, tr,
-                                                            horizons, True, uf, progress=progress, lo=0.05, hi=0.55)
+                                                            horizons, True, uf, progress=progress, lo=0.05, hi=0.55,
+                                                            ce_horizon=spec.main_horizon)
     N = ten.n_paths
     iid = ten.meta.get("generator") != "historical"
     hidx = {h: i for i, h in enumerate(horizons)}
@@ -240,7 +245,8 @@ def run_frontier(spec: FrontierSpec, progress: S.Progress) -> dict[str, Any]:
     spectrum = []
     eq_only = np.zeros(len(assets))
     eq_only[assets.index(spec.equity)] = 1.0
-    base_runs = {r: S.run(ctx, eq_only, tr, rate=r, util_floor=uf) for r in rs[::4]}
+    comparison_tensor = ctx.tensor.head(spec.main_horizon * 12)
+    base_runs = {r: S.run(ctx, eq_only, tr, rate=r, util_floor=uf, tensor=comparison_tensor) for r in rs[::4]}
     for bond in spec.bond_assets:
         if bond not in assets:
             spectrum.append({"bond": bond, "available": False})
@@ -249,7 +255,7 @@ def run_frontier(spec: FrontierSpec, progress: S.Progress) -> dict[str, Any]:
         for r, base in base_runs.items():
             w = eq_only * 0.6
             w[assets.index(bond)] += 0.4
-            out = S.run(ctx, w, tr, rate=r, util_floor=uf)
+            out = S.run(ctx, w, tr, rate=r, util_floor=uf, tensor=comparison_tensor)
             row["r"].append(r)
             row["d_success"].append(float(S.success(out.first_shortfall, spec.main_horizon * 12).mean() -
                                           S.success(base.first_shortfall, spec.main_horizon * 12).mean()))
@@ -311,7 +317,7 @@ def run_frontier(spec: FrontierSpec, progress: S.Progress) -> dict[str, Any]:
     ri5 = min(range(len(rs)), key=lambda i: abs(rs[i] - 0.05))
     for g in spec.gammas:
         _, CEg, *_ = _surface(ctx, assets, spec.equity, spec.bond, [rs[ri5]], bs_c, tr, (spec.main_horizon,), False,
-                              uf, gamma=g)
+                              uf, gamma=g, ce_horizon=spec.main_horizon)
         gamma_rows.append({"gamma": g, "b_ce": bs_c[int(np.argmax(CEg[:, 0]))]})
         forest.append({"dimension": "gamma (CE-optimal b)", "label": "gamma=%g" % g,
                        "b_min": bs_c[int(np.argmax(CEg[:, 0]))], "status": "ce_optimum", "lo": None, "hi": None})
@@ -322,11 +328,12 @@ def run_frontier(spec: FrontierSpec, progress: S.Progress) -> dict[str, Any]:
     phases = []
     for h in horizons:
         key = "%d|%.2f" % (h, mt)
+        _, phase_ce, *_ = _surface(ctx, assets, spec.equity, spec.bond, [0.04], bs, tr, (h,), False,
+                                   uf, ce_horizon=h)
         for row, brow in zip(thresholds[key], boot.get(key, [{}] * len(rs))):
             if abs(row["r"] - 0.04) < 1e-9:
-                ri4 = rs.index(row["r"])
                 phases.append({"horizon_years": h, "feasible_intervals": row["intervals"], "b_min": row["b_min"],
-                               "b_min_ci": [brow.get("q05"), brow.get("q95")], "b_ce": bs[int(np.argmax(CE[:, ri4]))],
+                               "b_min_ci": [brow.get("q05"), brow.get("q95")], "b_ce": bs[int(np.argmax(phase_ce[:, 0]))],
                                "status": row["status"]})
 
     progress("summarising", 0.95)
@@ -335,7 +342,8 @@ def run_frontier(spec: FrontierSpec, progress: S.Progress) -> dict[str, Any]:
         pass
     return {
         "kind": "frontier", "r": rs, "b": bs, "horizons": list(horizons), "targets": list(spec.targets),
-        "main_horizon": spec.main_horizon, "main_target": mt, "bond": spec.bond, "equity": spec.equity,
+        "main_horizon": spec.main_horizon, "ce_horizon_years": spec.main_horizon,
+        "main_target": mt, "bond": spec.bond, "equity": spec.equity,
         "rebalancer": spec.rebalancer,
         "p_success": {str(h): S.to_list(P[hidx[h]]) for h in horizons},
         "p_lo": {str(h): S.to_list(lo[hidx[h]]) for h in horizons},

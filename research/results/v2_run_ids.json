@@ -1,61 +1,61 @@
 {
   "frontier": {
-    "run_id": "829771eddae0b2607682",
+    "run_id": "15396257c3d3bfcb163e",
     "status": "done",
     "error": null,
-    "seconds": 17.883641481399536
+    "seconds": 26.47049641609192
   },
   "signed_flow": {
-    "run_id": "65860f4af6440d1590bc",
+    "run_id": "3c15e68b970135cb144d",
     "status": "done",
     "error": null,
-    "seconds": 24.563958883285522
+    "seconds": 14.351255178451538
   },
   "rebalance": {
-    "run_id": "27b3342dae46e41a805d",
+    "run_id": "b42f4a607fb70c037045",
     "status": "done",
     "error": null,
-    "seconds": 2.622076988220215
+    "seconds": 1.5521700382232666
   },
   "scenario_lab": {
-    "run_id": "c42f699cbc2ebc7c10ac",
+    "run_id": "29194f5a9e962706c75f",
     "status": "done",
     "error": null,
-    "seconds": 4.698688983917236
+    "seconds": 3.4555978775024414
   },
   "optimize": {
-    "run_id": "cc784d17cfe62f4e189a",
+    "run_id": "ea3c0f79c972a42d7904",
     "status": "done",
     "error": null,
-    "seconds": 12.855492115020752
+    "seconds": 8.202512741088867
   },
   "compare_v2": {
-    "run_id": "fa9a8c8ab68d5cc80ee7",
+    "run_id": "0f2900dc65ded619c306",
     "status": "done",
     "error": null,
-    "seconds": 1.8070344924926758
+    "seconds": 1.312398910522461
   },
   "asof": {
-    "run_id": "1abb1b9015a69b1ab163",
+    "run_id": "32ed9ceea7d75f71c9c3",
     "status": "done",
     "error": null,
-    "seconds": 1.9883005619049072
+    "seconds": 1.2286429405212402
   },
   "permanent": {
-    "run_id": "8fe9913e56468b1ac57d",
+    "run_id": "9d43ff9ca8d4f78b8a78",
     "status": "failed",
     "error": "IncompatibleUniverse: universe pp_modern_etf is missing required series: gold",
     "seconds": null
   },
   "permanent_core_duration": {
-    "run_id": "7ff76814bc3a60c58dfb",
+    "run_id": "672c92d3bbfb194c9c05",
     "status": "done",
     "error": null
   },
   "evidence": {
-    "run_id": "5f978b35f598800bb2aa",
+    "run_id": "84494473d0a51f421125",
     "status": "done",
     "error": null,
-    "seconds": 2.3790359497070312
+    "seconds": 1.6785852909088135
   }
 }

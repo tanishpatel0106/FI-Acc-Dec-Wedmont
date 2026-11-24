@@ -1,0 +1,97 @@
+{
+  "extracted_at": "2026-11-20T02:54:38.641430+00:00",
+  "sources": {
+    "mcti": {
+      "rows": 1189,
+      "start": "1925-12-31",
+      "end": "2024-12-31",
+      "sha256": "b79971421a6a8bbc8f77f7c8b52880e2eadd20d2eb6c8465523f8807cc08a7a0",
+      "unit_checks_against_index_growth": {
+        "b2ret": {
+          "decimal_rmse": 2.759560025968005e-07,
+          "percent_rmse": 0.008225969472595386,
+          "n": 1008
+        },
+        "b5ret": {
+          "decimal_rmse": 2.610594037780778e-07,
+          "percent_rmse": 0.014031325661492188,
+          "n": 1005
+        },
+        "b10ret": {
+          "decimal_rmse": 2.6868245146406944e-07,
+          "percent_rmse": 0.02025884723983854,
+          "n": 1004
+        },
+        "b20ret": {
+          "decimal_rmse": 2.7142979802468243e-07,
+          "percent_rmse": 0.027171913371598414,
+          "n": 996
+        },
+        "b30ret": {
+          "decimal_rmse": 2.6401009454019565e-07,
+          "percent_rmse": 0.0312171305668147,
+          "n": 998
+        },
+        "t30ret": {
+          "decimal_rmse": 3.120695812271568e-07,
+          "percent_rmse": 0.003642124211644479,
+          "n": 1188
+        },
+        "cpiret": {
+          "decimal_rmse": 0.0005442193567802559,
+          "percent_rmse": 0.005756738183558684,
+          "n": 1188
+        }
+      }
+    },
+    "msix": {
+      "rows": 1189,
+      "start": "1925-12-31",
+      "end": "2024-12-31",
+      "sha256": "99d3c0574717526240bcd15a05cd9e6cbfdaee85e22ddcc9b56ac2f764efc371",
+      "unit_checks_against_index_growth": {
+        "vwretd": {
+          "decimal_rmse": 3.3654853636158515e-07,
+          "percent_rmse": 0.05343798829743523,
+          "n": 1188
+        }
+      }
+    },
+    "etfs": {
+      "rows": 2651,
+      "start": "2001-08-31",
+      "end": "2025-12-31",
+      "sha256": "d145afa68a4de5221bf0b0a2b414e4d1b89f0e52aa351619e67a192ee7944dfb",
+      "ticker_counts": {
+        "DBC": 239,
+        "EEM": 273,
+        "EFA": 293,
+        "GLD": 254,
+        "HYG": 225,
+        "IEF": 282,
+        "LQD": 282,
+        "TIP": 265,
+        "TLT": 282,
+        "VNQ": 256
+      },
+      "permnos_per_ticker": {
+        "DBC": 1,
+        "EEM": 1,
+        "EFA": 1,
+        "GLD": 1,
+        "HYG": 1,
+        "IEF": 1,
+        "LQD": 1,
+        "TIP": 1,
+        "TLT": 1,
+        "VNQ": 1
+      }
+    },
+    "credit": {
+      "rows": 286,
+      "start": "2002-08-31",
+      "end": "2026-05-31",
+      "sha256": "5f521c7a826e3ba67cf760ca2c74695b03edc8af7f318d61aaa4722d0efff996"
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "return_information_precedes_decision": true,
+  "cpi_information_precedes_decision": true,
+  "policies": {
+    "sixty_forty": {
+      "months": 249,
+      "nonnegative_wealth": true,
+      "holdings_reconcile": true
+    },
+    "target_date": {
+      "months": 249,
+      "nonnegative_wealth": true,
+      "holdings_reconcile": true
+    },
+    "lifecycle_adaptive": {
+      "months": 249,
+      "nonnegative_wealth": true,
+      "holdings_reconcile": true
+    }
+  }
+}

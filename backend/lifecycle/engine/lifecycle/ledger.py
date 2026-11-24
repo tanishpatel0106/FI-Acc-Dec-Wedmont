@@ -66,8 +66,8 @@ REASONS = ["none", "initial", "calendar", "band breach", "Browne 15/35 review br
            "utility gain > cost", "trade rejected (cost > gain)"]
 
 # integer parameter slots
-I_RETIRE, I_SPEND, I_TRADE, I_CADENCE, I_CHECK, I_CF, I_CASH, I_EDGE, I_REC, I_TRACE, I_K, I_T0 = range(12)
-N_IP = 12   # I_T0: global month offset of local month 0 (sequential execution; 0 for whole-horizon runs)
+I_RETIRE, I_SPEND, I_TRADE, I_CADENCE, I_CHECK, I_CF, I_CASH, I_EDGE, I_REC, I_TRACE, I_K, I_T0, I_H0 = range(13)
+N_IP = 13   # I_H0 distinguishes supplied zero holdings from a new portfolio.
 # float parameter slots
 (F_W0, F_RATE, F_SAVE, F_GUP, F_GLO, F_GSTEP, F_ABS, F_REL, F_FLOOR, F_CEIL, F_COMM, F_SPREAD, F_SLIP,
  F_SLIPSCALE, F_RESERVE, F_GAMMA, F_ETA, F_KSHIFT, F_SCALE, F_UFLOOR, F_WREF, F_Q, F_RISK, F_REVIEW, F_SPEND0) = range(25)
@@ -159,9 +159,9 @@ def _path(j, R, dec_regime, labor, pension, wtgt_sched, defensive, cov, amort, i
             for a in range(A):
                 h0s += h0[j, a]
             for a in range(A):
-                h[a] = h0[j, a] if h0s > 0.0 else tgt[a] * W
+                h[a] = h0[j, a] if ip[I_H0] == 1 else tgt[a] * W
             started = True
-            if trace and h0s == 0.0:
+            if trace and ip[I_H0] == 0:
                 t_reason[t] = RS_INITIAL
         W = 0.0
         for a in range(A):
@@ -616,6 +616,7 @@ def simulate(R: NDArray[np.float64], dec_regime: NDArray[np.int64], labor: NDArr
     ip[I_REC] = 1 if cfg.record_years else 0
     ip[I_TRACE] = cfg.trace_path
     ip[I_T0] = cfg.t0
+    ip[I_H0] = 0 if cfg.h0 is None else 1
     fp = np.zeros(N_FP)
     fp[F_W0] = cfg.w0
     fp[F_RATE] = cfg.rate

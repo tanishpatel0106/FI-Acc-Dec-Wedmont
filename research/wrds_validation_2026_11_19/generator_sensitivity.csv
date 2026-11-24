@@ -1,0 +1,13 @@
+dataset,window,generator,paths,highest_success_at_5pct,minimum_bonds,status
+public,long,student_t,1000,0.87,,no_feasible_allocation
+public,modern,student_t,1000,0.926,0.0,no_bonds_needed
+public,early,student_t,1000,0.877,,no_feasible_allocation
+public,recent,student_t,1000,0.96,0.0,no_bonds_needed
+treasury_only,long,student_t,1000,0.873,,no_feasible_allocation
+treasury_only,modern,student_t,1000,0.927,0.0,no_bonds_needed
+treasury_only,early,student_t,1000,0.914,0.4,identified
+treasury_only,recent,student_t,1000,0.966,0.0,no_bonds_needed
+wrds,long,student_t,1000,0.853,,no_feasible_allocation
+wrds,modern,student_t,1000,0.901,0.0,no_bonds_needed
+wrds,early,student_t,1000,0.918,0.4,identified
+wrds,recent,student_t,1000,0.921,0.0,no_bonds_needed

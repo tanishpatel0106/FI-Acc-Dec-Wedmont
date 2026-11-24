@@ -1,0 +1,421 @@
+test_year,target,implicate,model,term,coefficient
+2019,any_risk,1,Intercept,Intercept,0.3782925865738959
+2019,any_risk,1,Age,Intercept,0.5577947670494193
+2019,any_risk,1,Age,age10,-0.13823563376336703
+2019,any_risk,1,Age,age45plus,-0.08793759196201996
+2019,any_risk,1,Age,age65plus,-0.23693815805660087
+2019,any_risk,1,Financial,Intercept,-7.281939279979214
+2019,any_risk,1,Financial,income_log,0.6664895090188235
+2019,any_risk,1,Financial,wealth_asinh,0.1758732832536762
+2019,any_risk,1,Financial + age,Intercept,-5.342365035667676
+2019,any_risk,1,Financial + age,income_log,0.44093674027727664
+2019,any_risk,1,Financial + age,wealth_asinh,0.5546006867023477
+2019,any_risk,1,Financial + age,age10,-0.5817053137862257
+2019,any_risk,1,Financial + age,age45plus,0.2334133027017458
+2019,any_risk,1,Financial + age,age65plus,-0.23620593170977053
+2019,any_risk,2,Intercept,Intercept,0.3787888299144965
+2019,any_risk,2,Age,Intercept,0.5445929440785177
+2019,any_risk,2,Age,age10,-0.14700603164252168
+2019,any_risk,2,Age,age45plus,-0.07646550707961713
+2019,any_risk,2,Age,age65plus,-0.2251781886787457
+2019,any_risk,2,Financial,Intercept,-7.345151642242476
+2019,any_risk,2,Financial,income_log,0.6729793014683538
+2019,any_risk,2,Financial,wealth_asinh,0.1718057048086219
+2019,any_risk,2,Financial + age,Intercept,-5.428063696797556
+2019,any_risk,2,Financial + age,income_log,0.4487243950695329
+2019,any_risk,2,Financial + age,wealth_asinh,0.5475493849344137
+2019,any_risk,2,Financial + age,age10,-0.5867824810287853
+2019,any_risk,2,Financial + age,age45plus,0.24387128430673982
+2019,any_risk,2,Financial + age,age65plus,-0.2303207434607534
+2019,any_risk,3,Intercept,Intercept,0.38435835822468156
+2019,any_risk,3,Age,Intercept,0.5542157868231692
+2019,any_risk,3,Age,age10,-0.1414734690203281
+2019,any_risk,3,Age,age45plus,-0.08256441174315497
+2019,any_risk,3,Age,age65plus,-0.21704220254992998
+2019,any_risk,3,Financial,Intercept,-7.2792378356227285
+2019,any_risk,3,Financial,income_log,0.6668659742208349
+2019,any_risk,3,Financial,wealth_asinh,0.1760781615526696
+2019,any_risk,3,Financial + age,Intercept,-5.406075484154426
+2019,any_risk,3,Financial + age,income_log,0.4467850551552249
+2019,any_risk,3,Financial + age,wealth_asinh,0.5506987538185182
+2019,any_risk,3,Financial + age,age10,-0.5845504816712405
+2019,any_risk,3,Financial + age,age45plus,0.2403216916621547
+2019,any_risk,3,Financial + age,age65plus,-0.2192101658531643
+2019,any_risk,4,Intercept,Intercept,0.3826628626707951
+2019,any_risk,4,Age,Intercept,0.5544518564980218
+2019,any_risk,4,Age,age10,-0.13999182567489274
+2019,any_risk,4,Age,age45plus,-0.08158449405831394
+2019,any_risk,4,Age,age65plus,-0.23284918747067215
+2019,any_risk,4,Financial,Intercept,-7.227974443391748
+2019,any_risk,4,Financial,income_log,0.6617910644077281
+2019,any_risk,4,Financial,wealth_asinh,0.179908495230214
+2019,any_risk,4,Financial + age,Intercept,-5.264562169052418
+2019,any_risk,4,Financial + age,income_log,0.4341489966940056
+2019,any_risk,4,Financial + age,wealth_asinh,0.5565734692866945
+2019,any_risk,4,Financial + age,age10,-0.5789665759990874
+2019,any_risk,4,Financial + age,age45plus,0.23420763296126232
+2019,any_risk,4,Financial + age,age65plus,-0.2331568271795319
+2019,any_risk,5,Intercept,Intercept,0.381124964123863
+2019,any_risk,5,Age,Intercept,0.5485235292891762
+2019,any_risk,5,Age,age10,-0.14374368712553529
+2019,any_risk,5,Age,age45plus,-0.07684509580431942
+2019,any_risk,5,Age,age65plus,-0.23299552378723978
+2019,any_risk,5,Financial,Intercept,-7.356723701376928
+2019,any_risk,5,Financial,income_log,0.6734519526493903
+2019,any_risk,5,Financial,wealth_asinh,0.1779102860038506
+2019,any_risk,5,Financial + age,Intercept,-5.488659938877548
+2019,any_risk,5,Financial + age,income_log,0.45407438536359235
+2019,any_risk,5,Financial + age,wealth_asinh,0.5510484631737184
+2019,any_risk,5,Financial + age,age10,-0.5854736728050206
+2019,any_risk,5,Financial + age,age45plus,0.24361909465554343
+2019,any_risk,5,Financial + age,age65plus,-0.23661410652844236
+2019,accessible_noage_ge3,1,Intercept,Intercept,-0.36812018979383626
+2019,accessible_noage_ge3,1,Age,Intercept,-0.5805066206918076
+2019,accessible_noage_ge3,1,Age,age10,0.1399670252395717
+2019,accessible_noage_ge3,1,Age,age45plus,0.17252171580488568
+2019,accessible_noage_ge3,1,Age,age65plus,-0.04165774101520181
+2019,accessible_noage_ge3,1,Financial,Intercept,-4.7610087008864515
+2019,accessible_noage_ge3,1,Financial,income_log,0.25581906663150045
+2019,accessible_noage_ge3,1,Financial,wealth_asinh,1.0647867240550117
+2019,accessible_noage_ge3,1,Financial + age,Intercept,-6.971180570702571
+2019,accessible_noage_ge3,1,Financial + age,income_log,0.3562454574953705
+2019,accessible_noage_ge3,1,Financial + age,wealth_asinh,1.1498652881849174
+2019,accessible_noage_ge3,1,Financial + age,age10,-0.7392389379949326
+2019,accessible_noage_ge3,1,Financial + age,age45plus,0.9556370790079461
+2019,accessible_noage_ge3,1,Financial + age,age65plus,0.16936433791038494
+2019,accessible_noage_ge3,2,Intercept,Intercept,-0.3775468774864731
+2019,accessible_noage_ge3,2,Age,Intercept,-0.5712993408231195
+2019,accessible_noage_ge3,2,Age,age10,0.14763309755048
+2019,accessible_noage_ge3,2,Age,age45plus,0.15599663351031715
+2019,accessible_noage_ge3,2,Age,age65plus,-0.049919765347264146
+2019,accessible_noage_ge3,2,Financial,Intercept,-4.925390866052319
+2019,accessible_noage_ge3,2,Financial,income_log,0.269192405526724
+2019,accessible_noage_ge3,2,Financial,wealth_asinh,1.0733061486885267
+2019,accessible_noage_ge3,2,Financial + age,Intercept,-6.951220773473742
+2019,accessible_noage_ge3,2,Financial + age,income_log,0.3559556694322096
+2019,accessible_noage_ge3,2,Financial + age,wealth_asinh,1.1657048661449474
+2019,accessible_noage_ge3,2,Financial + age,age10,-0.7259229060843044
+2019,accessible_noage_ge3,2,Financial + age,age45plus,0.9211537696410556
+2019,accessible_noage_ge3,2,Financial + age,age65plus,0.15261196884143807
+2019,accessible_noage_ge3,3,Intercept,Intercept,-0.3812825362587676
+2019,accessible_noage_ge3,3,Age,Intercept,-0.6059943984983305
+2019,accessible_noage_ge3,3,Age,age10,0.12643382487665958
+2019,accessible_noage_ge3,3,Age,age45plus,0.18338394955907816
+2019,accessible_noage_ge3,3,Age,age65plus,-0.028997634695087884
+2019,accessible_noage_ge3,3,Financial,Intercept,-4.757467373034676
+2019,accessible_noage_ge3,3,Financial,income_log,0.2508185055626022
+2019,accessible_noage_ge3,3,Financial,wealth_asinh,1.0895653003291914
+2019,accessible_noage_ge3,3,Financial + age,Intercept,-6.969084465550953
+2019,accessible_noage_ge3,3,Financial + age,income_log,0.34704141771969643
+2019,accessible_noage_ge3,3,Financial + age,wealth_asinh,1.1919953217116386
+2019,accessible_noage_ge3,3,Financial + age,age10,-0.7763095879984439
+2019,accessible_noage_ge3,3,Financial + age,age45plus,0.9768058313235254
+2019,accessible_noage_ge3,3,Financial + age,age65plus,0.1954722113079723
+2019,accessible_noage_ge3,4,Intercept,Intercept,-0.37018838222792066
+2019,accessible_noage_ge3,4,Age,Intercept,-0.5886633609084007
+2019,accessible_noage_ge3,4,Age,age10,0.13794485604719028
+2019,accessible_noage_ge3,4,Age,age45plus,0.18006069270482877
+2019,accessible_noage_ge3,4,Age,age65plus,-0.049837492237849244
+2019,accessible_noage_ge3,4,Financial,Intercept,-4.568332480114315
+2019,accessible_noage_ge3,4,Financial,income_log,0.236844602262157
+2019,accessible_noage_ge3,4,Financial,wealth_asinh,1.0808955226173131
+2019,accessible_noage_ge3,4,Financial + age,Intercept,-6.744966064849361
+2019,accessible_noage_ge3,4,Financial + age,income_log,0.3353308950985264
+2019,accessible_noage_ge3,4,Financial + age,wealth_asinh,1.1650977147647035
+2019,accessible_noage_ge3,4,Financial + age,age10,-0.7330290388686973
+2019,accessible_noage_ge3,4,Financial + age,age45plus,0.9482081606157157
+2019,accessible_noage_ge3,4,Financial + age,age65plus,0.15861855416575102
+2019,accessible_noage_ge3,5,Intercept,Intercept,-0.374871070663079
+2019,accessible_noage_ge3,5,Age,Intercept,-0.5977420207960923
+2019,accessible_noage_ge3,5,Age,age10,0.13513733381502263
+2019,accessible_noage_ge3,5,Age,age45plus,0.18370086112077436
+2019,accessible_noage_ge3,5,Age,age65plus,-0.047052849487443836
+2019,accessible_noage_ge3,5,Financial,Intercept,-5.022804097294056
+2019,accessible_noage_ge3,5,Financial,income_log,0.277108577371233
+2019,accessible_noage_ge3,5,Financial,wealth_asinh,1.078236718732851
+2019,accessible_noage_ge3,5,Financial + age,Intercept,-7.306412544315045
+2019,accessible_noage_ge3,5,Financial + age,income_log,0.38174448919627785
+2019,accessible_noage_ge3,5,Financial + age,wealth_asinh,1.163671968776462
+2019,accessible_noage_ge3,5,Financial + age,age10,-0.756188897857347
+2019,accessible_noage_ge3,5,Financial + age,age45plus,0.9835853270180643
+2019,accessible_noage_ge3,5,Financial + age,age65plus,0.15980248500868938
+2022,any_risk,1,Intercept,Intercept,0.41422298301210964
+2022,any_risk,1,Age,Intercept,0.6304901816687639
+2022,any_risk,1,Age,age10,-0.12215091729005818
+2022,any_risk,1,Age,age45plus,-0.12274673308107466
+2022,any_risk,1,Age,age65plus,-0.23269552791386455
+2022,any_risk,1,Financial,Intercept,-8.2472206335049
+2022,any_risk,1,Financial,income_log,0.7576914813468832
+2022,any_risk,1,Financial,wealth_asinh,0.1608757902777257
+2022,any_risk,1,Financial + age,Intercept,-6.219017902825603
+2022,any_risk,1,Financial + age,income_log,0.5219718296030137
+2022,any_risk,1,Financial + age,wealth_asinh,0.5270194197897881
+2022,any_risk,1,Financial + age,age10,-0.5869199635971046
+2022,any_risk,1,Financial + age,age45plus,0.2663833941505847
+2022,any_risk,1,Financial + age,age65plus,-0.23819510708472202
+2022,any_risk,2,Intercept,Intercept,0.4130398591415774
+2022,any_risk,2,Age,Intercept,0.6259277020832971
+2022,any_risk,2,Age,age10,-0.1265679372655318
+2022,any_risk,2,Age,age45plus,-0.12030968282344509
+2022,any_risk,2,Age,age65plus,-0.22640308664119388
+2022,any_risk,2,Financial,Intercept,-8.141060589031609
+2022,any_risk,2,Financial,income_log,0.7480108963433953
+2022,any_risk,2,Financial,wealth_asinh,0.1626578403584448
+2022,any_risk,2,Financial + age,Intercept,-6.110167114763809
+2022,any_risk,2,Financial + age,income_log,0.512137622511383
+2022,any_risk,2,Financial + age,wealth_asinh,0.5308002581419191
+2022,any_risk,2,Financial + age,age10,-0.5873650866683577
+2022,any_risk,2,Financial + age,age45plus,0.26389190080449415
+2022,any_risk,2,Financial + age,age65plus,-0.23912029347198593
+2022,any_risk,3,Intercept,Intercept,0.41499099989796295
+2022,any_risk,3,Age,Intercept,0.6304984891699041
+2022,any_risk,3,Age,age10,-0.12346173826272536
+2022,any_risk,3,Age,age45plus,-0.12415320815759982
+2022,any_risk,3,Age,age65plus,-0.22117749270941311
+2022,any_risk,3,Financial,Intercept,-8.100975677707085
+2022,any_risk,3,Financial,income_log,0.7441873893031168
+2022,any_risk,3,Financial,wealth_asinh,0.16622313024061844
+2022,any_risk,3,Financial + age,Intercept,-6.0807255526742905
+2022,any_risk,3,Financial + age,income_log,0.5096171470023377
+2022,any_risk,3,Financial + age,wealth_asinh,0.5330295087719731
+2022,any_risk,3,Financial + age,age10,-0.5851922193830431
+2022,any_risk,3,Financial + age,age45plus,0.26139973727894295
+2022,any_risk,3,Financial + age,age65plus,-0.23197595085501854
+2022,any_risk,4,Intercept,Intercept,0.4160595498451513
+2022,any_risk,4,Age,Intercept,0.6306053706566289
+2022,any_risk,4,Age,age10,-0.12412827504604067
+2022,any_risk,4,Age,age45plus,-0.12117638918205528
+2022,any_risk,4,Age,age65plus,-0.23176164557154152
+2022,any_risk,4,Financial,Intercept,-8.141935885774137
+2022,any_risk,4,Financial,income_log,0.7477568466980973
+2022,any_risk,4,Financial,wealth_asinh,0.1676356610738645
+2022,any_risk,4,Financial + age,Intercept,-6.092724933982171
+2022,any_risk,4,Financial + age,income_log,0.5104876039216777
+2022,any_risk,4,Financial + age,wealth_asinh,0.5348494136760543
+2022,any_risk,4,Financial + age,age10,-0.5857304041006162
+2022,any_risk,4,Financial + age,age45plus,0.26248966102489624
+2022,any_risk,4,Financial + age,age65plus,-0.23927460855239205
+2022,any_risk,5,Intercept,Intercept,0.4150598299899868
+2022,any_risk,5,Age,Intercept,0.6275342247799558
+2022,any_risk,5,Age,age10,-0.12636570885676618
+2022,any_risk,5,Age,age45plus,-0.11947712262910883
+2022,any_risk,5,Age,age65plus,-0.22827719791407963
+2022,any_risk,5,Financial,Intercept,-8.183980279222714
+2022,any_risk,5,Financial,income_log,0.7516172442831345
+2022,any_risk,5,Financial,wealth_asinh,0.16586708965673622
+2022,any_risk,5,Financial + age,Intercept,-6.1962807386570855
+2022,any_risk,5,Financial + age,income_log,0.5197646761802205
+2022,any_risk,5,Financial + age,wealth_asinh,0.531612557701302
+2022,any_risk,5,Financial + age,age10,-0.589478863056547
+2022,any_risk,5,Financial + age,age45plus,0.26577399032453597
+2022,any_risk,5,Financial + age,age65plus,-0.23233102295051497
+2022,accessible_noage_ge3,1,Intercept,Intercept,-0.34130997999219315
+2022,accessible_noage_ge3,1,Age,Intercept,-0.47702713262231106
+2022,accessible_noage_ge3,1,Age,age10,0.16095558383241312
+2022,accessible_noage_ge3,1,Age,age45plus,0.09315702347666657
+2022,accessible_noage_ge3,1,Age,age65plus,-0.0026651327856878335
+2022,accessible_noage_ge3,1,Financial,Intercept,-4.785324054188405
+2022,accessible_noage_ge3,1,Financial,income_log,0.2626104297332478
+2022,accessible_noage_ge3,1,Financial,wealth_asinh,1.0310148898951679
+2022,accessible_noage_ge3,1,Financial + age,Intercept,-6.675816240200784
+2022,accessible_noage_ge3,1,Financial + age,income_log,0.33814735681622726
+2022,accessible_noage_ge3,1,Financial + age,wealth_asinh,1.1284062569434328
+2022,accessible_noage_ge3,1,Financial + age,age10,-0.706661491139357
+2022,accessible_noage_ge3,1,Financial + age,age45plus,0.8805083157882158
+2022,accessible_noage_ge3,1,Financial + age,age65plus,0.2101752713587948
+2022,accessible_noage_ge3,2,Intercept,Intercept,-0.34433075545224123
+2022,accessible_noage_ge3,2,Age,Intercept,-0.4559088953694316
+2022,accessible_noage_ge3,2,Age,age10,0.17270414966297903
+2022,accessible_noage_ge3,2,Age,age45plus,0.06056696268636217
+2022,accessible_noage_ge3,2,Age,age65plus,0.042451513960154286
+2022,accessible_noage_ge3,2,Financial,Intercept,-4.655009491812937
+2022,accessible_noage_ge3,2,Financial,income_log,0.249387150178401
+2022,accessible_noage_ge3,2,Financial,wealth_asinh,1.0457264901179737
+2022,accessible_noage_ge3,2,Financial + age,Intercept,-6.387214968107135
+2022,accessible_noage_ge3,2,Financial + age,income_log,0.31469219348043137
+2022,accessible_noage_ge3,2,Financial + age,wealth_asinh,1.149174642535652
+2022,accessible_noage_ge3,2,Financial + age,age10,-0.6850805082184678
+2022,accessible_noage_ge3,2,Financial + age,age45plus,0.8185299977571328
+2022,accessible_noage_ge3,2,Financial + age,age65plus,0.2719285720575153
+2022,accessible_noage_ge3,3,Intercept,Intercept,-0.3410337548006206
+2022,accessible_noage_ge3,3,Age,Intercept,-0.4791045867876128
+2022,accessible_noage_ge3,3,Age,age10,0.1529225073244427
+2022,accessible_noage_ge3,3,Age,age45plus,0.08978928536978242
+2022,accessible_noage_ge3,3,Age,age65plus,0.03364497190532083
+2022,accessible_noage_ge3,3,Financial,Intercept,-4.863541472770281
+2022,accessible_noage_ge3,3,Financial,income_log,0.2684281040622514
+2022,accessible_noage_ge3,3,Financial,wealth_asinh,1.0454405480405264
+2022,accessible_noage_ge3,3,Financial + age,Intercept,-6.787196115468453
+2022,accessible_noage_ge3,3,Financial + age,income_log,0.344521778629757
+2022,accessible_noage_ge3,3,Financial + age,wealth_asinh,1.1516044594961488
+2022,accessible_noage_ge3,3,Financial + age,age10,-0.7267316230097871
+2022,accessible_noage_ge3,3,Financial + age,age45plus,0.8879504337395097
+2022,accessible_noage_ge3,3,Financial + age,age65plus,0.25285861962525463
+2022,accessible_noage_ge3,4,Intercept,Intercept,-0.3329406334908952
+2022,accessible_noage_ge3,4,Age,Intercept,-0.4782311232425932
+2022,accessible_noage_ge3,4,Age,age10,0.1524358476634632
+2022,accessible_noage_ge3,4,Age,age45plus,0.09928093249888337
+2022,accessible_noage_ge3,4,Age,age65plus,0.020147971703890016
+2022,accessible_noage_ge3,4,Financial,Intercept,-4.566505590174367
+2022,accessible_noage_ge3,4,Financial,income_log,0.2434633891673675
+2022,accessible_noage_ge3,4,Financial,wealth_asinh,1.040653099225463
+2022,accessible_noage_ge3,4,Financial + age,Intercept,-6.477388672441498
+2022,accessible_noage_ge3,4,Financial + age,income_log,0.32078458530424325
+2022,accessible_noage_ge3,4,Financial + age,wealth_asinh,1.137947757265578
+2022,accessible_noage_ge3,4,Financial + age,age10,-0.7074708105773594
+2022,accessible_noage_ge3,4,Financial + age,age45plus,0.8762611051728074
+2022,accessible_noage_ge3,4,Financial + age,age65plus,0.23761867984525525
+2022,accessible_noage_ge3,5,Intercept,Intercept,-0.3433439709142977
+2022,accessible_noage_ge3,5,Age,Intercept,-0.47285187489827835
+2022,accessible_noage_ge3,5,Age,age10,0.16202766265687082
+2022,accessible_noage_ge3,5,Age,age45plus,0.08182654449611629
+2022,accessible_noage_ge3,5,Age,age65plus,0.02590956055955201
+2022,accessible_noage_ge3,5,Financial,Intercept,-4.9088988490927665
+2022,accessible_noage_ge3,5,Financial,income_log,0.2729275013404146
+2022,accessible_noage_ge3,5,Financial,wealth_asinh,1.038310552378179
+2022,accessible_noage_ge3,5,Financial + age,Intercept,-6.831716565130157
+2022,accessible_noage_ge3,5,Financial + age,income_log,0.3518405977788727
+2022,accessible_noage_ge3,5,Financial + age,wealth_asinh,1.1352373964509206
+2022,accessible_noage_ge3,5,Financial + age,age10,-0.7054554550567839
+2022,accessible_noage_ge3,5,Financial + age,age45plus,0.867576372422717
+2022,accessible_noage_ge3,5,Financial + age,age65plus,0.251119454913829
+2025,any_risk,1,Intercept,Intercept,0.4459248426714351
+2025,any_risk,1,Age,Intercept,0.6650244361899725
+2025,any_risk,1,Age,age10,-0.1122926104504129
+2025,any_risk,1,Age,age45plus,-0.12888503643429147
+2025,any_risk,1,Age,age65plus,-0.18806305886304817
+2025,any_risk,1,Financial,Intercept,-8.214312489518635
+2025,any_risk,1,Financial,income_log,0.751943990920158
+2025,any_risk,1,Financial,wealth_asinh,0.19376375505034588
+2025,any_risk,1,Financial + age,Intercept,-6.075776247457026
+2025,any_risk,1,Financial + age,income_log,0.5088055564639873
+2025,any_risk,1,Financial + age,wealth_asinh,0.5375017756076268
+2025,any_risk,1,Financial + age,age10,-0.5648025807378153
+2025,any_risk,1,Financial + age,age45plus,0.23807823016032797
+2025,any_risk,1,Financial + age,age65plus,-0.14357447757723285
+2025,any_risk,2,Intercept,Intercept,0.45557374046205434
+2025,any_risk,2,Age,Intercept,0.6727781591382938
+2025,any_risk,2,Age,age10,-0.11063881687335392
+2025,any_risk,2,Age,age45plus,-0.12817744492081523
+2025,any_risk,2,Age,age65plus,-0.18478631436565762
+2025,any_risk,2,Financial,Intercept,-8.097852086558456
+2025,any_risk,2,Financial,income_log,0.7410097921454618
+2025,any_risk,2,Financial,wealth_asinh,0.20262398630774023
+2025,any_risk,2,Financial + age,Intercept,-5.964694087415555
+2025,any_risk,2,Financial + age,income_log,0.4983424357261914
+2025,any_risk,2,Financial + age,wealth_asinh,0.5478428994387281
+2025,any_risk,2,Financial + age,age10,-0.5659485117028106
+2025,any_risk,2,Financial + age,age45plus,0.23412464446896672
+2025,any_risk,2,Financial + age,age65plus,-0.1379963352230638
+2025,any_risk,3,Intercept,Intercept,0.4510612859613642
+2025,any_risk,3,Age,Intercept,0.6707124010384498
+2025,any_risk,3,Age,age10,-0.11149981656973597
+2025,any_risk,3,Age,age45plus,-0.13201630320426516
+2025,any_risk,3,Age,age65plus,-0.17634182650263816
+2025,any_risk,3,Financial,Intercept,-8.122167859413839
+2025,any_risk,3,Financial,income_log,0.74372446797684
+2025,any_risk,3,Financial,wealth_asinh,0.196135553518055
+2025,any_risk,3,Financial + age,Intercept,-5.986606694847135
+2025,any_risk,3,Financial + age,income_log,0.5009570987947224
+2025,any_risk,3,Financial + age,wealth_asinh,0.5404834475511332
+2025,any_risk,3,Financial + age,age10,-0.5640241091993082
+2025,any_risk,3,Financial + age,age45plus,0.23459366889334646
+2025,any_risk,3,Financial + age,age65plus,-0.1361035100078592
+2025,any_risk,4,Intercept,Intercept,0.45214729083644695
+2025,any_risk,4,Age,Intercept,0.672757263785575
+2025,any_risk,4,Age,age10,-0.10991937580670348
+2025,any_risk,4,Age,age45plus,-0.1320710131936728
+2025,any_risk,4,Age,age65plus,-0.18224044040062806
+2025,any_risk,4,Financial,Intercept,-8.061783652568115
+2025,any_risk,4,Financial,income_log,0.7376998396622428
+2025,any_risk,4,Financial,wealth_asinh,0.20211147173756122
+2025,any_risk,4,Financial + age,Intercept,-5.909663985739145
+2025,any_risk,4,Financial + age,income_log,0.49373563397734754
+2025,any_risk,4,Financial + age,wealth_asinh,0.5469571647455839
+2025,any_risk,4,Financial + age,age10,-0.5623574929499169
+2025,any_risk,4,Financial + age,age45plus,0.23031599814278186
+2025,any_risk,4,Financial + age,age65plus,-0.13850754670573334
+2025,any_risk,5,Intercept,Intercept,0.45180264414218496
+2025,any_risk,5,Age,Intercept,0.67116897133034
+2025,any_risk,5,Age,age10,-0.11228393608807799
+2025,any_risk,5,Age,age45plus,-0.12995449952502192
+2025,any_risk,5,Age,age65plus,-0.1838738049102902
+2025,any_risk,5,Financial,Intercept,-8.08305391891748
+2025,any_risk,5,Financial,income_log,0.7395138965644796
+2025,any_risk,5,Financial,wealth_asinh,0.2018595600504469
+2025,any_risk,5,Financial + age,Intercept,-5.94365661588158
+2025,any_risk,5,Financial + age,income_log,0.4966179715012697
+2025,any_risk,5,Financial + age,wealth_asinh,0.5486341223703661
+2025,any_risk,5,Financial + age,age10,-0.5651655319568218
+2025,any_risk,5,Financial + age,age45plus,0.2311738782915104
+2025,any_risk,5,Financial + age,age65plus,-0.13987769498725758
+2025,accessible_noage_ge3,1,Intercept,Intercept,-0.2666549417961187
+2025,accessible_noage_ge3,1,Age,Intercept,-0.3435657486050311
+2025,accessible_noage_ge3,1,Age,age10,0.1839166962436216
+2025,accessible_noage_ge3,1,Age,age45plus,0.02346639669377451
+2025,accessible_noage_ge3,1,Age,age65plus,0.05011399984847959
+2025,accessible_noage_ge3,1,Financial,Intercept,-4.665087858405065
+2025,accessible_noage_ge3,1,Financial,income_log,0.2554176108775212
+2025,accessible_noage_ge3,1,Financial,wealth_asinh,1.0188760824455245
+2025,accessible_noage_ge3,1,Financial + age,Intercept,-6.2547121709386575
+2025,accessible_noage_ge3,1,Financial + age,income_log,0.31838242358116164
+2025,accessible_noage_ge3,1,Financial + age,wealth_asinh,1.1033008963106083
+2025,accessible_noage_ge3,1,Financial + age,age10,-0.610012841237725
+2025,accessible_noage_ge3,1,Financial + age,age45plus,0.7039270944450255
+2025,accessible_noage_ge3,1,Financial + age,age65plus,0.34864426803934084
+2025,accessible_noage_ge3,2,Intercept,Intercept,-0.25294970734555655
+2025,accessible_noage_ge3,2,Age,Intercept,-0.3197030729304932
+2025,accessible_noage_ge3,2,Age,age10,0.18630510149316445
+2025,accessible_noage_ge3,2,Age,age45plus,0.007533592888981395
+2025,accessible_noage_ge3,2,Age,age65plus,0.08524695538538199
+2025,accessible_noage_ge3,2,Financial,Intercept,-4.614389699957684
+2025,accessible_noage_ge3,2,Financial,income_log,0.2505390647916786
+2025,accessible_noage_ge3,2,Financial,wealth_asinh,1.0280164830654535
+2025,accessible_noage_ge3,2,Financial + age,Intercept,-6.145319908133917
+2025,accessible_noage_ge3,2,Financial + age,income_log,0.3082311145111682
+2025,accessible_noage_ge3,2,Financial + age,wealth_asinh,1.1219605971671005
+2025,accessible_noage_ge3,2,Financial + age,age10,-0.6153048633589331
+2025,accessible_noage_ge3,2,Financial + age,age45plus,0.6783216898781392
+2025,accessible_noage_ge3,2,Financial + age,age65plus,0.41412989384790067
+2025,accessible_noage_ge3,3,Intercept,Intercept,-0.2643387876848564
+2025,accessible_noage_ge3,3,Age,Intercept,-0.35326926049564294
+2025,accessible_noage_ge3,3,Age,age10,0.17331109605040776
+2025,accessible_noage_ge3,3,Age,age45plus,0.03240707813876911
+2025,accessible_noage_ge3,3,Age,age65plus,0.07048242158885261
+2025,accessible_noage_ge3,3,Financial,Intercept,-4.636123308874958
+2025,accessible_noage_ge3,3,Financial,income_log,0.25091709854141847
+2025,accessible_noage_ge3,3,Financial,wealth_asinh,1.0336447327264513
+2025,accessible_noage_ge3,3,Financial + age,Intercept,-6.277448335747693
+2025,accessible_noage_ge3,3,Financial + age,income_log,0.3144096108631252
+2025,accessible_noage_ge3,3,Financial + age,wealth_asinh,1.127417932061458
+2025,accessible_noage_ge3,3,Financial + age,age10,-0.6402469521971327
+2025,accessible_noage_ge3,3,Financial + age,age45plus,0.7316466578930804
+2025,accessible_noage_ge3,3,Financial + age,age65plus,0.37501933285062894
+2025,accessible_noage_ge3,4,Intercept,Intercept,-0.25926196102270666
+2025,accessible_noage_ge3,4,Age,Intercept,-0.35673938260134624
+2025,accessible_noage_ge3,4,Age,age10,0.16713557644271063
+2025,accessible_noage_ge3,4,Age,age45plus,0.04341495065615969
+2025,accessible_noage_ge3,4,Age,age65plus,0.06055453120896418
+2025,accessible_noage_ge3,4,Financial,Intercept,-4.511731034483635
+2025,accessible_noage_ge3,4,Financial,income_log,0.24108590071078706
+2025,accessible_noage_ge3,4,Financial,wealth_asinh,1.027341705903234
+2025,accessible_noage_ge3,4,Financial + age,Intercept,-6.153528293189959
+2025,accessible_noage_ge3,4,Financial + age,income_log,0.30524425895822155
+2025,accessible_noage_ge3,4,Financial + age,wealth_asinh,1.1179573632422093
+2025,accessible_noage_ge3,4,Financial + age,age10,-0.6359226051982506
+2025,accessible_noage_ge3,4,Financial + age,age45plus,0.7317288200533374
+2025,accessible_noage_ge3,4,Financial + age,age65plus,0.3612543754387029
+2025,accessible_noage_ge3,5,Intercept,Intercept,-0.2592084195035274
+2025,accessible_noage_ge3,5,Age,Intercept,-0.3469973929274574
+2025,accessible_noage_ge3,5,Age,age10,0.176528737355073
+2025,accessible_noage_ge3,5,Age,age45plus,0.02807041126236889
+2025,accessible_noage_ge3,5,Age,age65plus,0.08426509081861881
+2025,accessible_noage_ge3,5,Financial,Intercept,-4.687248766560728
+2025,accessible_noage_ge3,5,Financial,income_log,0.25738452330311956
+2025,accessible_noage_ge3,5,Financial,wealth_asinh,1.0225106337777008
+2025,accessible_noage_ge3,5,Financial + age,Intercept,-6.393699547074822
+2025,accessible_noage_ge3,5,Financial + age,income_log,0.32899742830352324
+2025,accessible_noage_ge3,5,Financial + age,wealth_asinh,1.1055746019214794
+2025,accessible_noage_ge3,5,Financial + age,age10,-0.6226399431642481
+2025,accessible_noage_ge3,5,Financial + age,age45plus,0.7161184704515487
+2025,accessible_noage_ge3,5,Financial + age,age65plus,0.39120808628653525

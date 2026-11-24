@@ -1,7 +1,8 @@
 """WRDS Bond Returns (TRACE-based) -> value-weighted IG and HY credit indexes.
 
 Aggregation runs server-side so bond-level observations never leave WRDS.
-Weights are previous-month amount outstanding; rating_num 1..10 is AAA..BBB-.
+Weights and classifications use the immediately preceding calendar month.
+Rating numbers 1..10 denote AAA..BBB-. Gapped observations are excluded.
 """
 import pandas as pd
 
@@ -20,7 +21,9 @@ def pull_bondret(start_date: str = "2002-07-01", end_date: str = "2100-01-01") -
             if needed not in cols:
                 raise RuntimeError("bondret column missing: " + needed)
         sql = (
-            "with b as (select date, cusip, ret_eom, rating_num, "
+            "with b as (select date, cusip, ret_eom, "
+            " lag(date) over (partition by cusip order by date) as prior_date, "
+            " lag(rating_num) over (partition by cusip order by date) as rating_num, "
             " lag(amount_outstanding) over (partition by cusip order by date) as w "
             " from " + library + "." + table + " where date between %(s)s and %(e)s) "
             "select date, "
@@ -30,6 +33,7 @@ def pull_bondret(start_date: str = "2002-07-01", end_date: str = "2100-01-01") -
             "   nullif(sum(case when rating_num between 11 and 21 then w end), 0) as hy, "
             " count(*) as n "
             "from b where ret_eom is not null and w is not null and w > 0 "
+            "and date_trunc('month',date) = date_trunc('month',prior_date) + interval '1 month' "
             "group by date order by date")
         raw = db.raw_sql(sql, params={"s": start_date, "e": end_date}, date_cols=["date"])
     finally:
@@ -44,5 +48,5 @@ def pull_bondret(start_date: str = "2002-07-01", end_date: str = "2100-01-01") -
                 continue
             rows.append({"month_end": month_end, "series_id": sid, "value": float(v),
                          "quantity": "total_return", "provenance": "index_derived",
-                         "source": src + ".ret_eom:vw_" + col})
+                         "source": src + ".ret_eom:lagged_rating_amount_" + col})
     return finalize_rows(rows)

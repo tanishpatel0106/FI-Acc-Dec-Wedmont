@@ -1,0 +1,61 @@
+{
+  "frontier": {
+    "run_id": "f76f0571e170cf55adf0",
+    "status": "done",
+    "error": null,
+    "seconds": 41.38353371620178
+  },
+  "signed_flow": {
+    "run_id": "16d0ad677cb80ec88ab6",
+    "status": "done",
+    "error": null,
+    "seconds": 16.41896891593933
+  },
+  "rebalance": {
+    "run_id": "0a26cc68f211bc5263dd",
+    "status": "done",
+    "error": null,
+    "seconds": 1.9196951389312744
+  },
+  "scenario_lab": {
+    "run_id": "6f03d9db0c175130dae0",
+    "status": "done",
+    "error": null,
+    "seconds": 6.252260208129883
+  },
+  "optimize": {
+    "run_id": "13e1ea191194a258df6b",
+    "status": "done",
+    "error": null,
+    "seconds": 10.466154336929321
+  },
+  "compare_v2": {
+    "run_id": "2e5a2b5b23dc8ee0db70",
+    "status": "done",
+    "error": null,
+    "seconds": 1.5169060230255127
+  },
+  "asof": {
+    "run_id": "e7aa390bfde116695e0b",
+    "status": "done",
+    "error": null,
+    "seconds": 1.4762301445007324
+  },
+  "permanent": {
+    "run_id": "abaaace74895c7f57cbf",
+    "status": "failed",
+    "error": "IncompatibleUniverse: universe pp_modern_etf is missing required series: gold",
+    "seconds": null
+  },
+  "permanent_core_duration": {
+    "run_id": "532dcf179bf8c4ca858d",
+    "status": "done",
+    "error": null
+  },
+  "evidence": {
+    "run_id": "dfc1e2f2b7c34e1424fd",
+    "status": "done",
+    "error": null,
+    "seconds": 2.0037131309509277
+  }
+}

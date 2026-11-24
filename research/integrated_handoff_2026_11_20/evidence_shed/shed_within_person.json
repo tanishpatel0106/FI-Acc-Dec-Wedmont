@@ -1,0 +1,15 @@
+{
+  "estimate": 0.05917068371555693,
+  "se": 0.10257312747035686,
+  "low": -0.14187264612634254,
+  "high": 0.2602140135574564,
+  "p_normal": 0.5640317324180071,
+  "n": 4211,
+  "dataset": "SHED 2018-2019 matched respondents",
+  "weighting": "Unweighted retained-panel association",
+  "transitions": {
+    "-1.0": 296,
+    "0.0": 3541,
+    "1.0": 374
+  }
+}

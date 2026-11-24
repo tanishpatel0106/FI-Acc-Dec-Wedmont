@@ -1,0 +1,47 @@
+{
+  "configurations": 26,
+  "training_paths": 4000,
+  "validation_split": "first 2000 A1, last 2000 A2; refit on 4000, score on disjoint 10000 B",
+  "test_paths": 10000,
+  "horizons": [
+    10,
+    20
+  ],
+  "q_grid": [
+    -0.15,
+    -0.1,
+    -0.075,
+    -0.05,
+    -0.03,
+    -0.02,
+    -0.01,
+    -0.005,
+    0.0,
+    0.005,
+    0.01,
+    0.02,
+    0.03,
+    0.04,
+    0.05,
+    0.06,
+    0.07,
+    0.08,
+    0.1
+  ],
+  "original_age_weights": [
+    0.14285714285714285,
+    0.8571428571428571
+  ],
+  "equal_effective_horizon_weights": [
+    0.5,
+    0.5
+  ],
+  "alpha_grid": [
+    0.0,
+    0.25,
+    0.5,
+    0.75,
+    1.0
+  ],
+  "inference": "descriptive configuration sensitivity; seeds share historical data"
+}

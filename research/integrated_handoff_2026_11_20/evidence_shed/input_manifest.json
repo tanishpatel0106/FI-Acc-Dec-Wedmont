@@ -1,0 +1,36 @@
+{
+  "sources": [
+    {
+      "filename": "SHED_public_use_data_2018_(CSV).zip",
+      "relative_path": "data/capacity_validation/SHED_public_use_data_2018_(CSV).zip",
+      "url": "https://www.federalreserve.gov/consumerscommunities/files/SHED_public_use_data_2018_(CSV).zip",
+      "sha256": "769f2c55cb1caa4b907bdd3e7d422ce2960e1b5df320fc6be8d56b7320c7fc31",
+      "bytes": 2937805
+    },
+    {
+      "filename": "SHED_public_use_data_2019_(CSV).zip",
+      "relative_path": "data/capacity_validation/SHED_public_use_data_2019_(CSV).zip",
+      "url": "https://www.federalreserve.gov/consumerscommunities/files/SHED_public_use_data_2019_(CSV).zip",
+      "sha256": "c01cb7a93341ba62b8737395559a0e08d212d51f2bb889d9e27fed20927250c7",
+      "bytes": 2419059
+    },
+    {
+      "filename": "SHED_public_use_data_2024_(CSV).zip",
+      "relative_path": "data/capacity_validation/SHED_public_use_data_2024_(CSV).zip",
+      "url": "https://www.federalreserve.gov/consumerscommunities/files/SHED_public_use_data_2024_(CSV).zip",
+      "sha256": "b455d02356a0c01a02d7f478c02d772515491564e905ce13db55f272f83567c1",
+      "bytes": 3787684
+    },
+    {
+      "filename": "SHED_public_use_data_2025_(CSV).zip",
+      "relative_path": "data/capacity_validation/SHED_public_use_data_2025_(CSV).zip",
+      "url": "https://www.federalreserve.gov/consumerscommunities/files/SHED_public_use_data_2025_(CSV).zip",
+      "sha256": "a4ab3f7d042f16d63626b1af9aeb6f0b8a0b39e412fa94b87265bc67fe26de14",
+      "bytes": 4676794
+    }
+  ],
+  "source_script_sha256": "9e3aa32023fac36d526ee61e5c03453c682a335bf65acda0f3b1440b535d05ee",
+  "status": "Existing October analysis rerun November 20; not a new original finding",
+  "linkage": "Official shedid and 2025 panel_weight for 2024-2025; older 2018-2019 retained panel is unweighted",
+  "uncertainty": "HC3 model-based coefficient intervals; no full survey-design or CV-difference confidence interval"
+}

@@ -893,6 +893,27 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/runs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List All Runs
+         * @description One registry for every run kind (experiments, sweeps, comparisons, validations, attributions,
+         *     hypotheses and the nine studies), each with its accounting semantics and page.
+         */
+        get: operations["list_all_runs_v1_runs_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/runs/{run_id}/inspect": {
         parameters: {
             query?: never;
@@ -1118,7 +1139,7 @@ export interface components {
              * @default core
              * @enum {string}
              */
-            universe: "core" | "modern" | "core_long_history" | "core_duration" | "pp_modern_etf" | "pp_research_historical" | "liability_match";
+            universe: "core" | "modern" | "core_long_history" | "core_duration" | "pp_modern_etf" | "multi_asset_public" | "multi_asset_full" | "pp_research_historical" | "liability_match" | "observed_treasury_etf";
             /** Calibration Start */
             calibration_start?: string | null;
             /** Calibration End */
@@ -3222,6 +3243,42 @@ export interface operations {
                     "application/json": {
                         [key: string]: unknown;
                     };
+                };
+            };
+        };
+    };
+    list_all_runs_v1_runs_get: {
+        parameters: {
+            query?: {
+                kind?: string | null;
+                status?: string | null;
+                family?: string | null;
+                limit?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };

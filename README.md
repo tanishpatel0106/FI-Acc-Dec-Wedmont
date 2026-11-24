@@ -1,5 +1,19 @@
 # LIFECYCLE
 
+[Substantive research and technical progress](PROJECT_PROGRESS.md). Installation and GitHub publication are excluded from project contribution counts.
+
+[Download the complete employer handoff, PDFs and reproduction package](research/delivery_2026_11_20/README.md).
+
+The latest validated research handoff is dated **November 20, 2026**:
+[executed integrated notebook](research/integrated_handoff_2026_11_20/integrated_research.html),
+[executive findings](research/integrated_handoff_2026_11_20/EXECUTIVE_SUMMARY.txt), and
+[reproduction guide](research/integrated_handoff_2026_11_20/REPRODUCE.txt).
+It joins four-wave SCF age prediction, shock-specific household resilience, independent SHED
+prospective evidence, the 13-country evidence inventory and corrected WRDS allocation experiments.
+Age predicts the measured US outcomes across held-out waves; a general increase in capacity with
+age or a stable CE gain from the age-plus-flow rule is not established. Engine semantics are 2.4.
+Earlier dated reports remain an audit trail; use the integrated report for current conclusions.
+
 Multi-asset portfolio optimisation and lifetime-utility research platform (Wedmont Private Capital × Columbia).
 
 **Question.** How should an investor allocate across asset classes as contribution rate, withdrawal rate, horizon, wealth and

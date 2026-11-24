@@ -1,0 +1,40 @@
+{
+  "sources": [
+    {
+      "filename": "ind16_ascii.zip",
+      "relative_path": "data/stage2/ind16_ascii.zip",
+      "url": "https://www.bancaditalia.it/statistiche/tematiche/indagini-famiglie-imprese/bilanci-famiglie/distribuzione-microdati/documenti/ind16_ascii.zip",
+      "sha256": "b9794f203b565e1beb3a705c586c7627f6f0d56377f3c9eb2b7c16bb26f2976f",
+      "bytes": 2201946
+    },
+    {
+      "filename": "ind22_ascii.zip",
+      "relative_path": "data/stage2/ind22_ascii.zip",
+      "url": "https://www.bancaditalia.it/statistiche/tematiche/indagini-famiglie-imprese/bilanci-famiglie/distribuzione-microdati/documenti/ind22_ascii.zip?language_id=1",
+      "sha256": "fd31bb4263363b9098de6f0d0640a90484dc30d0d4fd0c5323706d61dc9fb675",
+      "bytes": 3566985
+    },
+    {
+      "filename": "sebi2025_respondents.zip",
+      "relative_path": "data/age_expense_extension/sebi2025_respondents.zip",
+      "url": "https://www.sebi.gov.in/sebi_data/commondocs/jan-2026/Investor%20Survey%202025%20Respondents%20Data.zip",
+      "sha256": "e867741651334464f83568bf2fe4c7c7cfe668fb6f26875ecae29b497992eb93",
+      "bytes": 133751419
+    },
+    {
+      "filename": "hfcs2021_tables.zip",
+      "relative_path": "data/age_expense_extension/hfcs2021_tables.zip",
+      "url": "https://www.ecb.europa.eu/home/pdf/research/hfcn/HFCS_Statistical_Tables_Wave_2021_June_2026.zip",
+      "sha256": "d7662b4b4b2d7713f555bb469f21070416f5639c44aa05d71897b8db1539b6c7",
+      "bytes": 2439362
+    },
+    {
+      "filename": "hfcs2023_tables.zip",
+      "relative_path": "data/age_expense_extension/hfcs2023_tables.zip",
+      "url": "https://www.ecb.europa.eu/home/pdf/research/hfcn/HFCS_Statistical_Tables_Wave_2023_October_2026.zip",
+      "sha256": "1971031f9c8c4e9762ce83faccf01e74bc8593d1560de049cbec458a3f9c7a0e",
+      "bytes": 3766127
+    }
+  ],
+  "status": "Public source hashes and URLs for the previously executed country findings; not harmonized microdata"
+}

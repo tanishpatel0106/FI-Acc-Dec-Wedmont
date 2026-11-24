@@ -202,6 +202,8 @@ def cmd_openapi(args: argparse.Namespace) -> None:
 
 
 def main() -> None:
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(errors="backslashreplace")
     ap = argparse.ArgumentParser(prog="lifecycle")
     sub = ap.add_subparsers(dest="cmd", required=True)
     p = sub.add_parser("ingest")

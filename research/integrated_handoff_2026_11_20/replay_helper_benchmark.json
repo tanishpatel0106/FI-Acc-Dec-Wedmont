@@ -1,0 +1,7 @@
+{
+  "legacy_median_seconds": 0.022571100009372458,
+  "compiled_median_seconds": 0.005408199998782948,
+  "microbenchmark_speedup": 4.173495805342225,
+  "problem": "Six-asset capped mean-variance helper; five warm timings; no claim of full application speedup",
+  "comparison": "Same algorithm/iteration caps; outputs agree to rtol 1e-10 and atol 1e-12; independent SLSQP optimum tests pass"
+}

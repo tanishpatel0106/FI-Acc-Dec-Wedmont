@@ -63,6 +63,33 @@ def _real_rate(spec: SignedFlowSpec) -> tuple[float, str]:
         return 0.015, "fallback 1.5% (no real curve in panel)"
 
 
+def paired_resources_comparison(candidate, reference, gamma, n_boot=200, seed=20261119):
+    """Equal-weight cell-average relative CE, resampling paired paths across all cells.
+
+    Arrays have shape (cells, paths). Intervals condition on the fitted policies and model.
+    """
+    candidate = np.maximum(np.asarray(candidate, dtype=float), 1000.0) / 1e6
+    reference = np.maximum(np.asarray(reference, dtype=float), 1000.0) / 1e6
+    if candidate.shape != reference.shape or candidate.ndim != 2:
+        raise ValueError("paired resource arrays must have identical (cells, paths) shapes")
+    transformed_a = np.log(candidate) if gamma == 1 else candidate ** (1 - gamma)
+    transformed_b = np.log(reference) if gamma == 1 else reference ** (1 - gamma)
+
+    def relative(a, b):
+        return np.expm1(a - b) if gamma == 1 else (a / b) ** (1 / (1 - gamma)) - 1
+
+    point = float(relative(transformed_a.mean(axis=1), transformed_b.mean(axis=1)).mean())
+    rng = np.random.default_rng(seed)
+    estimates = []
+    for _ in range(n_boot):
+        idx = rng.integers(0, candidate.shape[1], candidate.shape[1])
+        estimates.append(float(relative(transformed_a[:, idx].mean(axis=1),
+                                        transformed_b[:, idx].mean(axis=1)).mean()))
+    lo, hi = np.quantile(estimates, [0.025, 0.975]) if estimates else (np.nan, np.nan)
+    return {"delta": point, "lo": float(lo), "hi": float(hi), "n_boot": n_boot,
+            "method": "paired test-path percentile bootstrap across all cells; fitted policies fixed"}
+
+
 def run_signed_flow(spec: SignedFlowSpec, progress: S.Progress) -> dict[str, Any]:
     u = S.universe_or_raise(spec.data)
     if spec.bond not in u.assets:
@@ -78,6 +105,7 @@ def run_signed_flow(spec: SignedFlowSpec, progress: S.Progress) -> dict[str, Any
     SV_tr = np.zeros((nA, nQ, nB))
     SV_te = np.zeros((nA, nQ, nB))
     res_paths: dict[tuple[int, int, int], np.ndarray] = {}
+    test_resources: dict[tuple[int, int, int], np.ndarray] = {}
     surv_paths: dict[tuple[int, int, int], np.ndarray] = {}
     horizons = []
     k = 0
@@ -99,6 +127,7 @@ def run_signed_flow(spec: SignedFlowSpec, progress: S.Progress) -> dict[str, Any
                 SV_tr[ai, qi, bi] = float((o_tr.first_shortfall < 0).mean())
                 SV_te[ai, qi, bi] = float((o_te.first_shortfall < 0).mean())
                 res_paths[(ai, qi, bi)] = np.maximum(o_tr.terminal + o_tr.funded, 1000.0) / 1e6
+                test_resources[(ai, qi, bi)] = o_te.terminal + o_te.funded
                 surv_paths[(ai, qi, bi)] = o_tr.first_shortfall < 0
                 k += 1
                 if k % 40 == 0:
@@ -121,6 +150,19 @@ def run_signed_flow(spec: SignedFlowSpec, progress: S.Progress) -> dict[str, Any
     d_age = oos(lambda a, q: b_age[a])
     d_q = oos(lambda a, q: b_q[q])
     d_td = oos(lambda a, q: nearest(td[a]))
+    full_resources = np.stack([test_resources[(a, q, bs.index(b_ce[a, q]))]
+                               for a in range(nA) for q in range(nQ)])
+    age_resources = np.stack([test_resources[(a, q, bs.index(b_age[a]))]
+                              for a in range(nA) for q in range(nQ)])
+    comparisons = {}
+    for name, pick in (("age_only", lambda a, q: b_age[a]), ("q_only", lambda a, q: b_q[q]),
+                       ("target_date", lambda a, q: nearest(td[a]))):
+        resources = np.stack([test_resources[(a, q, bs.index(pick(a, q)))]
+                              for a in range(nA) for q in range(nQ)])
+        comparisons[name] = paired_resources_comparison(resources, full_resources, gamma,
+                                                        spec.n_boot, spec.scenario.seed + 17)
+    full_vs_age = paired_resources_comparison(full_resources, age_resources, gamma,
+                                               spec.n_boot, spec.scenario.seed + 17)
     # marginal slopes d b*/d q at fixed age: OLS over the q grid, path-bootstrap CI
     progress("uncertainty", 0.65)
     qa = np.array(qs)
@@ -182,9 +224,9 @@ def run_signed_flow(spec: SignedFlowSpec, progress: S.Progress) -> dict[str, Any
                                            "target_date": S.to_list(d_td)},
                      "oos_mean_delta": {"age_only": float(np.mean(d_age)), "q_only": float(np.mean(d_q)),
                                         "target_date": float(np.mean(d_td))},
-                     "oos_delta_ci": {n: [float(np.mean(m) - 1.96 * np.std(m) / np.sqrt(m.size)),
-                                          float(np.mean(m) + 1.96 * np.std(m) / np.sqrt(m.size))]
-                                      for n, m in (("age_only", d_age), ("q_only", d_q), ("target_date", d_td))},
+                     "oos_delta_ci": {n: [v["lo"], v["hi"]] for n, v in comparisons.items()},
+                     "oos_full_vs_age": full_vs_age,
+                     "oos_ci_method": "paired test-path bootstrap; conditional on fitted policies and model",
                      "note": "restricted policies are fitted on training paths and scored on disjoint test paths "
                              "relative to the cell-optimal (full) policy; negative = welfare loss"},
         "slopes": slopes, "funded_ratio": S.to_list(funded_ratio, 4),

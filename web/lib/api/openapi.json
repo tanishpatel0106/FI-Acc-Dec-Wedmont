@@ -3,7 +3,7 @@
   "info": {
     "title": "LIFECYCLE API",
     "description": "Multi-asset portfolio optimisation & lifetime utility research platform. Research output only - not investment advice.",
-    "version": "0.2.0"
+    "version": "0.2.3"
   },
   "paths": {
     "/v1/catalog/series": {
@@ -2808,6 +2808,103 @@
         }
       }
     },
+    "/v1/runs": {
+      "get": {
+        "tags": [
+          "v2 research"
+        ],
+        "summary": "List All Runs",
+        "description": "One registry for every run kind (experiments, sweeps, comparisons, validations, attributions,\nhypotheses and the nine studies), each with its accounting semantics and page.",
+        "operationId": "list_all_runs_v1_runs_get",
+        "parameters": [
+          {
+            "name": "kind",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Kind"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Status"
+            }
+          },
+          {
+            "name": "family",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^(study|experiment)$"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Family"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 2000,
+              "minimum": 1,
+              "default": 200,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response List All Runs V1 Runs Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/runs/{run_id}/inspect": {
       "get": {
         "tags": [
@@ -3227,8 +3324,11 @@
               "core_long_history",
               "core_duration",
               "pp_modern_etf",
+              "multi_asset_public",
+              "multi_asset_full",
               "pp_research_historical",
-              "liability_match"
+              "liability_match",
+              "observed_treasury_etf"
             ],
             "title": "Universe",
             "default": "core"
@@ -3390,7 +3490,7 @@
           "max_age": {
             "type": "number",
             "maximum": 110.0,
-            "minimum": 70.0,
+            "minimum": 20.0,
             "title": "Max Age",
             "default": 100.0
           },

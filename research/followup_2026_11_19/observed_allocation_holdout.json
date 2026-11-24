@@ -1,0 +1,130 @@
+{
+  "dataset": "observed",
+  "horizon_years": 30,
+  "gamma": 4,
+  "train_paths": 5000,
+  "test_paths": 10000,
+  "seed": 20261119,
+  "data": {
+    "universe": "observed_treasury_etf",
+    "calibration_start": "2002-09-01",
+    "calibration_end": "2026-09-30",
+    "catalog_hash": null
+  },
+  "catalog_hash": "9c9ac4174cebffdd",
+  "bond": "ust_7_10_etf",
+  "bond_grid": [
+    0.0,
+    0.05,
+    0.1,
+    0.15,
+    0.2,
+    0.25,
+    0.3,
+    0.35,
+    0.4,
+    0.45,
+    0.5,
+    0.55,
+    0.6,
+    0.65,
+    0.7,
+    0.75,
+    0.8,
+    0.85,
+    0.9,
+    0.95,
+    1.0
+  ],
+  "results": [
+    {
+      "withdrawal_rate": 0.04,
+      "trained_ce_bond_share": 0.45,
+      "trained_survival_bond_share": 0.35,
+      "test_ce_opt_success": 0.9803,
+      "test_survival_opt_success": 0.9815,
+      "test_ce_delta_ce_vs_survival": {
+        "delta": 0.021653888144173683,
+        "se": 0.006158621817232921,
+        "lo_delta": 0.00958298938239716,
+        "hi_delta": 0.03372478690595021,
+        "lo": 0.010009908037177018,
+        "hi": 0.032442451976450244,
+        "significant": true
+      },
+      "test_success_delta_ce_vs_survival": {
+        "diff": -0.0012,
+        "se": 0.0008123558285623486,
+        "lo": -0.002792217423982203,
+        "hi": 0.00039221742398220334
+      }
+    },
+    {
+      "withdrawal_rate": 0.045,
+      "trained_ce_bond_share": 0.4,
+      "trained_survival_bond_share": 0.25,
+      "test_ce_opt_success": 0.9494,
+      "test_survival_opt_success": 0.9582,
+      "test_ce_delta_ce_vs_survival": {
+        "delta": 0.05260805058125673,
+        "se": 0.0076730360487772525,
+        "lo_delta": 0.037568899925653314,
+        "hi_delta": 0.06764720123686015,
+        "lo": 0.03779467649534702,
+        "hi": 0.06746172409981792,
+        "significant": true
+      },
+      "test_success_delta_ce_vs_survival": {
+        "diff": -0.0088,
+        "se": 0.0012854653795899027,
+        "lo": -0.01131951214399621,
+        "hi": -0.006280487856003792
+      }
+    },
+    {
+      "withdrawal_rate": 0.05,
+      "trained_ce_bond_share": 0.35,
+      "trained_survival_bond_share": 0.05,
+      "test_ce_opt_success": 0.9064,
+      "test_survival_opt_success": 0.9277,
+      "test_ce_delta_ce_vs_survival": {
+        "delta": 0.12203775337491751,
+        "se": 0.008704218392798842,
+        "lo_delta": 0.10497748532503179,
+        "hi_delta": 0.13909802142480324,
+        "lo": 0.10683387897197906,
+        "hi": 0.13869353266029108,
+        "significant": true
+      },
+      "test_success_delta_ce_vs_survival": {
+        "diff": -0.0213,
+        "se": 0.0019506438683547839,
+        "lo": -0.025123261981975377,
+        "hi": -0.017476738018024622
+      }
+    },
+    {
+      "withdrawal_rate": 0.055,
+      "trained_ce_bond_share": 0.3,
+      "trained_survival_bond_share": 0.0,
+      "test_ce_opt_success": 0.8525,
+      "test_survival_opt_success": 0.8899,
+      "test_ce_delta_ce_vs_survival": {
+        "delta": 0.07757740900624177,
+        "se": 0.005870283056591255,
+        "lo_delta": 0.0660716542153229,
+        "hi_delta": 0.08908316379716064,
+        "lo": 0.06718974089379522,
+        "hi": 0.08807783125671577,
+        "significant": true
+      },
+      "test_success_delta_ce_vs_survival": {
+        "diff": -0.0374,
+        "se": 0.0022540257459058273,
+        "lo": -0.04181789046197543,
+        "hi": -0.03298210953802458
+      }
+    }
+  ],
+  "inference": "paired simulation paths conditional on model and trained policies"
+}

@@ -1,0 +1,9 @@
+group,threshold_months,published,reconstructed,difference_pp,status
+All ages,3,0.4,0.4101825463474936,1.0182546347493604,Approximate: all ages; public data vintage and explicit expense imputations differ
+All ages,6,0.28,0.30171959651200736,2.1719596512007335,Approximate: all ages; public data vintage and explicit expense imputations differ
+Under35,3,0.29,0.3009666835998888,1.0966683599888838,Approximate: all ages; public data vintage and explicit expense imputations differ
+Under35,6,0.16,0.16695335114185425,0.6953351141854247,Approximate: all ages; public data vintage and explicit expense imputations differ
+Age35-55,3,0.33,0.35031759739219426,2.0317597392194244,Approximate: all ages; public data vintage and explicit expense imputations differ
+Age35-55,6,0.21,0.23655360416528198,2.655360416528199,Approximate: all ages; public data vintage and explicit expense imputations differ
+Over55,3,0.5,0.5151275382698663,1.5127538269866347,Approximate: all ages; public data vintage and explicit expense imputations differ
+Over55,6,0.39,0.42354692263258265,3.354692263258263,Approximate: all ages; public data vintage and explicit expense imputations differ

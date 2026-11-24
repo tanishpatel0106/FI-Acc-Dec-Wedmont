@@ -86,7 +86,7 @@ def experiment_spec(data: StudyData, scen: StudyScenario, inv: StudyInvestor, pr
                      "seed": scen.seed if seed is None else seed, "block_length": scen.block_length,
                      "k_regimes": scen.k_regimes},
         "investor": {"start_age": inv.age, "retirement_age": min(max(inv.retirement_age, 40.0), 80.0),
-                     "max_age": max(max_age, 70.0), "initial_wealth": inv.initial_wealth, "income": inv.income,
+                     "max_age": max_age, "initial_wealth": inv.initial_wealth, "income": inv.income,
                      "income_profile": "cgm_college", "pension": inv.pension, "savings_rate": inv.savings_rate,
                      "sex": inv.sex, "mortality": inv.mortality},
         "preferences": {"gamma": pr.gamma, "beta_annual": pr.beta_annual, "c_min": max(pr.util_floor_annual, 1.0)},
@@ -295,9 +295,16 @@ def paired_success_diff(a: NDArray[np.bool_], b: NDArray[np.bool_]) -> dict[str,
 def cvar(x: NDArray[np.float64], alpha: float = 0.95) -> float:
     if len(x) == 0:
         return float("nan")
-    q = np.quantile(x, alpha)
-    tail = x[x >= q]
-    return float(tail.mean()) if len(tail) else float(q)
+    if not 0 <= alpha < 1:
+        raise ValueError("alpha must be in [0, 1)")
+    ordered = np.sort(x)[::-1]
+    mass = (1 - alpha) * len(ordered)
+    whole = int(np.floor(mass))
+    fractional = mass - whole
+    total = float(ordered[:whole].sum())
+    if fractional > 0 and whole < len(ordered):
+        total += fractional * ordered[whole]
+    return float(total / mass)
 
 
 def severity_block(out: ledger.LedgerOutput, n_sample: int = 0, seed: int = 3) -> dict[str, Any]:

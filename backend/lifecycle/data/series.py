@@ -34,6 +34,9 @@ _add(SeriesDef("ust_5y", "Treasury 5Y", "rates", "total_return", "decimal/month"
 _add(SeriesDef("ust_10y", "Treasury 10Y", "rates", "total_return", "decimal/month", defensive=True))
 _add(SeriesDef("ust_20y", "Treasury 20Y", "rates", "total_return", "decimal/month", defensive=True))
 _add(SeriesDef("ust_30y", "Treasury 30Y", "rates", "total_return", "decimal/month", defensive=True))
+_add(SeriesDef("ust_7_10_etf", "IEF 7-10Y Treasury ETF (adjusted market price)", "rates", "total_return",
+               "decimal/month", defensive=True))
+_add(SeriesDef("ust_20p_etf", "TLT 20+Y Treasury ETF", "rates", "total_return", "decimal/month", defensive=True))
 _add(SeriesDef("tips", "TIPS", "rates", "total_return", "decimal/month", defensive=True))
 _add(SeriesDef("ig_credit", "Investment-grade credit", "credit", "total_return", "decimal/month"))
 _add(SeriesDef("hy_credit", "High-yield credit (observed fund total return, e.g. HYG via WRDS CRSP)", "credit",
@@ -82,6 +85,10 @@ class UniverseDef:
 
 
 UNIVERSES: dict[str, UniverseDef] = {
+    "observed_treasury_etf": UniverseDef(
+        "observed_treasury_etf", "US equity, T-bills and observed IEF Treasury ETF returns",
+        required=("us_eq", "tbill", "ust_7_10_etf"),
+    ),
     # v2 universes (brief 4.4): explicit, non-overlapping definitions; nothing is spliced or back-filled
     "core_long_history": UniverseDef(
         "core_long_history", "Long-history core (US equity, T-bills, 10Y Treasury)",

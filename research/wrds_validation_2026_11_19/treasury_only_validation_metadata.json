@@ -1,0 +1,8 @@
+{
+  "dataset": "treasury_only",
+  "catalog_hash": "cac766f9337d97dc",
+  "engine_version": "0.2.3+f2df1bd6ee98",
+  "matched_end": "2024-12-31",
+  "hypotheses": "Source sensitivity, not empirical household risk tolerance",
+  "selection": "Retrospective extension after the public-data analysis; not preregistered"
+}

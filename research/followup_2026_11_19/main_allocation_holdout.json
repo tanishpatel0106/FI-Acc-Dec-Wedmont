@@ -1,0 +1,130 @@
+{
+  "dataset": "main",
+  "horizon_years": 30,
+  "gamma": 4,
+  "train_paths": 5000,
+  "test_paths": 10000,
+  "seed": 20261119,
+  "data": {
+    "universe": "core_long_history",
+    "calibration_start": "1953-01-01",
+    "calibration_end": "2026-09-30",
+    "catalog_hash": null
+  },
+  "catalog_hash": "3bbcce4a7278f089",
+  "bond": "ust_10y",
+  "bond_grid": [
+    0.0,
+    0.05,
+    0.1,
+    0.15,
+    0.2,
+    0.25,
+    0.3,
+    0.35,
+    0.4,
+    0.45,
+    0.5,
+    0.55,
+    0.6,
+    0.65,
+    0.7,
+    0.75,
+    0.8,
+    0.85,
+    0.9,
+    0.95,
+    1.0
+  ],
+  "results": [
+    {
+      "withdrawal_rate": 0.04,
+      "trained_ce_bond_share": 0.45,
+      "trained_survival_bond_share": 0.3,
+      "test_ce_opt_success": 0.9485,
+      "test_survival_opt_success": 0.9541,
+      "test_ce_delta_ce_vs_survival": {
+        "delta": 0.038857323473929783,
+        "se": 0.006486182543209896,
+        "lo_delta": 0.026144405689238388,
+        "hi_delta": 0.05157024125862118,
+        "lo": 0.026048708055416526,
+        "hi": 0.05176741082303139,
+        "significant": true
+      },
+      "test_success_delta_ce_vs_survival": {
+        "diff": -0.0056,
+        "se": 0.0011734571573645187,
+        "lo": -0.007899976028434456,
+        "hi": -0.0033000239715655433
+      }
+    },
+    {
+      "withdrawal_rate": 0.045,
+      "trained_ce_bond_share": 0.4,
+      "trained_survival_bond_share": 0.1,
+      "test_ce_opt_success": 0.9044,
+      "test_survival_opt_success": 0.9136,
+      "test_ce_delta_ce_vs_survival": {
+        "delta": 0.11699536019520562,
+        "se": 0.007837007797537801,
+        "lo_delta": 0.10163482491203153,
+        "hi_delta": 0.13235589547837973,
+        "lo": 0.10107489055716162,
+        "hi": 0.13159672204287182,
+        "significant": true
+      },
+      "test_success_delta_ce_vs_survival": {
+        "diff": -0.0092,
+        "se": 0.0019524131713649065,
+        "lo": -0.013026729815875217,
+        "hi": -0.0053732701841247826
+      }
+    },
+    {
+      "withdrawal_rate": 0.05,
+      "trained_ce_bond_share": 0.35,
+      "trained_survival_bond_share": 0.05,
+      "test_ce_opt_success": 0.8457,
+      "test_survival_opt_success": 0.8666,
+      "test_ce_delta_ce_vs_survival": {
+        "delta": 0.08733515398541969,
+        "se": 0.0052570739589060285,
+        "lo_delta": 0.07703128902596387,
+        "hi_delta": 0.0976390189448755,
+        "lo": 0.077168495488918,
+        "hi": 0.09758573482456441,
+        "significant": true
+      },
+      "test_success_delta_ce_vs_survival": {
+        "diff": -0.0209,
+        "se": 0.0022642507995291328,
+        "lo": -0.025337931567077098,
+        "hi": -0.0164620684329229
+      }
+    },
+    {
+      "withdrawal_rate": 0.055,
+      "trained_ce_bond_share": 0.3,
+      "trained_survival_bond_share": 0.0,
+      "test_ce_opt_success": 0.7803,
+      "test_survival_opt_success": 0.8138,
+      "test_ce_delta_ce_vs_survival": {
+        "delta": 0.0655918176428314,
+        "se": 0.0037838875824589154,
+        "lo_delta": 0.05817539798121192,
+        "hi_delta": 0.07300823730445087,
+        "lo": 0.057933638484762615,
+        "hi": 0.0724097816183263,
+        "significant": true
+      },
+      "test_success_delta_ce_vs_survival": {
+        "diff": -0.0335,
+        "se": 0.002428654943890476,
+        "lo": -0.038260163690025335,
+        "hi": -0.02873983630997467
+      }
+    }
+  ],
+  "inference": "paired simulation paths conditional on model and trained policies"
+}

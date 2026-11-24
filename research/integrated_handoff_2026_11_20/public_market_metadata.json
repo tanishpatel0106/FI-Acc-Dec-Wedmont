@@ -1,0 +1,21 @@
+{
+  "catalog_hash": "3bbcce4a7278f089",
+  "universe": "core_long_history",
+  "assets": [
+    "us_eq",
+    "tbill",
+    "ust_10y"
+  ],
+  "start": "1953-05-31",
+  "end": "2024-12-31",
+  "months": 860,
+  "training_paths": 2000,
+  "evaluation_paths": 5000,
+  "training_seed": 920261120,
+  "evaluation_seed": 820261120,
+  "block_months": 12,
+  "selection_confidence": "one-sided 95% Bonferroni-Wilson across six training candidates",
+  "prospective_status": "Conditional forward scenarios calibrated to 2025 household budgets and historical market data; not historical trading using future household observations",
+  "income_status": "Frozen real earned/nonlabor income except the stated six-month interruption; not estimated retirement or career dynamics",
+  "script_sha256": "c9e35256b480dcfcae4cf98b4f995950e298e98992ff9c072d63a48c0339f00c"
+}

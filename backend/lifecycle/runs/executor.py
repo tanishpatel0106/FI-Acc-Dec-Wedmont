@@ -85,6 +85,8 @@ def with_catalog(spec: BaseModel) -> BaseModel:
     data = getattr(spec, "data", None)
     if data is not None and hasattr(data, "catalog_hash"):
         return spec.model_copy(update={"data": data.model_copy(update={"catalog_hash": chash})})
+    if "catalog_hash" in type(spec).model_fields:
+        return spec.model_copy(update={"catalog_hash": chash})
     return spec
 
 

@@ -1,0 +1,14 @@
+{
+  "checked_date": "2026-11-20",
+  "email_source": "Connected Gmail; latest relevant installation follow-up dated November 10",
+  "confirmed_requirements": [
+    "Employer wants to run and explore the platform locally",
+    "Python 3.12 and uv; Node 22 requested",
+    "Public snapshot works without credentials",
+    "Licensed raw WRDS rows cannot be redistributed",
+    "GitHub collaborator access requires the employer username"
+  ],
+  "local_actions": "Source/aggregate package and one-command Windows setup prepared; no external message sent",
+  "outstanding": "Employer environment/access and response are external; no installation on their computer is claimed",
+  "recordings": "No recording or transcript located in the sources previously searched"
+}

@@ -1,0 +1,25 @@
+Engine 2.4 continuation correction and complete impact audit - November 20, 2026
+
+An explicitly supplied all-zero h0 must remain zero before returns and scheduled flows. The old
+kernel could treat that state as absent and endow w0 again. Version 2.4 distinguishes these cases.
+Independent exhaustion, mixed-path and monthly-accounting checks verify the correction.
+
+The matched WRDS frontier 5ed2a2bb125f27cca2cb and corrected signed-flow study 57e534824da155afbd59
+reproduce their stored numerical results exactly. New budget scenarios use 2.4; public outputs are
+independently reproduced. Full-horizon initialization without h0 retains its original path.
+
+The complete historical demonstration 31c4d46f75f7e5ceb2fd was re-evaluated, including its three
+forward policies and cohort, start-date, estimation-window and ablation experiments. Nine numbers
+change, all forward CE or unmet-outlay summaries. Lifecycle-adaptive annual CE falls by $2.07853,
+mean cumulative unmet outlays rise by $10.306 and unmet CVaR95 rises by $140.76. Its no-shortfall
+probability remains 0.884. Realized replay, experiment results and all other numerical fields agree
+within rtol 1e-10 / atol 1e-9. The full corrected aggregate JSON and nine-field diff are supplied;
+those summaries supersede the archived forward values. No blanket equality claim is made.
+
+The first broad attempts were stopped while addressing slow repeated optimization. Projection,
+mean-variance and equal-risk-contribution helpers now compile with Numba using the same algorithms
+and iteration caps. Independent closed-form/SLSQP checks and agreement with the interpreted routines
+support numerical equivalence. The complete final execution finished successfully; the log and
+engine24_historical_replay_audit.json record it. BLAS threads were bounded to 1 and Numba to 4;
+no investor, sampling, policy, horizon or experiment parameter was changed for the re-evaluation.
+A warm helper microbenchmark is separate from an overall application-performance claim.

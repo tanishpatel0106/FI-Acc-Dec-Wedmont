@@ -1,0 +1,85 @@
+year,specification,outcome,estimate,se,low,high,contrast,expense_definition
+2016,Demographics,any_risk,-0.22986341877576194,0.01530773356218671,-0.2598665765576479,-0.199860260993876,age75 minus age30,published-method expense reconstruction
+2016,Demographics,cash_ge3,0.24798336332157228,0.015191602030400604,0.2182078233419871,0.2777589033011575,age75 minus age30,published-method expense reconstruction
+2016,Demographics,baseline_reserve,0.064925000618553,0.012854077717249309,0.039731008292744355,0.09011899294436164,age75 minus age30,published-method expense reconstruction
+2016,Demographics,combined_stress_reserve,0.448106917418681,0.011981892193491354,0.4246224087194379,0.47159142611792404,age75 minus age30,published-method expense reconstruction
+2016,Demographics,combined_noage_expense,0.46127957011120324,0.011239534633338544,0.4392500822298597,0.4833090579925468,age75 minus age30,published-method expense reconstruction
+2016,Demographics,combined_published_expense,0.448106917418681,0.011981892193491384,0.42462240871943785,0.4715914261179241,age75 minus age30,published-method expense reconstruction
+2016,Demographics,combined_all_income_interruption,0.30097788447452134,0.014915671291745699,0.27174316874269977,0.3302126002063429,age75 minus age30,published-method expense reconstruction
+2016,Income and wealth adjustment,any_risk,-0.3801104519974164,0.015454292035269285,-0.41040086438654416,-0.3498200396082886,age75 minus age30,published-method expense reconstruction
+2016,Income and wealth adjustment,cash_ge3,-0.025228980343956542,0.015416937657856162,-0.05544617815335462,0.004988217465441536,age75 minus age30,published-method expense reconstruction
+2016,Income and wealth adjustment,baseline_reserve,-0.06832958019610377,0.014570949505231842,-0.09688864122635818,-0.039770519165849366,age75 minus age30,published-method expense reconstruction
+2016,Income and wealth adjustment,combined_stress_reserve,0.19477438793697918,0.012383986179698164,0.1705017750247708,0.21904700084918757,age75 minus age30,published-method expense reconstruction
+2016,Income and wealth adjustment,combined_noage_expense,0.20916123723125535,0.011866308106115222,0.1859032733432695,0.2324192011192412,age75 minus age30,published-method expense reconstruction
+2016,Income and wealth adjustment,combined_published_expense,0.19477438793697918,0.012383986179698164,0.1705017750247708,0.21904700084918757,age75 minus age30,published-method expense reconstruction
+2016,Income and wealth adjustment,combined_all_income_interruption,0.014208634521993141,0.01423705478321911,-0.013695992853116314,0.0421132618971026,age75 minus age30,published-method expense reconstruction
+2016,Income wealth and earned-share adjustment,any_risk,-0.33264896483598,0.020202629723013826,-0.3722461190930871,-0.2930518105788729,age75 minus age30,published-method expense reconstruction
+2016,Income wealth and earned-share adjustment,cash_ge3,-0.023425358045541078,0.018312896743087965,-0.05931863566199349,0.012467919570911333,age75 minus age30,published-method expense reconstruction
+2016,Income wealth and earned-share adjustment,baseline_reserve,0.05402105714502132,0.01604669395433973,0.02256953699451545,0.08547257729552718,age75 minus age30,published-method expense reconstruction
+2016,Income wealth and earned-share adjustment,combined_stress_reserve,0.03590327446292277,0.015007001324921498,0.006489551866076634,0.0653169970597689,age75 minus age30,published-method expense reconstruction
+2016,Income wealth and earned-share adjustment,combined_noage_expense,0.04630836110093217,0.014357951709633065,0.018166775750051364,0.07444994645181298,age75 minus age30,published-method expense reconstruction
+2016,Income wealth and earned-share adjustment,combined_published_expense,0.035903274462923185,0.015007001324921804,0.00648955186607645,0.06531699705976993,age75 minus age30,published-method expense reconstruction
+2016,Income wealth and earned-share adjustment,combined_all_income_interruption,-0.013086044249563,0.015405130332405178,-0.04328009970107714,0.017108011201951146,age75 minus age30,published-method expense reconstruction
+2019,Demographics,any_risk,-0.25721269803140945,0.015775344720817836,-0.2881323736842124,-0.2262930223786065,age75 minus age30,published-method expense reconstruction
+2019,Demographics,cash_ge3,0.19224838683601586,0.018596283573872573,0.1557996710312256,0.22869710264080612,age75 minus age30,published-method expense reconstruction
+2019,Demographics,baseline_reserve,0.041965531199509076,0.01534105197807784,0.01189706932247651,0.07203399307654164,age75 minus age30,published-method expense reconstruction
+2019,Demographics,combined_stress_reserve,0.42886085993085954,0.017391446540064706,0.39477362471233274,0.46294809514938634,age75 minus age30,published-method expense reconstruction
+2019,Demographics,combined_noage_expense,0.448914783547804,0.017855317543374962,0.4139183611627891,0.48391120593281894,age75 minus age30,published-method expense reconstruction
+2019,Demographics,combined_published_expense,0.4288608599308595,0.01739144654006471,0.3947736247123327,0.4629480951493863,age75 minus age30,published-method expense reconstruction
+2019,Demographics,combined_all_income_interruption,0.25207056217092494,0.016981798987530557,0.21878623615536505,0.2853548881864848,age75 minus age30,published-method expense reconstruction
+2019,Income and wealth adjustment,any_risk,-0.3790583420922235,0.018876195755210417,-0.4160556857724359,-0.3420609984120111,age75 minus age30,published-method expense reconstruction
+2019,Income and wealth adjustment,cash_ge3,-0.04954480097359526,0.018417411242718642,-0.0856429270093238,-0.01344667493786672,age75 minus age30,published-method expense reconstruction
+2019,Income and wealth adjustment,baseline_reserve,-0.04845544147374367,0.017364167508062054,-0.0824892097895453,-0.014421673157942044,age75 minus age30,published-method expense reconstruction
+2019,Income and wealth adjustment,combined_stress_reserve,0.19902000868745515,0.018088163497606263,0.16356720823214688,0.23447280914276342,age75 minus age30,published-method expense reconstruction
+2019,Income and wealth adjustment,combined_noage_expense,0.2191628641365835,0.01865119121803774,0.18260652934922955,0.25571919892393746,age75 minus age30,published-method expense reconstruction
+2019,Income and wealth adjustment,combined_published_expense,0.19902000868745515,0.018088163497606263,0.16356720823214688,0.23447280914276342,age75 minus age30,published-method expense reconstruction
+2019,Income and wealth adjustment,combined_all_income_interruption,-0.004771588491603945,0.015730418110937835,-0.035603207989042096,0.02606003100583421,age75 minus age30,published-method expense reconstruction
+2019,Income wealth and earned-share adjustment,any_risk,-0.3134807022382996,0.022349688776321625,-0.35728609223989,-0.2696753122367092,age75 minus age30,published-method expense reconstruction
+2019,Income wealth and earned-share adjustment,cash_ge3,-0.025334982211113993,0.022253095175079115,-0.06895104875426905,0.01828108433204107,age75 minus age30,published-method expense reconstruction
+2019,Income wealth and earned-share adjustment,baseline_reserve,0.11748510078128764,0.020200922416368346,0.07789129284520568,0.1570789087173696,age75 minus age30,published-method expense reconstruction
+2019,Income wealth and earned-share adjustment,combined_stress_reserve,0.0521593498019613,0.02331680541139315,0.006458411195630717,0.09786028840829188,age75 minus age30,published-method expense reconstruction
+2019,Income wealth and earned-share adjustment,combined_noage_expense,0.07333866941251,0.023968217559379758,0.02636096299612567,0.12031637582889432,age75 minus age30,published-method expense reconstruction
+2019,Income wealth and earned-share adjustment,combined_published_expense,0.0521593498019608,0.023316805411393107,0.006458411195630308,0.09786028840829128,age75 minus age30,published-method expense reconstruction
+2019,Income wealth and earned-share adjustment,combined_all_income_interruption,-0.028335849879399147,0.020724250613721885,-0.06895538108229404,0.012283681323495749,age75 minus age30,published-method expense reconstruction
+2022,Demographics,any_risk,-0.18718965577706825,0.02091675596842818,-0.2281864974751875,-0.14619281407894902,age75 minus age30,published-method expense reconstruction
+2022,Demographics,cash_ge3,0.22488897169466696,0.020674413902721015,0.18436712044533377,0.26541082294400015,age75 minus age30,published-method expense reconstruction
+2022,Demographics,baseline_reserve,0.01920541661426134,0.017678686051576815,-0.015444808046829218,0.0538556412753519,age75 minus age30,published-method expense reconstruction
+2022,Demographics,combined_stress_reserve,0.3892125408070557,0.019941783164481204,0.35012664580467256,0.4282984358094388,age75 minus age30,published-method expense reconstruction
+2022,Demographics,combined_noage_expense,0.4018403282693668,0.01912386744802119,0.36435754807124526,0.4393231084674883,age75 minus age30,published-method expense reconstruction
+2022,Demographics,combined_published_expense,0.3892125408070557,0.019941783164481097,0.35012664580467273,0.42829843580943866,age75 minus age30,published-method expense reconstruction
+2022,Demographics,combined_all_income_interruption,0.2279416218154057,0.021671394521747284,0.185465688552781,0.2704175550780304,age75 minus age30,published-method expense reconstruction
+2022,Income and wealth adjustment,any_risk,-0.3221724323134088,0.021224955397923198,-0.3637733448933383,-0.2805715197334793,age75 minus age30,published-method expense reconstruction
+2022,Income and wealth adjustment,cash_ge3,0.0018993263195744708,0.022146091752886038,-0.041507013516082165,0.04530566615523111,age75 minus age30,published-method expense reconstruction
+2022,Income and wealth adjustment,baseline_reserve,-0.07635604660156452,0.022757600169144264,-0.12096094293308728,-0.03175115027004176,age75 minus age30,published-method expense reconstruction
+2022,Income and wealth adjustment,combined_stress_reserve,0.1676699602135723,0.021678073133002494,0.12518093687288742,0.2101589835542572,age75 minus age30,published-method expense reconstruction
+2022,Income and wealth adjustment,combined_noage_expense,0.18478774930995695,0.02053633826064084,0.1445365263191009,0.225038972300813,age75 minus age30,published-method expense reconstruction
+2022,Income and wealth adjustment,combined_published_expense,0.1676699602135723,0.021678073133002494,0.12518093687288742,0.2101589835542572,age75 minus age30,published-method expense reconstruction
+2022,Income and wealth adjustment,combined_all_income_interruption,-0.02922132639296962,0.02142653168451036,-0.07121732849460993,0.012774675708670684,age75 minus age30,published-method expense reconstruction
+2022,Income wealth and earned-share adjustment,any_risk,-0.27305835772006704,0.02523541146826462,-0.3225197641978657,-0.2235969512422684,age75 minus age30,published-method expense reconstruction
+2022,Income wealth and earned-share adjustment,cash_ge3,0.01781521740388453,0.026655215221465665,-0.03442900443018817,0.07005943923795724,age75 minus age30,published-method expense reconstruction
+2022,Income wealth and earned-share adjustment,baseline_reserve,0.0505471206411741,0.021451310670411894,0.00850255172716679,0.0925916895551814,age75 minus age30,published-method expense reconstruction
+2022,Income wealth and earned-share adjustment,combined_stress_reserve,0.0296574976253825,0.025018832901702193,-0.019379414861953798,0.0786944101127188,age75 minus age30,published-method expense reconstruction
+2022,Income wealth and earned-share adjustment,combined_noage_expense,0.04483973871089175,0.025559896431969504,-0.0052576582957684775,0.09493713571755198,age75 minus age30,published-method expense reconstruction
+2022,Income wealth and earned-share adjustment,combined_published_expense,0.029657497625382806,0.025018832901701822,-0.019379414861952764,0.07869441011271838,age75 minus age30,published-method expense reconstruction
+2022,Income wealth and earned-share adjustment,combined_all_income_interruption,-0.03147252830835054,0.024068900531384458,-0.07864757334986408,0.015702516733162995,age75 minus age30,published-method expense reconstruction
+2025,Demographics,any_risk,-0.2059018253130731,0.018609418504735308,-0.2423762855823543,-0.1694273650437919,age75 minus age30,reported nonhousing plus rent and debt payments
+2025,Demographics,cash_ge3,0.22034145575895417,0.018712380708124258,0.18366518957103062,0.2570177219468777,age75 minus age30,reported nonhousing plus rent and debt payments
+2025,Demographics,baseline_reserve,0.13522193474206398,0.02301978455339603,0.09010315701740776,0.1803407124667202,age75 minus age30,reported nonhousing plus rent and debt payments
+2025,Demographics,combined_stress_reserve,0.4038402124748562,0.02276313699633313,0.35922446396204327,0.4484559609876691,age75 minus age30,reported nonhousing plus rent and debt payments
+2025,Demographics,combined_noage_expense,0.35102692012193937,0.02081417875322815,0.3102311297656122,0.39182271047826656,age75 minus age30,reported nonhousing plus rent and debt payments
+2025,Demographics,combined_published_expense,0.341723923601985,0.021029265638437097,0.3005065629506483,0.3829412842533217,age75 minus age30,reported nonhousing plus rent and debt payments
+2025,Demographics,combined_all_income_interruption,0.22897729472429393,0.02336636535327767,0.1831792186318697,0.27477537081671816,age75 minus age30,reported nonhousing plus rent and debt payments
+2025,Income and wealth adjustment,any_risk,-0.31645219761703147,0.022344760302359604,-0.3602479278096563,-0.27265646742440663,age75 minus age30,reported nonhousing plus rent and debt payments
+2025,Income and wealth adjustment,cash_ge3,-0.032238575777814665,0.02106103209377904,-0.07351819868162159,0.009041047125992255,age75 minus age30,reported nonhousing plus rent and debt payments
+2025,Income and wealth adjustment,baseline_reserve,-0.0023926052773560816,0.029286899515120052,-0.05979492832699138,0.05500971777227922,age75 minus age30,reported nonhousing plus rent and debt payments
+2025,Income and wealth adjustment,combined_stress_reserve,0.16510329891959788,0.025779385421679672,0.11457570349310572,0.21563089434609004,age75 minus age30,reported nonhousing plus rent and debt payments
+2025,Income and wealth adjustment,combined_noage_expense,0.12535158475342878,0.02292973491665484,0.0804093043167853,0.17029386519007228,age75 minus age30,reported nonhousing plus rent and debt payments
+2025,Income and wealth adjustment,combined_published_expense,0.11464865290739645,0.022988674926805192,0.06959085005085827,0.15970645576393463,age75 minus age30,reported nonhousing plus rent and debt payments
+2025,Income and wealth adjustment,combined_all_income_interruption,-0.03590846082431966,0.022526301198558415,-0.08006001117349415,0.008243089524854835,age75 minus age30,reported nonhousing plus rent and debt payments
+2025,Income wealth and earned-share adjustment,any_risk,-0.28287813091920444,0.026772422422324898,-0.3353520788669612,-0.23040418297144766,age75 minus age30,reported nonhousing plus rent and debt payments
+2025,Income wealth and earned-share adjustment,cash_ge3,-0.06418910339350958,0.02608161609185078,-0.11530907093353711,-0.013069135853482058,age75 minus age30,reported nonhousing plus rent and debt payments
+2025,Income wealth and earned-share adjustment,baseline_reserve,0.034455422094693364,0.035640413875422605,-0.035399789101134935,0.10431063329052166,age75 minus age30,reported nonhousing plus rent and debt payments
+2025,Income wealth and earned-share adjustment,combined_stress_reserve,0.0037030984323383337,0.03470459786041736,-0.06431791337407969,0.07172411023875636,age75 minus age30,reported nonhousing plus rent and debt payments
+2025,Income wealth and earned-share adjustment,combined_noage_expense,-0.040567697583387435,0.027646999286139205,-0.09475581618422027,0.013620421017445407,age75 minus age30,reported nonhousing plus rent and debt payments
+2025,Income wealth and earned-share adjustment,combined_published_expense,-0.05084642013762722,0.027305402274395384,-0.10436500859544218,0.002672168320187733,age75 minus age30,reported nonhousing plus rent and debt payments
+2025,Income wealth and earned-share adjustment,combined_all_income_interruption,-0.08038080784612946,0.027368103205130848,-0.13402229012818592,-0.026739325564072998,age75 minus age30,reported nonhousing plus rent and debt payments

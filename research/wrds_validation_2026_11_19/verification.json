@@ -1,0 +1,16 @@
+{
+  "raw_input_hashes": "4 of 4 verified",
+  "restricted_invalid_return_count": 0,
+  "nonfinite_values": 0,
+  "duplicate_month_series_rows": 0,
+  "matched_frontier_studies": 12,
+  "frontier_horizon": "30 years for success and utility",
+  "historical_holdout": "8 folds and 192 cells per dataset; 384 cells total",
+  "exact_reproduction": {
+    "frontier": "reproduced 5ed2a2bb125f27cca2cb",
+    "signed_flow": "reproduced 57e534824da155afbd59"
+  },
+  "backend_tests": "111 passed after credit timing correction",
+  "restricted_data_in_notebook": "No raw vendor observations; aggregate artifacts only",
+  "WRDS_access": "Duo and Terms of Use completed; authenticated Cloud extraction successful"
+}

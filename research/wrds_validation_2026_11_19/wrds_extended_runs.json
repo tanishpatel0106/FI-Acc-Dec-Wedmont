@@ -1,0 +1,256 @@
+{
+  "signed_flow": {
+    "run_id": "57e534824da155afbd59",
+    "kind": "signed_flow",
+    "label": "WRDS matched three-asset age and cash-flow surface",
+    "spec": {
+      "ages": [
+        25.0,
+        35.0,
+        45.0,
+        55.0,
+        65.0,
+        75.0,
+        85.0
+      ],
+      "b_step": 0.1,
+      "bond": "ust_10y",
+      "costs": {
+        "commission_bps": 0.0,
+        "half_spread_bps": 0.0,
+        "slippage_bps": 0.0
+      },
+      "data": {
+        "calibration_end": "2024-12-31",
+        "calibration_start": "1953-01-01",
+        "catalog_hash": "c1f8e3775eab9dd7",
+        "universe": "core_long_history"
+      },
+      "equity": "us_eq",
+      "horizon_years": 20,
+      "label": null,
+      "n_boot": 300,
+      "persona_income": 100000.0,
+      "persona_savings": [
+        0.05,
+        0.1,
+        0.15,
+        0.2,
+        0.25
+      ],
+      "persona_start_ages": [
+        25.0,
+        30.0,
+        35.0,
+        40.0,
+        45.0,
+        50.0
+      ],
+      "persona_target_multiple": 12.0,
+      "preferences": {
+        "beta_annual": 0.97,
+        "gamma": 4.0,
+        "util_floor_annual": 3000.0
+      },
+      "q_grid": [
+        -0.15,
+        -0.1,
+        -0.075,
+        -0.05,
+        -0.03,
+        -0.02,
+        -0.01,
+        -0.005,
+        0.0,
+        0.005,
+        0.01,
+        0.02,
+        0.03,
+        0.04,
+        0.05,
+        0.06,
+        0.07,
+        0.08,
+        0.1
+      ],
+      "real_discount_rate": null,
+      "rebalancer": "calendar_12m",
+      "scenario": {
+        "block_length": null,
+        "generator": "bootstrap",
+        "k_regimes": 1,
+        "n_paths": 5000,
+        "n_train_paths": 4000,
+        "seed": 20261119
+      },
+      "w_ref": 1000000.0
+    },
+    "catalog_hash": "c1f8e3775eab9dd7",
+    "engine_version": "0.2.3+b0c1e245654a"
+  },
+  "permanent": {
+    "run_id": "aa611787c22163372d8c",
+    "kind": "permanent",
+    "label": "WRDS Permanent Portfolio, complete fund months",
+    "spec": {
+      "benchmark": "sixty_forty",
+      "cash": "tbill",
+      "cohort_years": 10,
+      "costs": {
+        "commission_bps": 1.0,
+        "half_spread_bps": 2.0,
+        "slippage_bps": 0.0
+      },
+      "data": {
+        "calibration_end": "2024-12-31",
+        "calibration_start": "2004-12-01",
+        "catalog_hash": "c1f8e3775eab9dd7",
+        "universe": "pp_modern_etf"
+      },
+      "duration_variants": [
+        "ust_2y",
+        "ust_5y",
+        "ust_10y",
+        "ust_30y"
+      ],
+      "equity": "us_eq",
+      "gold": "gold",
+      "horizons_years": [
+        10,
+        20,
+        30
+      ],
+      "investor": {
+        "age": 65.0,
+        "horizon_years": 30,
+        "income": 0.0,
+        "initial_wealth": 1000000.0,
+        "mortality": true,
+        "pension": 0.0,
+        "retirement_age": 65.0,
+        "savings_rate": 0.1,
+        "sex": "unisex"
+      },
+      "label": null,
+      "long_bond": "ust_30y",
+      "policies": [
+        "sixty_forty",
+        "pp_classic",
+        "pp_monthly",
+        "pp_annual",
+        "pp_15_35_monthly",
+        "pp_5pp_band",
+        "pp_intermediate",
+        "pp_tips_blend",
+        "pp_cash_buffer",
+        "pp_no_gold",
+        "pp_no_long_duration",
+        "best_static",
+        "pp_dynamic_weights",
+        "pp_robust"
+      ],
+      "preferences": {
+        "beta_annual": 0.97,
+        "gamma": 4.0,
+        "util_floor_annual": 3000.0
+      },
+      "reserve_years": [
+        0.0,
+        1.0,
+        2.0,
+        3.0,
+        5.0
+      ],
+      "scenario": {
+        "block_length": null,
+        "generator": "bootstrap",
+        "k_regimes": 2,
+        "n_paths": 2000,
+        "n_train_paths": 1000,
+        "seed": 20261107
+      },
+      "simplex_divisions": 10,
+      "withdrawal": 0.04,
+      "withdrawal_grid": [
+        0.02,
+        0.03,
+        0.04,
+        0.05,
+        0.06,
+        0.07,
+        0.08
+      ]
+    },
+    "catalog_hash": "c1f8e3775eab9dd7",
+    "engine_version": "0.2.3+f2df1bd6ee98"
+  },
+  "multi_asset": {
+    "run_id": "89516686c41df966361d",
+    "kind": "multi_asset",
+    "label": "WRDS full multi-asset baseline",
+    "spec": {
+      "benchmark": "sixty_forty",
+      "block_step": 0.25,
+      "costs": {
+        "commission_bps": 1.0,
+        "half_spread_bps": 2.0,
+        "slippage_bps": 0.0
+      },
+      "data": {
+        "calibration_end": "2024-12-31",
+        "calibration_start": "2007-05-01",
+        "catalog_hash": "c1f8e3775eab9dd7",
+        "universe": "multi_asset_full"
+      },
+      "investor": {
+        "age": 65.0,
+        "horizon_years": 30,
+        "income": 0.0,
+        "initial_wealth": 1000000.0,
+        "mortality": true,
+        "pension": 0.0,
+        "retirement_age": 65.0,
+        "savings_rate": 0.1,
+        "sex": "unisex"
+      },
+      "label": null,
+      "policies": [
+        "sixty_forty",
+        "equal_weight",
+        "pp_multi_asset",
+        "risk_parity",
+        "regime_blocks",
+        "trend_tsmom",
+        "inverse_vol",
+        "vol_target",
+        "crra_static",
+        "crra_parametric"
+      ],
+      "preferences": {
+        "beta_annual": 0.97,
+        "gamma": 4.0,
+        "util_floor_annual": 3000.0
+      },
+      "robustness_generators": [
+        "bootstrap"
+      ],
+      "saver_income": 100000.0,
+      "saver_savings_rate": 0.15,
+      "saver_start_age": 35.0,
+      "scenario": {
+        "block_length": null,
+        "generator": "markov_switching",
+        "k_regimes": 2,
+        "n_paths": 2000,
+        "n_train_paths": 1000,
+        "seed": 20261107
+      },
+      "target_vol": 0.08,
+      "trend_months": 12,
+      "vol_months": 12,
+      "withdrawal": 0.04
+    },
+    "catalog_hash": "c1f8e3775eab9dd7",
+    "engine_version": "0.2.3+f2df1bd6ee98"
+  }
+}

@@ -1,0 +1,462 @@
+{
+  "catalog_hash": "c1f8e3775eab9dd7",
+  "built_at": "2026-11-19T21:57:04.692365",
+  "choices": {
+    "commodities": {
+      "chosen": "wrds:crsp.msf_v2.mthret.DBC",
+      "alternatives": []
+    },
+    "cpi_nsa": {
+      "chosen": "wrds:crsp.mcti.cpiret",
+      "alternatives": [
+        "fred:CPIAUCNS"
+      ]
+    },
+    "cpi_sa": {
+      "chosen": "fred:CPIAUCSL",
+      "alternatives": []
+    },
+    "em_eq": {
+      "chosen": "wrds:crsp.msf_v2.mthret.EEM",
+      "alternatives": [
+        "french:Emerging_5_Factors_CSV.zip.Mkt-RF+RF"
+      ]
+    },
+    "ff_cma": {
+      "chosen": "french:F-F_Research_Data_5_Factors_2x3_CSV.zip.CMA",
+      "alternatives": []
+    },
+    "ff_hml": {
+      "chosen": "french:F-F_Research_Data_Factors.HML",
+      "alternatives": []
+    },
+    "ff_mktrf": {
+      "chosen": "french:F-F_Research_Data_Factors.Mkt-RF",
+      "alternatives": []
+    },
+    "ff_rf": {
+      "chosen": "french:F-F_Research_Data_Factors.RF",
+      "alternatives": []
+    },
+    "ff_rmw": {
+      "chosen": "french:F-F_Research_Data_5_Factors_2x3_CSV.zip.RMW",
+      "alternatives": []
+    },
+    "ff_smb": {
+      "chosen": "french:F-F_Research_Data_Factors.SMB",
+      "alternatives": []
+    },
+    "ff_umd": {
+      "chosen": "french:F-F_Momentum_Factor_CSV.zip.Mom",
+      "alternatives": []
+    },
+    "fx_aud": {
+      "chosen": "derived:fx_deposit(DEXUSAL,IRSTCI01AUM156N)",
+      "alternatives": []
+    },
+    "fx_basket": {
+      "chosen": "derived:fx_basket(equal-weight GBP,JPY,CAD,AUD; H.10 month-end spot; OECD call money)",
+      "alternatives": []
+    },
+    "fx_cad": {
+      "chosen": "derived:fx_deposit(DEXCAUS,IRSTCI01CAM156N)",
+      "alternatives": []
+    },
+    "fx_gbp": {
+      "chosen": "derived:fx_deposit(DEXUSUK,IRSTCI01GBM156N)",
+      "alternatives": []
+    },
+    "fx_jpy": {
+      "chosen": "derived:fx_deposit(DEXJPUS,IRSTCI01JPM156N)",
+      "alternatives": []
+    },
+    "fxs_aud": {
+      "chosen": "fred:DEXUSAL",
+      "alternatives": []
+    },
+    "fxs_cad": {
+      "chosen": "fred:DEXCAUS:inverted",
+      "alternatives": []
+    },
+    "fxs_gbp": {
+      "chosen": "fred:DEXUSUK",
+      "alternatives": []
+    },
+    "fxs_jpy": {
+      "chosen": "fred:DEXJPUS:inverted",
+      "alternatives": []
+    },
+    "gold": {
+      "chosen": "wrds:crsp.msf_v2.mthret.GLD",
+      "alternatives": []
+    },
+    "gsw_nom_01": {
+      "chosen": "fed:gsw_nominal.SVENY01",
+      "alternatives": []
+    },
+    "gsw_nom_02": {
+      "chosen": "fed:gsw_nominal.SVENY02",
+      "alternatives": []
+    },
+    "gsw_nom_03": {
+      "chosen": "fed:gsw_nominal.SVENY03",
+      "alternatives": []
+    },
+    "gsw_nom_04": {
+      "chosen": "fed:gsw_nominal.SVENY04",
+      "alternatives": []
+    },
+    "gsw_nom_05": {
+      "chosen": "fed:gsw_nominal.SVENY05",
+      "alternatives": []
+    },
+    "gsw_nom_06": {
+      "chosen": "fed:gsw_nominal.SVENY06",
+      "alternatives": []
+    },
+    "gsw_nom_07": {
+      "chosen": "fed:gsw_nominal.SVENY07",
+      "alternatives": []
+    },
+    "gsw_nom_08": {
+      "chosen": "fed:gsw_nominal.SVENY08",
+      "alternatives": []
+    },
+    "gsw_nom_09": {
+      "chosen": "fed:gsw_nominal.SVENY09",
+      "alternatives": []
+    },
+    "gsw_nom_10": {
+      "chosen": "fed:gsw_nominal.SVENY10",
+      "alternatives": []
+    },
+    "gsw_nom_11": {
+      "chosen": "fed:gsw_nominal.SVENY11",
+      "alternatives": []
+    },
+    "gsw_nom_12": {
+      "chosen": "fed:gsw_nominal.SVENY12",
+      "alternatives": []
+    },
+    "gsw_nom_13": {
+      "chosen": "fed:gsw_nominal.SVENY13",
+      "alternatives": []
+    },
+    "gsw_nom_14": {
+      "chosen": "fed:gsw_nominal.SVENY14",
+      "alternatives": []
+    },
+    "gsw_nom_15": {
+      "chosen": "fed:gsw_nominal.SVENY15",
+      "alternatives": []
+    },
+    "gsw_nom_16": {
+      "chosen": "fed:gsw_nominal.SVENY16",
+      "alternatives": []
+    },
+    "gsw_nom_17": {
+      "chosen": "fed:gsw_nominal.SVENY17",
+      "alternatives": []
+    },
+    "gsw_nom_18": {
+      "chosen": "fed:gsw_nominal.SVENY18",
+      "alternatives": []
+    },
+    "gsw_nom_19": {
+      "chosen": "fed:gsw_nominal.SVENY19",
+      "alternatives": []
+    },
+    "gsw_nom_20": {
+      "chosen": "fed:gsw_nominal.SVENY20",
+      "alternatives": []
+    },
+    "gsw_nom_21": {
+      "chosen": "fed:gsw_nominal.SVENY21",
+      "alternatives": []
+    },
+    "gsw_nom_22": {
+      "chosen": "fed:gsw_nominal.SVENY22",
+      "alternatives": []
+    },
+    "gsw_nom_23": {
+      "chosen": "fed:gsw_nominal.SVENY23",
+      "alternatives": []
+    },
+    "gsw_nom_24": {
+      "chosen": "fed:gsw_nominal.SVENY24",
+      "alternatives": []
+    },
+    "gsw_nom_25": {
+      "chosen": "fed:gsw_nominal.SVENY25",
+      "alternatives": []
+    },
+    "gsw_nom_26": {
+      "chosen": "fed:gsw_nominal.SVENY26",
+      "alternatives": []
+    },
+    "gsw_nom_27": {
+      "chosen": "fed:gsw_nominal.SVENY27",
+      "alternatives": []
+    },
+    "gsw_nom_28": {
+      "chosen": "fed:gsw_nominal.SVENY28",
+      "alternatives": []
+    },
+    "gsw_nom_29": {
+      "chosen": "fed:gsw_nominal.SVENY29",
+      "alternatives": []
+    },
+    "gsw_nom_30": {
+      "chosen": "fed:gsw_nominal.SVENY30",
+      "alternatives": []
+    },
+    "gsw_real_02": {
+      "chosen": "fed:gsw_tips.TIPSY02",
+      "alternatives": []
+    },
+    "gsw_real_03": {
+      "chosen": "fed:gsw_tips.TIPSY03",
+      "alternatives": []
+    },
+    "gsw_real_04": {
+      "chosen": "fed:gsw_tips.TIPSY04",
+      "alternatives": []
+    },
+    "gsw_real_05": {
+      "chosen": "fed:gsw_tips.TIPSY05",
+      "alternatives": []
+    },
+    "gsw_real_06": {
+      "chosen": "fed:gsw_tips.TIPSY06",
+      "alternatives": []
+    },
+    "gsw_real_07": {
+      "chosen": "fed:gsw_tips.TIPSY07",
+      "alternatives": []
+    },
+    "gsw_real_08": {
+      "chosen": "fed:gsw_tips.TIPSY08",
+      "alternatives": []
+    },
+    "gsw_real_09": {
+      "chosen": "fed:gsw_tips.TIPSY09",
+      "alternatives": []
+    },
+    "gsw_real_10": {
+      "chosen": "fed:gsw_tips.TIPSY10",
+      "alternatives": []
+    },
+    "gsw_real_11": {
+      "chosen": "fed:gsw_tips.TIPSY11",
+      "alternatives": []
+    },
+    "gsw_real_12": {
+      "chosen": "fed:gsw_tips.TIPSY12",
+      "alternatives": []
+    },
+    "gsw_real_13": {
+      "chosen": "fed:gsw_tips.TIPSY13",
+      "alternatives": []
+    },
+    "gsw_real_14": {
+      "chosen": "fed:gsw_tips.TIPSY14",
+      "alternatives": []
+    },
+    "gsw_real_15": {
+      "chosen": "fed:gsw_tips.TIPSY15",
+      "alternatives": []
+    },
+    "gsw_real_16": {
+      "chosen": "fed:gsw_tips.TIPSY16",
+      "alternatives": []
+    },
+    "gsw_real_17": {
+      "chosen": "fed:gsw_tips.TIPSY17",
+      "alternatives": []
+    },
+    "gsw_real_18": {
+      "chosen": "fed:gsw_tips.TIPSY18",
+      "alternatives": []
+    },
+    "gsw_real_19": {
+      "chosen": "fed:gsw_tips.TIPSY19",
+      "alternatives": []
+    },
+    "gsw_real_20": {
+      "chosen": "fed:gsw_tips.TIPSY20",
+      "alternatives": []
+    },
+    "hy_credit": {
+      "chosen": "wrds:crsp.msf_v2.mthret.HYG",
+      "alternatives": [
+        "wrds:wrdsapps_bondret.lagged_rating_amount.hy"
+      ]
+    },
+    "ig_credit": {
+      "chosen": "wrds:wrdsapps_bondret.lagged_rating_amount.ig",
+      "alternatives": [
+        "model:par_bond(y_aaa,10.0y)"
+      ]
+    },
+    "ig_credit_etf": {
+      "chosen": "wrds:crsp.msf_v2.mthret.LQD",
+      "alternatives": []
+    },
+    "intl_eq": {
+      "chosen": "wrds:crsp.msf_v2.mthret.EFA",
+      "alternatives": [
+        "french:Developed_ex_US_3_Factors_CSV.zip.Mkt-RF+RF"
+      ]
+    },
+    "reit": {
+      "chosen": "wrds:crsp.msf_v2.mthret.VNQ",
+      "alternatives": []
+    },
+    "s_acm_rny10": {
+      "chosen": "nyfed:acm.ACMRNY10",
+      "alternatives": []
+    },
+    "s_acm_tp10": {
+      "chosen": "nyfed:acm.ACMTP10",
+      "alternatives": []
+    },
+    "s_indpro": {
+      "chosen": "fred:INDPRO",
+      "alternatives": []
+    },
+    "s_unrate": {
+      "chosen": "fred:UNRATE",
+      "alternatives": []
+    },
+    "s_usrec": {
+      "chosen": "fred:USREC",
+      "alternatives": []
+    },
+    "s_vixcls": {
+      "chosen": "fred:VIXCLS",
+      "alternatives": []
+    },
+    "tbill": {
+      "chosen": "wrds:crsp.mcti.t30ret",
+      "alternatives": [
+        "french:F-F_Research_Data_Factors.RF"
+      ]
+    },
+    "tips": {
+      "chosen": "wrds:crsp.msf_v2.mthret.TIP",
+      "alternatives": [
+        "model:par_bond(y_dfii10,10.0y,real+cpi)"
+      ]
+    },
+    "us_eq": {
+      "chosen": "wrds:crsp.msix.vwretd",
+      "alternatives": [
+        "french:F-F_Research_Data_Factors.Mkt-RF+RF"
+      ]
+    },
+    "ust_10y": {
+      "chosen": "wrds:crsp.mcti.b10ret",
+      "alternatives": [
+        "model:par_bond(y_dgs10,10.0y)"
+      ]
+    },
+    "ust_20p_etf": {
+      "chosen": "wrds:crsp.msf_v2.mthret.TLT",
+      "alternatives": []
+    },
+    "ust_20y": {
+      "chosen": "wrds:crsp.mcti.b20ret",
+      "alternatives": [
+        "model:par_bond(y_dgs20,20.0y)"
+      ]
+    },
+    "ust_2y": {
+      "chosen": "wrds:crsp.mcti.b2ret",
+      "alternatives": [
+        "model:par_bond(y_dgs2,2.0y)"
+      ]
+    },
+    "ust_30y": {
+      "chosen": "wrds:crsp.mcti.b30ret",
+      "alternatives": [
+        "model:par_bond(y_dgs30,30.0y)"
+      ]
+    },
+    "ust_5y": {
+      "chosen": "wrds:crsp.mcti.b5ret",
+      "alternatives": [
+        "model:par_bond(y_dgs5,5.0y)"
+      ]
+    },
+    "ust_7_10_etf": {
+      "chosen": "wrds:crsp.msf_v2.mthret.IEF",
+      "alternatives": []
+    },
+    "y_aaa": {
+      "chosen": "fred:AAA",
+      "alternatives": []
+    },
+    "y_baa": {
+      "chosen": "fred:BAA",
+      "alternatives": []
+    },
+    "y_cm_aud": {
+      "chosen": "fred:IRSTCI01AUM156N",
+      "alternatives": []
+    },
+    "y_cm_cad": {
+      "chosen": "fred:IRSTCI01CAM156N",
+      "alternatives": []
+    },
+    "y_cm_gbp": {
+      "chosen": "fred:IRSTCI01GBM156N",
+      "alternatives": []
+    },
+    "y_cm_jpy": {
+      "chosen": "fred:IRSTCI01JPM156N",
+      "alternatives": []
+    },
+    "y_dfii10": {
+      "chosen": "fred:FII10",
+      "alternatives": []
+    },
+    "y_dfii5": {
+      "chosen": "fred:FII5",
+      "alternatives": []
+    },
+    "y_dgs10": {
+      "chosen": "fred:GS10",
+      "alternatives": []
+    },
+    "y_dgs2": {
+      "chosen": "fred:GS2",
+      "alternatives": []
+    },
+    "y_dgs20": {
+      "chosen": "fred:GS20",
+      "alternatives": []
+    },
+    "y_dgs30": {
+      "chosen": "fred:GS30",
+      "alternatives": []
+    },
+    "y_dgs5": {
+      "chosen": "fred:GS5",
+      "alternatives": []
+    },
+    "y_t10yie": {
+      "chosen": "fred:T10YIEM",
+      "alternatives": []
+    },
+    "y_t5yie": {
+      "chosen": "fred:T5YIEM",
+      "alternatives": []
+    },
+    "y_tb3ms": {
+      "chosen": "fred:TB3MS",
+      "alternatives": []
+    }
+  },
+  "n_series": 107,
+  "n_rows": 67010
+}

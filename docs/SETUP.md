@@ -5,6 +5,44 @@ public data, then optionally adds WRDS. Every step was run end to end on Linux (
 
 ## 0. Requirements
 
+### Windows PowerShell
+
+The November 20 handoff provides a single public-data setup command from the repository root:
+
+```powershell
+.\setup_windows.ps1
+```
+
+Install Node.js 22 or newer and `uv` first. If uv is available only as a Python module, use
+`python -m pip install uv`; the script falls back to `python -m uv`. An explicit interpreter can
+be supplied with `-UvPython C:/path/to/python.exe`. The script restores the public snapshot,
+builds the panel, generates study outputs, installs locked frontend dependencies and builds the app.
+It uses copy mode for OneDrive and bounds numerical-library threads. `-SkipStudies` performs only
+installation/data/build steps. If gold is unavailable, the ex-gold study is explicitly labeled.
+
+The current employer evidence is in
+`research/integrated_handoff_2026_11_20/integrated_research.html`; earlier dated reports are an audit trail.
+
+The validated Windows path uses Python 3.12 and the locked backend dependencies. From the repository root,
+run `python -m pip install uv`, then the following commands.
+
+```powershell
+$env:PYTHONUTF8='1'
+python -m uv sync --project backend --extra dev --extra wrds --extra workers --frozen
+backend/.venv/Scripts/python.exe -m lifecycle.cli ingest --offline
+backend/.venv/Scripts/python.exe -m lifecycle.cli seed-v2
+Push-Location web
+npm.cmd ci
+npm.cmd run build
+Pop-Location
+```
+
+Start the API with `backend/.venv/Scripts/python.exe -m uvicorn lifecycle.api.main:app --host 127.0.0.1 --port 8000`.
+In another terminal, run `npm.cmd run start --prefix web`. The browser entry point is `http://localhost:3000`.
+
+The November 19 validation notebook lives at `research/followup_2026_11_19/fixed_income_validation.ipynb`.
+Its input files and `validation_manifest.json` record the run IDs, specifications and data hashes used.
+
 | Tool | Version | Notes |
 |---|---|---|
 | Python | 3.12 (exactly; `requires-python = ">=3.12,<3.13"`) | |

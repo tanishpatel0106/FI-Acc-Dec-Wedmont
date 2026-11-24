@@ -25,6 +25,7 @@ from lifecycle.studies import historical_replay as H
 
 
 class LifecycleSimSpec(S.Frozen):
+    catalog_hash: str | None = None
     start: str = "2007-01"
     scenario_source: str = Field("simulated_from_start", pattern="^(simulated_from_start|history_then_simulated)$")
     investor: H.ReplayInvestor = Field(default_factory=H.ReplayInvestor)

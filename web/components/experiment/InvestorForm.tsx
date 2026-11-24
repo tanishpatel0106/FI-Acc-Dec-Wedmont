@@ -1,6 +1,6 @@
 "use client";
 import { useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Field, NativeSelect, NumberInput } from "@/components/common/Fields";
@@ -55,17 +55,15 @@ export function InvestorForm() {
     savingsRate: s.savingsRate, pension: s.pension, gamma: s.gamma, beta: s.beta, eta: s.eta, cMin: s.cMin,
     withdrawalRate: s.withdrawalRate, nPaths: s.nPaths, costBps: s.costBps, rebalanceMonths: s.rebalanceMonths } });
   const errors = form.formState.errors;
+  const values = useWatch({ control: form.control });
   const setStore = s.set;
   useEffect(() => {
-    const sub = form.watch((v) => {
-      const parsed = investorSchema.safeParse(v);
-      if (parsed.success) setStore(parsed.data);
-    });
-    return () => sub.unsubscribe();
-  }, [form, setStore]);
+    const parsed = investorSchema.safeParse(values);
+    if (parsed.success) setStore(parsed.data);
+  }, [values, setStore]);
   const num = (name: keyof FormValues, label: string, step: number, hint?: string) => (
     <Field label={label} hint={errors[name]?.message ?? hint}>
-      <NumberInput value={form.watch(name) as number} step={step} invalid={!!errors[name]}
+      <NumberInput value={values[name] as number} step={step} invalid={!!errors[name]}
         onChange={(v) => form.setValue(name, v as never, { shouldValidate: true })} />
     </Field>
   );
